@@ -1,5 +1,7 @@
 {
 	"name": "svelte-html-modal",
+	"author": "Hyunbin Seo",
+	"license": "MIT",
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "vite dev",
@@ -24,7 +26,7 @@
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"svelte": "^4.0.0"
+		"svelte": "^3.59.2 || ^4.0.0"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.0.0",
@@ -47,5 +49,13 @@
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"type": "module"
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/hyunbinseo/svelte-html-modal.git"
+	},
+	"bugs": {
+		"url": "https://github.com/hyunbinseo/svelte-html-modal/issues"
+	},
+	"homepage": "https://github.com/hyunbinseo/svelte-html-modal#readme"
 }
