@@ -1,0 +1,70 @@
+/* Safari 17.0 (19616.1.27.211.1) */
+
+dialog:modal {
+	position: fixed;
+	overflow-x: auto;
+	overflow-y: auto;
+	inset-block-start: 0px;
+	inset-block-end: 0px;
+	max-width: calc(100% - 2em - 6px);
+	max-height: calc(100% - 2em - 6px);
+	visibility: visible;
+}
+dialog[open] {
+	display: block;
+}
+dialog {
+	position: absolute;
+	inset-inline-start: 0px;
+	inset-inline-end: 0px;
+	width: fit-content;
+	height: fit-content;
+	margin-top: auto;
+	margin-right: auto;
+	margin-bottom: auto;
+	margin-left: auto;
+	border-top-width: medium;
+	border-right-width: medium;
+	border-bottom-width: medium;
+	border-left-width: medium;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: currentcolor;
+	border-right-color: currentcolor;
+	border-bottom-color: currentcolor;
+	border-left-color: currentcolor;
+	border-image-source: none;
+	border-image-slice: 100%;
+	border-image-width: 1;
+	border-image-outset: 0;
+	border-image-repeat: stretch;
+	padding-top: 1em;
+	padding-right: 1em;
+	padding-bottom: 1em;
+	padding-left: 1em;
+	background-color: canvas;
+	color: canvastext;
+	display: none;
+}
+
+dialog::backdrop {
+	background-image: none;
+	background-position-x: 0%;
+	background-position-y: 0%;
+	background-size: auto;
+	background-repeat: repeat;
+	background-attachment: scroll;
+	background-origin: padding-box;
+	background-clip: border-box;
+	background-color: rgba(0, 0, 0, 0.1);
+}
+::backdrop {
+	display: block;
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+}
