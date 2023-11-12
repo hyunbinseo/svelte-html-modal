@@ -1,8 +1,9 @@
 # Svelte HTML Modal
 
-A simple wrapper component for the HTML [`<dialog>`] element.
+A simple wrapper component for the HTML [`<dialog>`] element. [Demo]
 
 [`<dialog>`]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement
+[Demo]: https://svelte.dev/repl/7ffaea50f0c0466ea2b4be8e0aee20dd?version=4.2.3
 
 ## Benefits
 
@@ -24,7 +25,7 @@ npm i svelte-html-modal -D
 ```
 
 ```svelte
-<script lang="ts">
+<script>
   import { Modal } from 'svelte-html-modal';
 
   let showModal = false;
@@ -33,7 +34,14 @@ npm i svelte-html-modal -D
 <button type="button" on:click={() => (showModal = true)}>Show Modal</button>
 
 <Modal bind:showModal on:close={() => (showModal = false)}>
-  <!-- Content -->
-  <button>Close Modal</button>
+  <div>
+    <!-- content -->
+  </div>
 </Modal>
+
+<style>
+  div {
+    background-color: canvas; /* transparent by default */
+  }
+</style>
 ```
