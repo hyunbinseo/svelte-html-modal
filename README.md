@@ -34,10 +34,24 @@ npm i svelte-html-modal -D
 
 <button type="button" on:click={() => (showModal = true)}>Show Modal</button>
 
-<Modal bind:showModal on:close={() => (showModal = false)}>
-  <!-- content -->
+<Modal bind:showModal>
+  <!-- Container to set padding, etc. -->
+  <div>
+    <!-- Modal content -->
+    <button>Close Modal</button>
+  </div>
 </Modal>
 ```
+
+At least one should be provided for the touch and mouse users.
+
+- `<button>Close Modal</button>`
+- `<Modal closeWithBackdropClick={true}>`
+
+To change the modal's background or its border radius, either
+
+1. Set `transparentBackdrop={true}` and style the container's background.
+2. Style the component's `<dialog>` element using the [`:global` operator](https://joyofcode.xyz/global-styles-in-sveltekit).
 
 ## Configurations
 
