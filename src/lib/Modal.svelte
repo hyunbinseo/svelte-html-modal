@@ -1,28 +1,40 @@
 <script lang="ts">
 	import { BROWSER } from 'esm-env';
+	import type { Action } from 'svelte/action';
+	import type { HTMLFormAttributes } from 'svelte/elements';
 
 	export let showModal: boolean;
+	export let formAttributes: HTMLFormAttributes = { method: 'dialog' };
 
 	// Configurations
+	export let showModalOnMount = false;
 	export let closeWithBackdropClick = false;
+	export let transparentBackdrop = false;
 	export let fullHeight = false;
 	export let fullWidth = false;
 
 	let dialog: HTMLDialogElement;
 
-	$: if (BROWSER && showModal) {
-		document.body.style.overflowY = 'hidden';
-		dialog.showModal();
-	}
+	const handleShowModal = (element?: HTMLDialogElement) => {
+		document.body.style.overflow = 'hidden';
+		(element || dialog).showModal();
+	};
+
+	$: if (BROWSER && showModal) handleShowModal();
+
+	const handleDialogMount = ((dialog) => {
+		if (showModalOnMount) handleShowModal(dialog);
+	}) satisfies Action<HTMLDialogElement>;
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const handleDialogClose = (e: { currentTarget: HTMLDialogElement }) => {
+		document.body.style.overflow = 'visible';
+		showModal = false;
+	};
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const handleDialogBackdrop = (e: { currentTarget: HTMLDialogElement }) => {
 		if (closeWithBackdropClick) dialog.close();
-	};
-
-	const handleDialogClose = () => {
-		document.body.style.overflowY = 'visible';
-		showModal = false;
 	};
 </script>
 
@@ -30,6 +42,8 @@
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <dialog
 	bind:this={dialog}
+	use:handleDialogMount
+	style:background-color={transparentBackdrop ? 'transparent' : null}
 	style:max-height={fullHeight ? '100%' : null}
 	style:max-width={fullWidth ? '100%' : null}
 	on:click|self={handleDialogBackdrop}
@@ -38,7 +52,7 @@
 	on:cancel
 	on:submit
 >
-	<form method="dialog" on:click|stopPropagation>
+	<form {...formAttributes} on:click|stopPropagation>
 		<slot />
 	</form>
 </dialog>
@@ -46,7 +60,6 @@
 <style>
 	dialog {
 		/* Reference https://github.com/tailwindlabs/tailwindcss/pull/11069#issuecomment-1527384738 */
-		background-color: transparent;
 		border-width: 0;
 		padding: 0;
 	}
