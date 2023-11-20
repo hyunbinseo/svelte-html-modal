@@ -58,7 +58,7 @@
 	on:cancel
 	on:submit
 >
-	<form {...formAttributes} use:optionalEnhance on:click|stopPropagation>
+	<form {...{ ...formAttributes, enhance: null }} use:optionalEnhance on:click|stopPropagation>
 		<slot />
 	</form>
 </dialog>
