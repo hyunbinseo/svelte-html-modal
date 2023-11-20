@@ -13,7 +13,6 @@
 	// Configurations
 	export let showModalOnMount = false;
 	export let closeWithBackdropClick = false;
-	export let transparentBackdrop = false;
 	export let fullHeight = false;
 	export let fullWidth = false;
 
@@ -49,7 +48,6 @@
 <dialog
 	bind:this={dialog}
 	use:handleDialogMount
-	style:background-color={transparentBackdrop ? 'transparent' : null}
 	style:max-height={fullHeight ? '100%' : null}
 	style:max-width={fullWidth ? '100%' : null}
 	on:click|self={handleDialogBackdrop}
