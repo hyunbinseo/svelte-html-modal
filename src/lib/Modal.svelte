@@ -1,10 +1,14 @@
 <script lang="ts">
+	import type { enhance } from '$app/forms';
 	import { BROWSER } from 'esm-env';
 	import type { Action } from 'svelte/action';
 	import type { HTMLFormAttributes } from 'svelte/elements';
 
+	type NotEnhanced = HTMLFormAttributes & { enhance?: never };
+	type Enhanced = Omit<HTMLFormAttributes, 'method'> & { method: 'post'; enhance: typeof enhance };
+
 	export let showModal: boolean;
-	export let formAttributes: HTMLFormAttributes = { method: 'dialog' };
+	export let formAttributes: NotEnhanced | Enhanced = { method: 'dialog' };
 
 	// Configurations
 	export let showModalOnMount = false;
@@ -36,6 +40,8 @@
 	const handleDialogBackdrop = (e: { currentTarget: HTMLDialogElement }) => {
 		if (closeWithBackdropClick) dialog.close();
 	};
+
+	const optionalEnhance = formAttributes.enhance || (() => undefined);
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -52,7 +58,7 @@
 	on:cancel
 	on:submit
 >
-	<form {...formAttributes} on:click|stopPropagation>
+	<form {...formAttributes} use:optionalEnhance on:click|stopPropagation>
 		<slot />
 	</form>
 </dialog>

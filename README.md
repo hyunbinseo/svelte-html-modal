@@ -83,7 +83,10 @@ In the component, a `<form method="dialog">` is placed inside a `<dialog>` eleme
 - `<dialog>` close and cancel, `<form>` submit events are forwarded.
 
 ```ts
-export let formAttributes: HTMLFormAttributes = { method: 'dialog' };
+export let formAttributes: NotEnhanced | Enhanced = { method: 'dialog' };
 ```
 
-- `use:enhanced` is not applied since it is a SvelteKit specific module.
+This behavior can be overridden by passing a `formAttributes` prop to the component.
+
+- It is basically the `HTMLFormAttributes` type provided in Svelte.
+- SvelteKit's `enhance` can be passed alongside `method="post"`.
