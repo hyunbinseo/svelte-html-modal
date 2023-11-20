@@ -9,7 +9,8 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"strict": true,
-		"module": "NodeNext",
+		// FIXME module resolution causing a TypeScript error.
+		// Reference https://github.com/sveltejs/kit/issues/11086
 		"moduleResolution": "NodeNext"
 	}
 }
