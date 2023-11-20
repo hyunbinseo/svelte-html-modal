@@ -55,7 +55,7 @@ npm i svelte-html-modal -D
 <button type="button" on:click={() => (showModal = true)}>Show Modal</button>
 
 <!-- Outer <div> is used for styling purposes. Reference the <style> element below. -->
-<div>
+<div class="modal-wrapper">
   <Modal bind:showModal closeWithBackdropClick={true}>
     <!-- Method 1: Set backdrop click or touch to close the modal. -->
     <!-- Method 2: This button closes the modal without any JavaScript. -->
@@ -64,13 +64,13 @@ npm i svelte-html-modal -D
 </div>
 
 <style>
-  /* Only the <dialog> inside this page's <div> is styled. */
+  /* Only the <dialog> inside this page's .modal-wrapper is styled. */
   /* Reference https://svelte.dev/docs/svelte-components#style */
-  div :global(dialog) {
+  .modal-wrapper :global(dialog) {
     padding: 1rem;
     border-radius: 0.375rem;
   }
-  div :global(dialog::backdrop) {
+  .modal-wrapper :global(dialog::backdrop) {
     backdrop-filter: blur(8px) brightness(0.5);
   }
 </style>
@@ -105,6 +105,11 @@ Browsers' [default style] restricts dialog's height and width to `calc((100% - 6
 
 In the component, a `<form method="dialog">` is placed inside a `<dialog>` element.
 
+- This allows any `<button>` passed to the `<slot>` to [close the dialog].
+- `<dialog>` close and cancel, `<form>` submit events are forwarded.
+
+[close the dialog]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method
+
 ```svelte
 <!-- Component Structure -->
 <dialog on:close on:cancel on:submit>
@@ -114,16 +119,31 @@ In the component, a `<form method="dialog">` is placed inside a `<dialog>` eleme
 </dialog>
 ```
 
-- This allows any `<button>` passed to the `<slot>` to [close the dialog].
-- `<dialog>` close and cancel, `<form>` submit events are forwarded.
+This behavior can be overridden by passing a `formAttributes` prop to the component.
 
-[close the dialog]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method
+- It is basically the `HTMLFormAttributes` type provided in Svelte.
+- SvelteKit's `enhance` can be passed alongside `method="post"`.
 
 ```ts
 export let formAttributes: NotEnhanced | Enhanced = { method: 'dialog' };
 ```
 
-This behavior can be overridden by passing a `formAttributes` prop to the component.
+To style the component's slot, the `<form>` element should be styled, not the `<dialog>`.
 
-- It is basically the `HTMLFormAttributes` type provided in Svelte.
-- SvelteKit's `enhance` can be passed alongside `method="post"`.
+```svelte
+<div class="modal-wrapper">
+  <Modal bind:showModal>
+    <h1>This is a Title</h1>
+    <!-- 1.5rem vertical gap -->
+    <button>Close Modal</button>
+  </Modal>
+</div>
+
+<style lang="postcss">
+  .modal-wrapper :global(dialog > form) {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+  }
+</style>
+```
