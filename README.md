@@ -22,28 +22,33 @@ Don't reinvent the wheel.
 
 ## HTML
 
-This background knowledge is required to style the `<Modal>` component.
+This background knowledge is required to understand the `<Modal>` component.
 
-- Modal container: `<dialog>` element
-- Modal backdrop: `dialog::backdrop` pseudo-element
+```
+Structure            | Role      | Style
+-------------------- | --------- | ----------------------------------
+├── dialog::backdrop | backdrop  | background-color, backdrop-filter
+└── <dialog>         | root      | background-color, border-radius
+    └── <form>       | container | padding, flex, flex-direction
+        └── <slot>   | content   |
+```
 
-Yes, the dialog element can be a dialog or a modal, based on [how it is opened].
+Yes, the `<dialog>` element can be a dialog or a modal based on [how it is opened].
 
 [how it is opened]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal
 
+Reference the [advanced](#advanced) section for the reason why a `<form>` element is nested.
+
 ## Usage
+
+Install the [package] and copy-and-paste the starter template.
 
 ```
 pnpm add svelte-html-modal -D
 npm i svelte-html-modal -D
 ```
 
-1. Install the [package] using the preferred package manager.
-2. Provide at least one closing method for the pointer users.
-3. Style the modal. The browser default padding has been [reset].
-
 [package]: https://www.npmjs.com/package/svelte-html-modal
-[reset]: https://github.com/tailwindlabs/tailwindcss/pull/11069#issuecomment-1527384738
 
 ```svelte
 <script>
@@ -57,6 +62,7 @@ npm i svelte-html-modal -D
 <!-- Outer <div> is used for styling purposes. Reference the <style> element below. -->
 <div class="modal-wrapper">
   <Modal bind:showModal closeWithBackdropClick={true}>
+    <!-- Provide at least one closing method for the pointer users. -->
     <!-- Method 1: Set backdrop click or touch to close the modal. -->
     <!-- Method 2: This button closes the modal without any JavaScript. -->
     <button>Close Modal</button>
@@ -67,11 +73,15 @@ npm i svelte-html-modal -D
   /* Only the <dialog> inside this page's .modal-wrapper is styled. */
   /* Reference https://svelte.dev/docs/svelte-components#style */
   .modal-wrapper :global(dialog) {
-    padding: 1rem;
     border-radius: 0.375rem;
   }
   .modal-wrapper :global(dialog::backdrop) {
     backdrop-filter: blur(8px) brightness(0.5);
+  }
+  /* User-agent style has been reset. If needed, container padding should be manually set. */
+  /* Reference https://github.com/tailwindlabs/tailwindcss/pull/11069#issuecomment-1527384738 */
+  .modal-wrapper :global(dialog > form) {
+    padding: 1rem;
   }
 </style>
 ```
@@ -82,8 +92,11 @@ For Tailwind CSS users, above style can be rewritten using the [`@apply` directi
 
 ```svelte
 <style lang="postcss">
-  div :global(dialog) {
-    @apply rounded-md p-4 backdrop:backdrop-blur backdrop:backdrop-brightness-50;
+  .modal-wrapper :global(dialog) {
+    @apply rounded-md backdrop:backdrop-blur backdrop:backdrop-brightness-50;
+  }
+  .modal-wrapper :global(dialog > form) {
+    @apply p-4;
   }
 </style>
 ```
@@ -105,10 +118,10 @@ Browsers' [default style] restricts dialog's height and width to `calc((100% - 6
 
 In the component, a `<form method="dialog">` is placed inside a `<dialog>` element.
 
-- This allows any `<button>` passed to the `<slot>` to [close the dialog].
+- `<button>` passed to the `<slot>` [closes the dialog] through submit.
 - `<dialog>` close and cancel, `<form>` submit events are forwarded.
 
-[close the dialog]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method
+[closes the dialog]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method
 
 ```svelte
 <!-- Component Structure -->
@@ -141,6 +154,7 @@ To style the component's slot, the `<form>` element should be styled, not the `<
 
 <style lang="postcss">
   .modal-wrapper :global(dialog > form) {
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     row-gap: 1.5rem;
