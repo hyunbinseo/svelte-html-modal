@@ -1,11 +1,14 @@
 <script lang="ts">
-	import type { enhance } from '$app/forms';
+	import type { SubmitFunction } from '@sveltejs/kit';
 	import { BROWSER } from 'esm-env';
 	import type { Action } from 'svelte/action';
 	import type { HTMLFormAttributes } from 'svelte/elements';
 
 	type NotEnhanced = HTMLFormAttributes & { enhance?: never };
-	type Enhanced = Omit<HTMLFormAttributes, 'method'> & { method: 'post'; enhance: typeof enhance };
+	type Enhanced = Omit<HTMLFormAttributes, 'method'> & {
+		method: 'post';
+		enhance: Action<HTMLFormElement, SubmitFunction>;
+	};
 
 	export let showModal: boolean;
 	export let formAttributes: NotEnhanced | Enhanced = { method: 'dialog' };
