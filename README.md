@@ -28,12 +28,12 @@ This background knowledge is required to understand the `<Modal>` component.
 Structure            | Role      | Style
 -------------------- | --------- | ----------------------------------
 ├── dialog::backdrop | backdrop  | background-color, backdrop-filter
-└── <dialog>         | root      | background-color, border-radius
-    └── <form>       | container | padding, flex, flex-direction
+└── <dialog>         | root      | width, border-radius, padding
+    └── <form>       | container | display, flex-direction, etc.
         └── <slot>   | content   |
 ```
 
-Yes, the `<dialog>` element can be a dialog or a modal based on [how it is opened].
+The `<dialog>` element can be a dialog or a modal based on [how it is opened].
 
 [how it is opened]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal
 
@@ -41,14 +41,10 @@ Reference the [advanced](#advanced) section for the reason why a `<form>` elemen
 
 ## Usage
 
-Install the [package] and copy-and-paste the starter template.
-
 ```
 pnpm add svelte-html-modal -D
 npm i svelte-html-modal -D
 ```
-
-[package]: https://www.npmjs.com/package/svelte-html-modal
 
 ```svelte
 <script>
@@ -59,13 +55,17 @@ npm i svelte-html-modal -D
 
 <button type="button" on:click={() => (showModal = true)}>Show Modal</button>
 
-<!-- Outer <div> is used for styling purposes. Reference the <style> element below. -->
+<!-- Outer wrapper <div> is used for styling. -->
+<!-- Reference the <style> element below. -->
 <div class="modal-wrapper">
+  <!-- Provide at least one closing method for the pointer users. -->
+  <!-- Method 1: Set the close-with-backdrop-click prop. -->
+  <!-- Method 2: Pass a <button> element to the slot. -->
   <Modal bind:showModal closeWithBackdropClick={true}>
-    <!-- Provide at least one closing method for the pointer users. -->
-    <!-- Method 1: Set backdrop click or touch to close the modal. -->
-    <!-- Method 2: This button closes the modal without any JavaScript. -->
-    <button>Close Modal</button>
+    <h1>Hello, Modal!</h1>
+    <!-- Full-width, due to the align-items: stretch; default style. -->
+    <!-- Closes the modal without any JavaScript. -->
+    <button>Close</button>
   </Modal>
 </div>
 
@@ -73,15 +73,20 @@ npm i svelte-html-modal -D
   /* Only the <dialog> inside this page's .modal-wrapper is styled. */
   /* Reference https://svelte.dev/docs/svelte-components#style */
   .modal-wrapper :global(dialog) {
+    width: 20rem;
     border-radius: 0.375rem;
+    /* Dialog padding has been reset to 0. Browser default style is 1em. */
+    /* Reference https://github.com/tailwindlabs/tailwindcss/pull/11069 */
+    /* Reference https://browserdefaultstyles.com/#dialog */
+    padding: 1rem;
   }
   .modal-wrapper :global(dialog::backdrop) {
     backdrop-filter: blur(8px) brightness(0.5);
   }
-  /* User-agent style has been reset. If needed, container padding should be manually set. */
-  /* Reference https://github.com/tailwindlabs/tailwindcss/pull/11069#issuecomment-1527384738 */
   .modal-wrapper :global(dialog > form) {
-    padding: 1rem;
+    /* <slot> styles */
+    display: flex;
+    flex-direction: column;
   }
 </style>
 ```
@@ -93,10 +98,10 @@ For Tailwind CSS users, above style can be rewritten using the [`@apply` directi
 ```svelte
 <style lang="postcss">
   .modal-wrapper :global(dialog) {
-    @apply rounded-md backdrop:backdrop-blur backdrop:backdrop-brightness-50;
+    @apply w-80 rounded-md p-4 backdrop:backdrop-blur backdrop:backdrop-brightness-50;
   }
   .modal-wrapper :global(dialog > form) {
-    @apply p-4;
+    @apply flex flex-col;
   }
 </style>
 ```
@@ -110,7 +115,7 @@ export let fullHeight = false;
 export let fullWidth = false;
 ```
 
-Browsers' [default style] restricts dialog's height and width to `calc((100% - 6px) - 2em);`.
+Browser [default style] restricts dialog's height and width to `calc((100% - 6px) - 2em);`.
 
 [default style]: /docs/user-agent
 
@@ -138,26 +143,12 @@ This behavior can be overridden by passing a `formAttributes` prop to the compon
 - SvelteKit's `enhance` can be passed alongside `method="post"`.
 
 ```ts
+type NotEnhanced = HTMLFormAttributes & { enhance?: never };
+
+type Enhanced = Omit<HTMLFormAttributes, 'method'> & {
+  method: 'post';
+  enhance: Action<HTMLFormElement, SubmitFunction>;
+};
+
 export let formAttributes: NotEnhanced | Enhanced = { method: 'dialog' };
-```
-
-To style the component's slot, the `<form>` element should be styled, not the `<dialog>`.
-
-```svelte
-<div class="modal-wrapper">
-  <Modal bind:showModal>
-    <h1>This is a Title</h1>
-    <!-- 1.5rem vertical gap -->
-    <button>Close Modal</button>
-  </Modal>
-</div>
-
-<style lang="postcss">
-  .modal-wrapper :global(dialog > form) {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    row-gap: 1.5rem;
-  }
-</style>
 ```
