@@ -111,6 +111,7 @@ For Tailwind CSS users, above style can be rewritten using the [`@apply` directi
 ```ts
 export let showModalOnMount = false;
 export let closeWithBackdropClick = false;
+export let preventCancel = false;
 export let fullHeight = false;
 export let fullWidth = false;
 ```

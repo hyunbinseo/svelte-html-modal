@@ -25,6 +25,7 @@
 	// Configurations
 	export let showModalOnMount = false;
 	export let closeWithBackdropClick = false;
+	export let preventCancel = false;
 	export let fullHeight = false;
 	export let fullWidth = false;
 
@@ -40,6 +41,10 @@
 	const handleDialogMount = ((dialog) => {
 		if (showModalOnMount) handleShowModal(dialog);
 	}) satisfies Action<HTMLDialogElement>;
+
+	const handleDialogCancel = (e: Event & { currentTarget: HTMLDialogElement }) => {
+		if (preventCancel) e.preventDefault();
+	};
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const handleDialogClose = (e: { currentTarget: HTMLDialogElement }) => {
@@ -67,6 +72,7 @@
 	style:max-height={fullHeight ? '100%' : null}
 	style:max-width={fullWidth ? '100%' : null}
 	on:click|self={handleDialogBackdrop}
+	on:cancel={handleDialogCancel}
 	on:close={handleDialogClose}
 	on:close
 	on:cancel
