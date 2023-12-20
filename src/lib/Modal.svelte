@@ -4,14 +4,23 @@
 	import type { Action } from 'svelte/action';
 	import type { HTMLFormAttributes } from 'svelte/elements';
 
-	type NotEnhanced = HTMLFormAttributes & { enhance?: never };
+	// To customize the behavior, you can provide a SubmitFunction that runs immediately before the form is submitted.
+	// Reference https://kit.svelte.dev/docs/form-actions#progressive-enhancement-customising-use-enhance
+	type Enhance = Action<HTMLFormElement, SubmitFunction>;
+
 	type Enhanced = Omit<HTMLFormAttributes, 'method'> & {
 		method: 'post';
-		enhance: Action<HTMLFormElement, SubmitFunction>;
+		enhance: Enhance;
+		submitFunction?: SubmitFunction;
+	};
+
+	type NotEnhanced = HTMLFormAttributes & {
+		enhance?: never;
+		submitFunction?: never;
 	};
 
 	export let showModal: boolean;
-	export let formAttributes: NotEnhanced | Enhanced = { method: 'dialog' };
+	export let formAttributes: Enhanced | NotEnhanced = { method: 'dialog' };
 
 	// Configurations
 	export let showModalOnMount = false;
@@ -44,6 +53,10 @@
 	};
 
 	const optionalEnhance = formAttributes.enhance || (() => undefined);
+
+	// export function enhance(form_element, submit = () => {}) { /* function body */ }
+	// Reference https://github.com/sveltejs/kit/blob/main/packages/kit/src/runtime/app/forms.js
+	const submitFunction = formAttributes.submitFunction || (() => undefined);
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -59,7 +72,11 @@
 	on:cancel
 	on:submit
 >
-	<form {...{ ...formAttributes, enhance: null }} use:optionalEnhance on:click|stopPropagation>
+	<form
+		{...{ ...formAttributes, enhance: null }}
+		use:optionalEnhance={submitFunction}
+		on:click|stopPropagation
+	>
 		<slot />
 	</form>
 </dialog>

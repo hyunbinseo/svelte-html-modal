@@ -139,16 +139,35 @@ In the component, a `<form method="dialog">` is placed inside a `<dialog>` eleme
 
 This behavior can be overridden by passing a `formAttributes` prop to the component.
 
-- It is basically the `HTMLFormAttributes` type provided in Svelte.
-- SvelteKit's `enhance` can be passed alongside `method="post"`.
+```svelte
+<script>
+  import { enhance } from '$app/forms';
+</script>
+
+<Modal formAttributes={{ method: 'post', enhance }}></Modal>
+```
+
+- It is an extended version of the `HTMLFormAttributes` [type] in Svelte.
+- For progressive enhancement, provide the SvelteKit's [`enhance`] module.
+- [Customize] the `use:enhance` behavior by providing a `submitFunction`.
+
+[type]: https://github.com/sveltejs/svelte/blob/main/packages/svelte/elements.d.ts
+[`enhance`]: https://kit.svelte.dev/docs/modules#$app-forms-enhance
+[customize]: https://kit.svelte.dev/docs/form-actions#progressive-enhancement-customising-use-enhance
 
 ```ts
-type NotEnhanced = HTMLFormAttributes & { enhance?: never };
+type Enhance = Action<HTMLFormElement, SubmitFunction>;
 
 type Enhanced = Omit<HTMLFormAttributes, 'method'> & {
   method: 'post';
-  enhance: Action<HTMLFormElement, SubmitFunction>;
+  enhance: Enhance;
+  submitFunction?: SubmitFunction;
 };
 
-export let formAttributes: NotEnhanced | Enhanced = { method: 'dialog' };
+type NotEnhanced = HTMLFormAttributes & {
+  enhance?: never;
+  submitFunction?: never;
+};
+
+export let formAttributes: Enhanced | NotEnhanced = { method: 'dialog' };
 ```
