@@ -109,7 +109,6 @@ For Tailwind CSS users, above style can be rewritten using the [`@apply` directi
 ## Configurations
 
 ```ts
-export let showModalOnMount = false;
 export let closeWithBackdropClick = false;
 export let preventCancel = false;
 export let fullHeight = false;

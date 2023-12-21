@@ -23,7 +23,6 @@
 	export let formAttributes: Enhanced | NotEnhanced = { method: 'dialog' };
 
 	// Configurations
-	export let showModalOnMount = false;
 	export let closeWithBackdropClick = false;
 	export let preventCancel = false;
 	export let fullHeight = false;
@@ -31,16 +30,13 @@
 
 	let dialog: HTMLDialogElement;
 
-	const handleShowModal = (element?: HTMLDialogElement) => {
-		document.body.style.overflow = 'hidden';
-		(element || dialog).showModal();
-	};
-
-	$: if (BROWSER && showModal) handleShowModal();
-
-	const handleDialogMount = ((dialog) => {
-		if (showModalOnMount) handleShowModal(dialog);
-	}) satisfies Action<HTMLDialogElement>;
+	$: if (BROWSER && dialog) {
+		if (showModal) {
+			document.body.style.overflow = 'hidden';
+			dialog.showModal();
+		}
+		if (!showModal && dialog.open) dialog.close();
+	}
 
 	const handleDialogCancel = (e: Event & { currentTarget: HTMLDialogElement }) => {
 		if (preventCancel) e.preventDefault();
@@ -68,7 +64,6 @@
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <dialog
 	bind:this={dialog}
-	use:handleDialogMount
 	on:cancel
 	on:cancel={handleDialogCancel}
 	on:click|self={handleDialogClick}
