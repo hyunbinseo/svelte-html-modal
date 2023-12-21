@@ -47,14 +47,14 @@
 	};
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const handleDialogClose = (e: { currentTarget: HTMLDialogElement }) => {
-		document.body.style.overflow = 'visible';
-		showModal = false;
+	const handleDialogClick = (e: { currentTarget: HTMLDialogElement }) => {
+		if (closeWithBackdropClick) dialog.close();
 	};
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const handleDialogBackdrop = (e: { currentTarget: HTMLDialogElement }) => {
-		if (closeWithBackdropClick) dialog.close();
+	const handleDialogClose = (e: { currentTarget: HTMLDialogElement }) => {
+		document.body.style.overflow = 'visible';
+		showModal = false;
 	};
 
 	const optionalEnhance = formAttributes.enhance || (() => undefined);
@@ -69,14 +69,14 @@
 <dialog
 	bind:this={dialog}
 	use:handleDialogMount
+	on:cancel
+	on:cancel={handleDialogCancel}
+	on:click|self={handleDialogClick}
+	on:close
+	on:close={handleDialogClose}
+	on:submit
 	style:max-height={fullHeight ? '100%' : null}
 	style:max-width={fullWidth ? '100%' : null}
-	on:click|self={handleDialogBackdrop}
-	on:cancel={handleDialogCancel}
-	on:close={handleDialogClose}
-	on:close
-	on:cancel
-	on:submit
 >
 	<form
 		{...{ ...formAttributes, enhance: null }}
