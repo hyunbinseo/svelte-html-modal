@@ -43,11 +43,6 @@
 	};
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const handleDialogClick = (e: { currentTarget: HTMLDialogElement }) => {
-		if (closeWithBackdropClick) dialog.close();
-	};
-
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const handleDialogClose = (e: { currentTarget: HTMLDialogElement }) => {
 		document.body.style.overflow = 'visible';
 		showModal = false;
@@ -66,7 +61,7 @@
 	bind:this={dialog}
 	on:cancel
 	on:cancel={handleDialogCancel}
-	on:click|self={handleDialogClick}
+	on:click|self={closeWithBackdropClick ? () => dialog.close() : null}
 	on:close
 	on:close={handleDialogClose}
 	on:submit
@@ -84,6 +79,8 @@
 
 <style>
 	dialog {
+		/* Border-width and padding is set to 0 in the Tailwind CSS preflight. */
+		/* Reference https://github.com/tailwindlabs/tailwindcss/blob/master/src/css/preflight.css */
 		/* Reference https://github.com/tailwindlabs/tailwindcss/pull/11069#issuecomment-1527384738 */
 		border-width: 0;
 		padding: 0;
