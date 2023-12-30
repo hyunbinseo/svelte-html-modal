@@ -23,6 +23,7 @@
 	export let formAttributes: Enhanced | NotEnhanced = { method: 'dialog' };
 
 	// Configurations
+	export let showFlyInAnimation = true;
 	export let closeWithBackdropClick = false;
 	export let preventCancel = false;
 	export let fullHeight = false;
@@ -65,6 +66,7 @@
 	on:close
 	on:close={handleDialogClose}
 	on:submit
+	class:fly={showFlyInAnimation}
 	style:max-height={fullHeight ? '100%' : null}
 	style:max-width={fullWidth ? '100%' : null}
 >
@@ -93,14 +95,14 @@
 			transform: translateY(0%);
 		}
 	}
-	dialog[open] {
+	dialog.fly[open] {
 		/* Animation breaks in iOS 16.3.1 but works in (16.4.1 and 15.8). */
 		/* Reference https://github.com/sveltejs/svelte/pull/8200 */
 		animation: fly 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 		/* Reference https://easings.net/en#easeOutBack */
 	}
 	@media (prefers-reduced-motion) {
-		dialog[open] {
+		dialog.fly[open] {
 			animation: none;
 		}
 	}

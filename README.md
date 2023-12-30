@@ -38,7 +38,7 @@ The `<dialog>` element can be a dialog or a modal based on [how it is opened].
 
 [how it is opened]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal
 
-Reference the [advanced](#advanced) section for the reason why a `<form>` element is nested.
+Reference the [nested `<form>`](#nested-form) section to understand the reason and benefits.
 
 ## Usage
 
@@ -110,6 +110,7 @@ For Tailwind CSS users, above style can be rewritten using the [`@apply` directi
 ## Configurations
 
 ```ts
+export let showFlyInAnimation = true;
 export let closeWithBackdropClick = false;
 export let preventCancel = false;
 export let fullHeight = false;
@@ -120,7 +121,40 @@ Browser [default style] restricts dialog's height and width to `calc((100% - 6px
 
 [default style]: /docs/user-agent
 
-## Advanced
+## Custom Animations
+
+Default fly-in animation can be disabled and overridden using CSS animations.
+
+Fly-out animation is not available since it is a `display: black → none` switch.
+
+```svelte
+<div class="modal-wrapper">
+  <Modal bind:showModal showFlyInAnimation={false}>
+    <!-- Modal Content -->
+  </Modal>
+</div>
+
+<style>
+  @keyframes fly {
+    from {
+      transform: translateY(32px);
+    }
+    to {
+      transform: translateY(0%);
+    }
+  }
+  .modal-wrapper :global(dialog[open]) {
+    animation: fly 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @media (prefers-reduced-motion) {
+    .modal-wrapper :global(dialog[open]) {
+      animation: none;
+    }
+  }
+</style>
+```
+
+## Nested Form
 
 In the component, a `<form method="dialog">` is placed inside a `<dialog>` element.
 
