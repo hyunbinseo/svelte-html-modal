@@ -8,26 +8,28 @@
 	export let preventCancel = false;
 	export let fullHeight = false;
 	export let fullWidth = false;
-
 	export let trapFocus = true;
-	export let background = 'rgba(0, 0, 0, 0.1)';
 
 	let container: HTMLDivElement;
-	const getNeighboringElements = () => container.parentNode?.children || [];
+	let ignoredElements: Element[] = [];
+
+	const handleFocus = (mode: 'lock' | 'unlock') => {
+		if (!trapFocus) return;
+		if (mode === 'unlock') {
+			for (const element of ignoredElements) element.removeAttribute('inert');
+			return;
+		}
+		const wrapper = container.parentElement;
+		for (const element of wrapper?.parentElement?.children || []) {
+			if (element === wrapper) continue;
+			element.setAttribute('inert', '');
+			ignoredElements.push(element);
+		}
+	};
 
 	onMount(() => {
-		if (trapFocus) {
-			for (const element of getNeighboringElements()) {
-				if (element !== container) element.setAttribute('inert', '');
-			}
-		}
-		return () => {
-			if (trapFocus) {
-				for (const element of getNeighboringElements()) {
-					element.removeAttribute('inert');
-				}
-			}
-		};
+		handleFocus('lock');
+		return () => handleFocus('unlock');
 	});
 </script>
 
@@ -42,7 +44,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-	style:background
+	class="backdrop"
 	bind:this={container}
 	on:click={closeWithBackdropClick ? () => (showModal = false) : null}
 >
@@ -59,12 +61,12 @@
 </div>
 
 <style>
-	div {
-		display: block; /* Firefox, Safari */
-		position: fixed;
+	.backdrop {
+		background: rgba(0, 0, 0, 0.1);
 		/* The inset CSS property came after the <dialog> element. */
 		/* Reference https://caniuse.com/mdn-css_properties_inset */
 		/* Reference https://caniuse.com/dialog */
+		position: fixed;
 		top: 0;
 		left: 0;
 		right: 0;

@@ -38,14 +38,16 @@ To trap the focus inside the component, the [inert] HTML attribute is used.
 
 [inert]: https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inert
 
-For this to work, the component should be located on the top-most level.
+For this to work, it is advised to place the component on the top-most level.
 
 ```svelte
 <body data-sveltekit-preload-data="hover">
   <div>
     <!-- %sveltekit.body% -->
-    <!-- The component should be placed in this level. -->
-    <ModalLike bind:showModal></ModalLike>
+    <!-- The modal-wrapper's siblings will have the inert set. -->
+    <div class="modal-wrapper">
+      <ModalLike bind:showModal></ModalLike>
+    </div>
   </div>
 </body>
 ```
@@ -73,24 +75,46 @@ npm i svelte-html-modal -D
 <script>
   import { ModalLike } from 'svelte-html-modal';
 
-  let showModal = false;
+  // If the modal does not have to be shown on mount,
+  // why not use the full-fledged Modal component instead?
+  // Reference https://github.com/hyunbinseo/svelte-html-modal#readme
+  let showModal = true;
 </script>
 
 <button type="button" on:click={() => (showModal = true)}>Show Modal</button>
 
+<!-- Outer wrapper <div> is required for the focus-trap to work. -->
+<!-- It is also used for styling. Reference the <style> element below. -->
 {#if showModal}
-  <!-- Style the backdrop using the background prop. -->
-  <!-- A .modal-wrapper element is not necessary. -->
-  <ModalLike bind:showModal>
-    <!-- Example with a nested <form> element. -->
-    <!-- Elements other than <form> can be used. -->
-    <form method="dialog">
-      <h1>Hello, Modal!</h1>
-      <!-- Closes the modal without any JavaScript. -->
-      <button>Close</button>
-    </form>
-  </ModalLike>
+  <div class="modal-wrapper">
+    <ModalLike bind:showModal>
+      <!-- Example with a nested <form> element. -->
+      <!-- Elements other than <form> can be used. -->
+      <form method="dialog">
+        <h1>Hello, Modal!</h1>
+        <!-- Closes the modal without any JavaScript. -->
+        <button>Close</button>
+      </form>
+    </ModalLike>
+  </div>
 {/if}
+
+<style>
+  /* Only the <dialog> inside this page's .modal-wrapper is styled. */
+  /* Reference https://svelte.dev/docs/svelte-components#style */
+  .modal-wrapper :global(dialog) {
+    width: 20rem;
+    border-radius: 0.375rem;
+    /* Dialog padding has been reset to 0. Browser default style is 1em. */
+    /* Reference https://github.com/tailwindlabs/tailwindcss/pull/11069 */
+    /* Reference https://browserdefaultstyles.com/#dialog */
+    padding: 1rem;
+  }
+  /* dialog::backdrop only exists when opened with a `showModal()` method. */
+  .modal-wrapper :global(.backdrop) {
+    backdrop-filter: blur(8px) brightness(0.5);
+  }
+</style>
 ```
 
 ## Configurations
@@ -100,7 +124,5 @@ export let closeWithBackdropClick = false;
 export let preventCancel = false;
 export let fullHeight = false;
 export let fullWidth = false;
-
 export let trapFocus = true;
-export let background = 'rgba(0, 0, 0, 0.1)';
 ```
