@@ -8,7 +8,9 @@
 	export let preventCancel = false;
 	export let fullHeight = false;
 	export let fullWidth = false;
+
 	export let trapFocus = true;
+	export let background = 'rgba(0, 0, 0, 0.1)';
 
 	let container: HTMLDivElement;
 	const getNeighboringElements = () => container.parentNode?.children || [];
@@ -39,7 +41,11 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div bind:this={container} on:click={closeWithBackdropClick ? () => (showModal = false) : null}>
+<div
+	style:background
+	bind:this={container}
+	on:click={closeWithBackdropClick ? () => (showModal = false) : null}
+>
 	<!-- Dialog can be closed using a method="dialog" form element. -->
 	<!-- When this occurs, this component should be unmounted. -->
 	<dialog
@@ -54,7 +60,6 @@
 
 <style>
 	div {
-		background: rgba(0, 0, 0, 0.1);
 		display: block; /* Firefox, Safari */
 		position: fixed;
 		/* The inset CSS property came after the <dialog> element. */
