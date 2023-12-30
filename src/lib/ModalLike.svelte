@@ -52,6 +52,9 @@
 	<!-- When this occurs, this component should be unmounted. -->
 	<dialog
 		open
+		on:cancel
+		on:close
+		on:submit
 		on:close={() => (showModal = false)}
 		style:max-height={fullHeight ? '100%' : null}
 		style:max-width={fullWidth ? '100%' : null}
