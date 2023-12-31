@@ -15,7 +15,7 @@ Don't reinvent the wheel.
 - Plain HTML `<button>` closes the modal
 - Disables `<body>` scrolling when opened[^overflow]
 - DOM events - close, cancel, and submit
-- [SSR ready](/docs//ssr.md) - show dialog with HTML only
+- [SSR ready](/docs/ssr.md) - show dialog with HTML only
 
 [^overflow]: Sets `overflow: hidden` in the `<body>` element. Similar to how [Bootstrap modal] works.
 
@@ -51,6 +51,8 @@ npm i svelte-html-modal -D
 <script>
   import { Modal } from 'svelte-html-modal';
 
+  // If this value is true, the modal is opened immediately after the JavaScript is loaded.
+  // For the modal to be opened in the server-rendered markup, use the ModalLike component.
   let showModal = false;
 </script>
 
@@ -62,11 +64,22 @@ npm i svelte-html-modal -D
   <!-- Provide at least one closing method for the pointer users. -->
   <!-- Method 1: Set the close-with-backdrop-click prop. -->
   <!-- Method 2: Pass a <button> element to the slot. -->
-  <Modal bind:showModal closeWithBackdropClick={true}>
+  <Modal
+    bind:showModal
+    closeWithBackdropClick={true}
+    on:close={(e) => {
+      if (e.currentTarget instanceof HTMLDialogElement) {
+        // The value of the button that was pressed to close the dialog.
+        // Reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/returnValue
+        e.currentTarget.returnValue; // bye
+      }
+    }}
+  >
+    <!-- Flex items. Reference the `:global(dialog > form)` style below. -->
     <h1>Hello, Modal!</h1>
-    <!-- Full-width, due to the align-items: stretch; default style. -->
-    <!-- Closes the modal without any JavaScript. -->
-    <button>Close</button>
+    <!-- This button closes the modal without any JavaScript on:click handlers. -->
+    <!-- To identify the button that closed the modal, use the value attribute. -->
+    <button value="bye">Close</button>
   </Modal>
 </div>
 
