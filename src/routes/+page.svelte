@@ -6,10 +6,9 @@
 	// For the modal to be opened in the server-rendered markup, use the ModalLike component.
 	let showModal = false;
 
-	// If the modal does not have to be shown on mount,
-	// why not use the full-fledged Modal component instead?
+	// If the modal should not be shown on-mount, use the Modal component.
 	// Reference https://github.com/hyunbinseo/svelte-html-modal#readme
-	let showModalLike = true;
+	let showModalLike = true; // Initial value should be `true`.
 </script>
 
 <fieldset>
@@ -43,12 +42,11 @@
 	</Modal>
 </div>
 
-<!-- The {#if} block is required. -->
-{#if showModal}
+{#if showModalLike}
 	<!-- Outer wrapper <div> is required for the focus-trap to work. -->
 	<!-- It is also used for styling. Reference the <style> element below. -->
 	<div class="modal-wrapper">
-		<ModalLike bind:showModal={showModalLike}>
+		<ModalLike on:close={() => (showModalLike = false)}>
 			<!-- Example with a nested <form> element. -->
 			<!-- Elements other than <form> can be used. -->
 			<form method="dialog">

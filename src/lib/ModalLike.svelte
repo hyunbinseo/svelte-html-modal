@@ -1,8 +1,6 @@
 <script lang="ts">
 	import type { Action } from 'svelte/action';
 
-	export let showModal: boolean;
-
 	// Configurations
 	export let closeWithBackdropClick = false;
 	export let preventCancel = false;
@@ -10,6 +8,7 @@
 	export let fullWidth = false;
 	export let trapFocus = true;
 
+	let dialog: HTMLDialogElement;
 	let inertElements: Element[] = [];
 
 	const handleModal: Action<HTMLDivElement> = (container) => {
@@ -48,7 +47,7 @@
 <svelte:window
 	on:keydown={!preventCancel
 		? (e) => {
-				if (e.key === 'Escape') showModal = false;
+				if (e.key === 'Escape') dialog.close();
 			}
 		: null}
 />
@@ -58,15 +57,15 @@
 <div
 	use:handleModal
 	class="backdrop"
-	on:click={closeWithBackdropClick ? () => (showModal = false) : null}
+	on:click={closeWithBackdropClick ? () => dialog.close() : null}
 >
 	<dialog
+		bind:this={dialog}
 		use:focusOnMount
 		open
 		on:cancel
 		on:close
 		on:submit
-		on:close={() => (showModal = false)}
 		style:max-height={fullHeight ? '100%' : null}
 		style:max-width={fullWidth ? '100%' : null}
 	>

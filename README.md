@@ -52,7 +52,8 @@ npm i svelte-html-modal -D
   import { Modal } from 'svelte-html-modal';
 
   // If this value is true, the modal is opened immediately after the JavaScript is loaded.
-  // For the modal to be opened in the server-rendered markup, use the ModalLike component.
+  // For the modal to be opened in the server-rendered markup, use the <ModalLike> component.
+  // Reference https://github.com/hyunbinseo/svelte-html-modal/blob/main/docs/ssr.md
   let showModal = false;
 </script>
 
