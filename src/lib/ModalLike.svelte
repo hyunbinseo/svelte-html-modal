@@ -12,7 +12,8 @@
 
 	let inertElements: Element[] = [];
 
-	const handleFocusLock: Action<HTMLDivElement> = (container) => {
+	const handleModal: Action<HTMLDivElement> = (container) => {
+		document.body.style.overflow = 'hidden';
 		if (trapFocus) {
 			const wrapper = container.parentElement;
 			const elements = wrapper?.parentElement?.children || [];
@@ -24,6 +25,7 @@
 		}
 		return {
 			destroy: () => {
+				document.body.style.overflow = 'visible';
 				for (const element of inertElements) element.removeAttribute('inert');
 			}
 		};
@@ -54,7 +56,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-	use:handleFocusLock
+	use:handleModal
 	class="backdrop"
 	on:click={closeWithBackdropClick ? () => (showModal = false) : null}
 >

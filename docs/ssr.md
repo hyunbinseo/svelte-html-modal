@@ -83,9 +83,10 @@ npm i svelte-html-modal -D
 
 <button type="button" on:click={() => (showModal = true)}>Show Modal</button>
 
-<!-- Outer wrapper <div> is required for the focus-trap to work. -->
-<!-- It is also used for styling. Reference the <style> element below. -->
+<!-- The {#if} block is required. -->
 {#if showModal}
+  <!-- Outer wrapper <div> is required for the focus-trap to work. -->
+  <!-- It is also used for styling. Reference the <style> element below. -->
   <div class="modal-wrapper">
     <ModalLike bind:showModal>
       <!-- Example with a nested <form> element. -->
