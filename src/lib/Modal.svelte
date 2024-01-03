@@ -39,16 +39,6 @@
 		if (!showModal && dialog.open) dialog.close();
 	}
 
-	const handleDialogCancel = (e: Event & { currentTarget: HTMLDialogElement }) => {
-		if (preventCancel) e.preventDefault();
-	};
-
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const handleDialogClose = (e: { currentTarget: HTMLDialogElement }) => {
-		document.body.style.overflow = 'visible';
-		showModal = false;
-	};
-
 	const optionalEnhance = formAttributes.enhance || (() => undefined);
 
 	// export function enhance(form_element, submit = () => {}) { /* function body */ }
@@ -61,11 +51,14 @@
 <dialog
 	bind:this={dialog}
 	on:cancel
-	on:cancel={handleDialogCancel}
-	on:click|self={closeWithBackdropClick ? () => dialog.close() : null}
 	on:close
-	on:close={handleDialogClose}
 	on:submit
+	on:cancel={preventCancel ? (e) => e.preventDefault() : null}
+	on:click|self={closeWithBackdropClick ? () => dialog.close() : null}
+	on:close={() => {
+		document.body.style.overflow = 'visible';
+		showModal = false;
+	}}
 	class:fly={showFlyInAnimation}
 	style:max-height={fullHeight ? '100%' : null}
 	style:max-width={fullWidth ? '100%' : null}

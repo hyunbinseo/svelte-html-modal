@@ -14,7 +14,7 @@ Don't reinvent the wheel.
 - CSS animation when opening the modal
 - Plain HTML `<button>` closes the modal
 - Disables `<body>` scrolling when opened[^overflow]
-- DOM events - close, cancel, and submit
+- DOM events - cancel, close, and submit
 - [SSR ready](/docs/ssr.md) - show dialog with HTML only
 
 [^overflow]: Sets `overflow: hidden` in the `<body>` element. Similar to how [Bootstrap modal] works.
