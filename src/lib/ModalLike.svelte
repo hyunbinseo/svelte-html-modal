@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import type { Action } from 'svelte/action';
 
 	export let showModal: boolean;
 
@@ -31,6 +32,19 @@
 		handleFocus('lock');
 		return () => handleFocus('unlock');
 	});
+
+	// SvelteKit focuses the <body> element after each client-side routing navigation.
+	// Reference https://kit.svelte.dev/docs/accessibility#focus-management
+
+	// The <body> should not stay focused after navigating to a page with an open ModalLike component.
+	// The page can be scrolled with keyboard inputs - even with the sibling elements' inert attribute.
+
+	// Also, this is the default fallback behavior starting from Chrome 112.
+	// Reference https://developer.chrome.com/blog/new-in-chrome-112#dialog
+
+	const focusOnMount: Action<HTMLDialogElement> = (dialog) => {
+		if (document.activeElement === document.body) dialog.focus();
+	};
 </script>
 
 <svelte:window
@@ -48,9 +62,8 @@
 	bind:this={container}
 	on:click={closeWithBackdropClick ? () => (showModal = false) : null}
 >
-	<!-- Dialog can be closed using a method="dialog" form element. -->
-	<!-- When this occurs, this component should be unmounted. -->
 	<dialog
+		use:focusOnMount
 		open
 		on:cancel
 		on:close
