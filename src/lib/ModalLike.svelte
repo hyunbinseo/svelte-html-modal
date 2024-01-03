@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import type { Action } from 'svelte/action';
 
 	export let showModal: boolean;
@@ -11,27 +10,24 @@
 	export let fullWidth = false;
 	export let trapFocus = true;
 
-	let container: HTMLDivElement;
-	let ignoredElements: Element[] = [];
+	let inertElements: Element[] = [];
 
-	const handleFocus = (mode: 'lock' | 'unlock') => {
-		if (!trapFocus) return;
-		if (mode === 'unlock') {
-			for (const element of ignoredElements) element.removeAttribute('inert');
-			return;
+	const handleFocusLock: Action<HTMLDivElement> = (container) => {
+		if (trapFocus) {
+			const wrapper = container.parentElement;
+			const elements = wrapper?.parentElement?.children || [];
+			for (const element of elements) {
+				if (element === wrapper) continue;
+				element.setAttribute('inert', '');
+				inertElements.push(element);
+			}
 		}
-		const wrapper = container.parentElement;
-		for (const element of wrapper?.parentElement?.children || []) {
-			if (element === wrapper) continue;
-			element.setAttribute('inert', '');
-			ignoredElements.push(element);
-		}
+		return {
+			destroy: () => {
+				for (const element of inertElements) element.removeAttribute('inert');
+			}
+		};
 	};
-
-	onMount(() => {
-		handleFocus('lock');
-		return () => handleFocus('unlock');
-	});
 
 	// SvelteKit focuses the <body> element after each client-side routing navigation.
 	// Reference https://kit.svelte.dev/docs/accessibility#focus-management
@@ -58,8 +54,8 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
+	use:handleFocusLock
 	class="backdrop"
-	bind:this={container}
 	on:click={closeWithBackdropClick ? () => (showModal = false) : null}
 >
 	<dialog
