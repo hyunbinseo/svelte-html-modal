@@ -23,13 +23,17 @@
 	export let formAttributes: Enhanced | NotEnhanced = { method: 'dialog' };
 
 	// Configurations
+
 	export let showFlyInAnimation = true;
 	export let closeWithBackdropClick = false;
 	export let preventCancel = false;
+	export let resetFormOnClose = false;
+
 	export let fullHeight = false;
 	export let fullWidth = false;
 
 	let dialog: HTMLDialogElement;
+	let form: HTMLFormElement;
 
 	$: if (BROWSER && dialog) {
 		if (showModal) {
@@ -56,6 +60,7 @@
 	on:cancel={preventCancel ? (e) => e.preventDefault() : null}
 	on:click|self={closeWithBackdropClick ? () => dialog.close() : null}
 	on:close={() => {
+		if (resetFormOnClose) form.reset();
 		document.body.style.overflow = 'visible';
 		showModal = false;
 	}}
@@ -64,6 +69,7 @@
 	style:max-width={fullWidth ? '100%' : null}
 >
 	<form
+		bind:this={form}
 		{...{ ...formAttributes, enhance: null }}
 		use:optionalEnhance={submitFunction}
 		on:click|stopPropagation
