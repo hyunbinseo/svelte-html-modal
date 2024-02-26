@@ -1,39 +1,18 @@
 <script lang="ts">
-	import type { SubmitFunction } from '@sveltejs/kit';
 	import { BROWSER } from 'esm-env';
-	import type { Action } from 'svelte/action';
-	import type { HTMLFormAttributes } from 'svelte/elements';
-
-	// To customize the behavior, you can provide a SubmitFunction that runs immediately before the form is submitted.
-	// Reference https://kit.svelte.dev/docs/form-actions#progressive-enhancement-customising-use-enhance
-	type Enhance = Action<HTMLFormElement, SubmitFunction>;
-
-	type Enhanced = Omit<HTMLFormAttributes, 'method'> & {
-		method: 'post';
-		enhance: Enhance;
-		submitFunction?: SubmitFunction;
-	};
-
-	type NotEnhanced = HTMLFormAttributes & {
-		enhance?: never;
-		submitFunction?: never;
-	};
 
 	export let showModal: boolean;
-	export let formAttributes: Enhanced | NotEnhanced = { method: 'dialog' };
 
 	// Configurations
 
 	export let showFlyInAnimation = true;
 	export let closeWithBackdropClick = false;
 	export let preventCancel = false;
-	export let resetFormOnClose = false;
 
 	export let fullHeight = false;
 	export let fullWidth = false;
 
 	let dialog: HTMLDialogElement;
-	let form: HTMLFormElement;
 
 	$: if (BROWSER && dialog) {
 		if (showModal) {
@@ -42,12 +21,6 @@
 		}
 		if (!showModal && dialog.open) dialog.close();
 	}
-
-	const optionalEnhance = formAttributes.enhance || (() => undefined);
-
-	// export function enhance(form_element, submit = () => {}) { /* function body */ }
-	// Reference https://github.com/sveltejs/kit/blob/main/packages/kit/src/runtime/app/forms.js
-	const submitFunction = formAttributes.submitFunction || (() => undefined);
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -55,27 +28,21 @@
 <dialog
 	bind:this={dialog}
 	on:cancel
-	on:close
-	on:submit
 	on:cancel={preventCancel ? (e) => e.preventDefault() : null}
-	on:click|self={closeWithBackdropClick ? () => dialog.close() : null}
+	on:close
 	on:close={() => {
-		if (resetFormOnClose) form.reset();
 		document.body.style.overflow = 'visible';
 		showModal = false;
 	}}
+	on:click|self={closeWithBackdropClick ? () => dialog.close() : null}
 	class:fly={showFlyInAnimation}
 	style:max-height={fullHeight ? '100%' : null}
 	style:max-width={fullWidth ? '100%' : null}
 >
-	<form
-		bind:this={form}
-		{...{ ...formAttributes, enhance: null }}
-		use:optionalEnhance={submitFunction}
-		on:click|stopPropagation
-	>
+	<!-- svelte-ignore a11y-no-static-element-interactions -->
+	<div on:click|stopPropagation>
 		<slot />
-	</form>
+	</div>
 </dialog>
 
 <style>

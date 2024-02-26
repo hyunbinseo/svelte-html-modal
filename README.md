@@ -127,7 +127,6 @@ For Tailwind CSS users, above style can be rewritten using the [`@apply` directi
 export let showFlyInAnimation = true;
 export let closeWithBackdropClick = false;
 export let preventCancel = false;
-export let resetFormOnClose = false;
 
 export let fullHeight = false;
 export let fullWidth = false;
