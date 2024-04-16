@@ -101,6 +101,7 @@
 	}
 	dialog {
 		overflow: auto;
+		/* dialog:modal user agent style */
 		max-width: calc(100% - 6px - 2em);
 		max-height: calc(100% - 6px - 2em);
 		/* Normalize dialog styles. */
