@@ -1,62 +1,58 @@
 <script>
+	// NOTE Change the import path in Svelte REPL.
+	// import { Modal } from 'svelte-html-modal';
+
 	import Modal from '$lib/Modal.svelte';
-	import ModalLike from '$lib/ModalLike.svelte';
 
-	// If this value is true, the modal is opened immediately after the JavaScript is loaded.
-	// For the modal to be opened in the server-rendered markup, use the ModalLike component.
+	// JavaScript is required for the <dialog> element to be shown as a modal.
+	// Even if this value is true, the modal cannot be opened until JS is loaded.
+
+	// To open the modal in a server-rendered markup, use the <ModalLike> component.
+	// Reference https://github.com/hyunbinseo/svelte-html-modal/blob/main/docs/ssr.md
+
 	let showModal = false;
-
-	// If the modal should not be shown on-mount, use the Modal component.
-	// Reference https://github.com/hyunbinseo/svelte-html-modal#readme
-	let showModalLike = true; // Initial value should be `true`.
 </script>
 
-<fieldset>
-	<legend>Show</legend>
-	<button type="button" on:click={() => (showModal = true)}>Modal</button>
-	<button type="button" on:click={() => (showModalLike = true)}>ModalLike</button>
-</fieldset>
+<button type="button" on:click={() => (showModal = true)}>Show Modal</button>
+<a href="https://github.com/hyunbinseo/svelte-html-modal#readme">GitHub</a>
 
 <!-- Outer wrapper <div> is used for styling. -->
 <!-- Reference the <style> element below. -->
 <div class="modal-wrapper">
-	<!-- Provide at least one closing method for the pointer users. -->
-	<!-- Method 1: Set the close-with-backdrop-click prop. -->
-	<!-- Method 2: Pass a <button> element to the slot. -->
 	<Modal
 		bind:showModal
 		closeWithBackdropClick={true}
 		on:close={(e) => {
-			if (e.currentTarget instanceof HTMLDialogElement) {
-				// The value of the button that was pressed to close the dialog.
-				// Reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/returnValue
-				e.currentTarget.returnValue; // bye
-			}
+			if (!(e.currentTarget instanceof HTMLDialogElement)) return;
+
+			// Empty string if closed with JavaScript. (e.g. on:click)
+			// Value of the submit button if closed with a form submit.
+			console.log(`Dialog return value: ${e.currentTarget.returnValue || '<empty string>'}`);
 		}}
 	>
-		<!-- Flex items. Reference the `:global(dialog > form)` style below. -->
-		<h1>Hello, Modal!</h1>
-		<!-- This button closes the modal without any JavaScript on:click handlers. -->
-		<!-- To identify the button that closed the modal, use the value attribute. -->
-		<button value="bye">Close</button>
+		<p>Close the modal</p>
+
+		<!-- Close the modal with JavaScript. -->
+		<ul>
+			<li>Click on the backdrop</li>
+			<li>
+				<button type="button" on:click={() => (showModal = false)}>Close with JavaScript</button>
+			</li>
+		</ul>
+
+		<!-- Close the modal without JavaScript. -->
+		<!-- Reference https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method -->
+		<form method="dialog">
+			<!-- The button used to close the modal can be identified in the close event's return value. -->
+			<!-- Reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/returnValue -->
+			<ul>
+				<li>Press the <kbd>Esc</kbd> key</li>
+				<li><button value="a" formnovalidate>Close without JavaScript (A)</button></li>
+				<li><button value="b">Close without JavaScript (B)</button></li>
+			</ul>
+		</form>
 	</Modal>
 </div>
-
-{#if showModalLike}
-	<!-- Outer wrapper <div> is required for the focus-trap to work. -->
-	<!-- It is also used for styling. Reference the <style> element below. -->
-	<div class="modal-wrapper">
-		<ModalLike on:close={() => (showModalLike = false)}>
-			<!-- Example with a nested <form> element. -->
-			<!-- Elements other than <form> can be used. -->
-			<form method="dialog">
-				<h1>Hello, Modal!</h1>
-				<!-- Closes the modal without any JavaScript. -->
-				<button>Close</button>
-			</form>
-		</ModalLike>
-	</div>
-{/if}
 
 <style>
 	/* Only the <dialog> inside this page's .modal-wrapper is styled. */
@@ -71,16 +67,5 @@
 	}
 	.modal-wrapper :global(dialog::backdrop) {
 		backdrop-filter: blur(8px) brightness(0.5);
-	}
-
-	/* dialog::backdrop only exists when opened with a `showModalLike()` method. */
-	.modal-wrapper :global(.backdrop) {
-		backdrop-filter: blur(8px) brightness(0.5);
-	}
-
-	.modal-wrapper :global(dialog > form) {
-		/* <slot> styles */
-		display: flex;
-		flex-direction: column;
 	}
 </style>
