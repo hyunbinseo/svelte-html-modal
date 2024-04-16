@@ -11,17 +11,26 @@
 	let dialog: HTMLDialogElement;
 	let inertElements: Element[] = [];
 
+	const inertIsSupported = () => {
+		const element = document.createElement('div');
+		const isSupported = 'inert' in element;
+		element.remove();
+		return isSupported;
+	};
+
 	const handleModal: Action<HTMLDivElement> = (container) => {
 		document.body.style.overflow = 'hidden';
-		if (trapFocus) {
+
+		if (trapFocus && inertIsSupported()) {
 			const wrapper = container.parentElement;
-			const elements = wrapper?.parentElement?.children || [];
-			for (const element of elements) {
-				if (element === wrapper) continue;
-				element.setAttribute('inert', '');
-				inertElements.push(element);
+			const siblings = wrapper?.parentElement?.children || [];
+			for (const sibling of siblings) {
+				if (sibling === wrapper) continue;
+				sibling.setAttribute('inert', '');
+				inertElements.push(sibling);
 			}
 		}
+
 		return {
 			destroy: () => {
 				document.body.style.overflow = 'visible';
