@@ -124,12 +124,12 @@ For Tailwind CSS users, above style can be rewritten using the [`@apply` directi
 ## Configurations
 
 ```ts
-export let showFlyInAnimation = true;
 export let closeWithBackdropClick = false;
 export let preventCancel = false;
 
 export let fullHeight = false;
 export let fullWidth = false;
+export let showFlyInAnimation = true;
 ```
 
 Browser [default style] restricts dialog's height and width to `calc((100% - 6px) - 2em);`.

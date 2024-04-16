@@ -121,7 +121,8 @@ npm i svelte-html-modal -D
 ```ts
 export let closeWithBackdropClick = false;
 export let preventCancel = false;
+export let trapFocus = true;
+
 export let fullHeight = false;
 export let fullWidth = false;
-export let trapFocus = true;
 ```

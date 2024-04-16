@@ -3,14 +3,12 @@
 
 	export let showModal: boolean;
 
-	// Configurations
-
-	export let showFlyInAnimation = true;
 	export let closeWithBackdropClick = false;
 	export let preventCancel = false;
 
 	export let fullHeight = false;
 	export let fullWidth = false;
+	export let showFlyInAnimation = true;
 
 	let dialog: HTMLDialogElement;
 

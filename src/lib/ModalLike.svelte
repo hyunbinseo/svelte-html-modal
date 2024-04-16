@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { Action } from 'svelte/action';
 
-	// Configurations
 	export let closeWithBackdropClick = false;
 	export let preventCancel = false;
+	export let trapFocus = true;
+
 	export let fullHeight = false;
 	export let fullWidth = false;
-	export let trapFocus = true;
 
 	let dialog: HTMLDialogElement;
 	let inertElements: Element[] = [];
