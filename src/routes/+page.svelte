@@ -57,7 +57,7 @@
 <style>
 	/* Only the <dialog> inside this page's .modal-wrapper is styled. */
 	/* Reference https://svelte.dev/docs/svelte-components#style */
-	.modal-wrapper :global(dialog) {
+	.modal-wrapper > :global(dialog) {
 		width: 20rem;
 		border-radius: 0.375rem;
 		/* Dialog padding has been reset to 0. Browser default style is 1em. */
@@ -65,7 +65,7 @@
 		/* Reference https://browserdefaultstyles.com/#dialog */
 		padding: 1rem;
 	}
-	.modal-wrapper :global(dialog::backdrop) {
+	.modal-wrapper > :global(dialog::backdrop) {
 		backdrop-filter: blur(8px) brightness(0.5);
 	}
 </style>

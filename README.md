@@ -74,7 +74,7 @@ npm i svelte-html-modal -D
 <style>
   /* Only the <dialog> inside this page's .modal-wrapper is styled. */
   /* Reference https://svelte.dev/docs/svelte-components#style */
-  .modal-wrapper :global(dialog) {
+  .modal-wrapper > :global(dialog) {
     width: 20rem;
     border-radius: 0.375rem;
     /* Dialog padding has been reset to 0. Browser default style is 1em. */
@@ -82,7 +82,7 @@ npm i svelte-html-modal -D
     /* Reference https://browserdefaultstyles.com/#dialog */
     padding: 1rem;
   }
-  .modal-wrapper :global(dialog::backdrop) {
+  .modal-wrapper > :global(dialog::backdrop) {
     backdrop-filter: blur(8px) brightness(0.5);
   }
 </style>
@@ -94,7 +94,7 @@ For Tailwind CSS users, above style can be rewritten using the [`@apply` directi
 
 ```svelte
 <style lang="postcss">
-  .modal-wrapper :global(dialog) {
+  .modal-wrapper > :global(dialog) {
     @apply w-80 rounded-md p-4 backdrop:backdrop-blur backdrop:backdrop-brightness-50;
   }
 </style>
@@ -137,11 +137,11 @@ Fly-out animation is not available since it is a `display: black → none` switc
       transform: translateY(0%);
     }
   }
-  .modal-wrapper :global(dialog[open]) {
+  .modal-wrapper > :global(dialog[open]) {
     animation: fly 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   @media (prefers-reduced-motion) {
-    .modal-wrapper :global(dialog[open]) {
+    .modal-wrapper > :global(dialog[open]) {
       animation: none;
     }
   }
