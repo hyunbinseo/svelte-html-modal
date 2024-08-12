@@ -15,7 +15,8 @@ A simple wrapper component for the HTML [`<dialog>` element] - [demo]
 - Disable the `<body>` scrolling when opened[^overflow]
 - Forwarded DOM events (cancel, close, submit)
 - CSS animation when opening the modal
-- An alternative [SSR ready](/docs/ssr.md) component
+- An alternative [SSR ready component](/docs/ssr.md)
+- Guide for SvelteKit [`use:enhance` usage](/docs/form.md)
 
 [^overflow]: Sets `overflow: hidden` in the `<body>` element, similar to the [Bootstrap modal].
 
