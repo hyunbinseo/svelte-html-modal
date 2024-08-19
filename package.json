@@ -16,7 +16,7 @@
 		"format": "prettier --write ."
 	},
 	"peerDependencies": {
-		"svelte": "^3.59.2 || ^4.0.0"
+		"svelte": "^5.0.0"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.2.4",
@@ -27,13 +27,12 @@
 		"eslint": "^9.9.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.43.0",
-		"esm-env": "^1.0.0",
 		"globals": "^15.9.0",
 		"happy-dom": "^14.12.3",
 		"prettier": "^3.3.3",
 		"prettier-plugin-svelte": "^3.2.6",
 		"publint": "^0.2.10",
-		"svelte": "^4.2.18",
+		"svelte": "5.0.0-next.225",
 		"svelte-check": "^3.8.5",
 		"tslib": "^2.6.3",
 		"typescript": "^5.5.4",

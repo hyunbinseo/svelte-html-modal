@@ -1,8 +1,5 @@
 <script>
-	// NOTE Change the import path in Svelte REPL.
-	// import { Modal } from 'svelte-html-modal';
-
-	import Modal from '$lib/Modal.svelte';
+	import Modal from '$lib/Modal.svelte'; // 'svelte-html-modal'
 
 	// JavaScript is required for the <dialog> element to be shown as a modal.
 	// Even if this value is true, the modal cannot be opened until JS is loaded.

@@ -1,45 +1,58 @@
 <script lang="ts">
-	import { BROWSER } from 'esm-env';
+	let {
+		// FIXME showModal variable is currently an unknown type.
+		// Reference https://github.com/sveltejs/svelte/issues/12901
+		showModal = $bindable<boolean>(),
+		closeWithBackdropClick = false,
+		preventCancel = false,
+		fullHeight = false,
+		fullWidth = false,
+		showFlyInAnimation = false,
+		oncancel = (() => {}) as () => unknown,
+		onclose = (() => {}) as () => unknown,
+		children
+	} = $props();
 
-	export let showModal: boolean;
+	let dialog: HTMLDialogElement | undefined;
 
-	export let closeWithBackdropClick = false;
-	export let preventCancel = false;
-
-	export let fullHeight = false;
-	export let fullWidth = false;
-	export let showFlyInAnimation = true;
-
-	let dialog: HTMLDialogElement;
-
-	$: if (BROWSER && dialog) {
-		if (showModal) {
+	$effect(() => {
+		if (!dialog) return;
+		if (!showModal && dialog.open) {
+			// body.overflow is handled in onclose.
+			dialog.close();
+		}
+		if (showModal && !dialog.open) {
 			document.body.style.overflow = 'hidden';
 			dialog.showModal();
 		}
-		if (!showModal && dialog.open) dialog.close();
-	}
+	});
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <dialog
 	bind:this={dialog}
-	on:cancel
-	on:cancel={preventCancel ? (e) => e.preventDefault() : null}
-	on:close
-	on:close={() => {
+	oncancel={(e) => {
+		if (preventCancel) e.preventDefault();
+		oncancel();
+	}}
+	onclose={() => {
 		document.body.style.overflow = 'visible';
 		showModal = false;
+		onclose();
 	}}
-	on:click|self={closeWithBackdropClick ? () => dialog.close() : null}
+	onclick={(e) => {
+		if (closeWithBackdropClick && e.currentTarget === e.target) dialog?.close();
+	}}
 	class:fly={showFlyInAnimation}
 	style:max-height={fullHeight ? '100%' : null}
 	style:max-width={fullWidth ? '100%' : null}
 >
-	<!-- svelte-ignore a11y-no-static-element-interactions -->
-	<div on:click|stopPropagation>
-		<slot />
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
+	<div onclick={(e) => e.stopPropagation()}>
+		<!-- FIXME 'children' is of type 'unknown' -->
+		<!-- Reference https://github.com/sveltejs/language-tools/issues/2466 -->
+		{@render children()}
 	</div>
 </dialog>
 
