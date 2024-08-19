@@ -2,6 +2,9 @@ import { act, render } from '@testing-library/svelte';
 import { expect, test, vi } from 'vitest';
 import Modal from './lib/Modal.svelte';
 
+// TODO Migrate to Vitest Browser Mode
+// Reference https://vitest.dev/guide/browser/
+
 // NOTE `dialog::backdrop` pseudo element cannot be selected in JavaScript.
 // Therefore, the close modal with backdrop click option cannot be tested.
 // Reference https://stackoverflow.com/questions/38872290
