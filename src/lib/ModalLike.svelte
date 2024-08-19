@@ -69,6 +69,11 @@
 </div>
 
 <style>
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
 	.backdrop {
 		background: rgba(0, 0, 0, 0.1);
 		/* The inset CSS property came after the <dialog> element. */

@@ -55,6 +55,11 @@
 </dialog>
 
 <style>
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
 	dialog {
 		/* Border-width and padding is set to 0 in the Tailwind CSS preflight. */
 		/* Reference https://github.com/tailwindlabs/tailwindcss/blob/master/src/css/preflight.css */
