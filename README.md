@@ -109,7 +109,7 @@ For Tailwind CSS users, above style can be rewritten using the [`@apply` directi
 ```ts
 export let closeWithBackdrop = false;
 export let preventCancel = false;
-export let showFlyInAnimation = true;
+export let showTransition = true;
 ```
 
 ## Custom Animations
@@ -120,7 +120,7 @@ Fly-out animation is not available since it is a `display: black → none` switc
 
 ```svelte
 <div class="modal-wrapper">
-  <Modal bind:showModal showFlyInAnimation={false}>
+  <Modal bind:showModal showTransition={false}>
     <!-- Modal Content -->
   </Modal>
 </div>

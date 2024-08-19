@@ -5,7 +5,7 @@
 		showModal = $bindable<boolean>() as boolean,
 		closeWithBackdrop = false,
 		preventCancel = false,
-		showFlyInAnimation = false,
+		showTransition = true,
 		oncancel = (() => {}) as EventHandler,
 		onclose = (() => {}) as EventHandler,
 		// FIXME Properly type children and make it optional.
@@ -44,7 +44,7 @@
 	onclick={(e) => {
 		if (closeWithBackdrop && e.currentTarget === e.target) dialog?.close();
 	}}
-	class:fly={showFlyInAnimation}
+	class:show-transition={showTransition}
 >
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div onclick={(e) => e.stopPropagation()}>
@@ -72,23 +72,40 @@
 		/* Does not work if the modal has no vertical scroll. */
 		touch-action: none;
 	}
-	@keyframes fly {
-		from {
-			transform: translateY(32px);
+	@media (prefers-reduced-motion: no-preference) {
+		dialog.show-transition {
+			translate: 0 2rem;
 		}
-		to {
-			transform: translateY(0%);
+		dialog.show-transition,
+		dialog.show-transition::backdrop {
+			opacity: 0;
+			/* Provide cross-browser support */
+			transition: opacity, translate, display, overlay;
+			transition:
+				opacity,
+				translate,
+				display allow-discrete,
+				overlay allow-discrete;
+			transition-duration: 0.5s;
+			transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
 		}
 	}
-	dialog.fly[open] {
-		/* Animation breaks in iOS 16.3.1 but works in (16.4.1 and 15.8). */
-		/* Reference https://github.com/sveltejs/svelte/pull/8200 */
-		animation: fly 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-		/* Reference https://easings.net/en#easeOutBack */
+	@media (prefers-reduced-motion: no-preference) {
+		dialog[open].show-transition {
+			translate: 0 0;
+		}
+		dialog[open].show-transition,
+		dialog[open].show-transition::backdrop {
+			opacity: 1;
+		}
 	}
-	@media (prefers-reduced-motion) {
-		dialog.fly[open] {
-			animation: none;
+	@starting-style {
+		dialog[open].show-transition {
+			translate: 0 2rem;
+		}
+		dialog[open].show-transition,
+		dialog[open].show-transition::backdrop {
+			opacity: 0;
 		}
 	}
 </style>
