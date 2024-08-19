@@ -18,7 +18,7 @@
 <div class="modal-wrapper">
 	<Modal
 		bind:showModal
-		closeWithBackdropClick={true}
+		closeWithBackdrop={true}
 		onclose={(e) => {
 			if (!(e.currentTarget instanceof HTMLDialogElement)) return;
 

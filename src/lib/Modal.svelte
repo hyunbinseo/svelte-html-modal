@@ -3,7 +3,7 @@
 
 	let {
 		showModal = $bindable<boolean>() as boolean,
-		closeWithBackdropClick = false,
+		closeWithBackdrop = false,
 		preventCancel = false,
 		showFlyInAnimation = false,
 		oncancel = (() => {}) as EventHandler,
@@ -42,7 +42,7 @@
 		onclose(e);
 	}}
 	onclick={(e) => {
-		if (closeWithBackdropClick && e.currentTarget === e.target) dialog?.close();
+		if (closeWithBackdrop && e.currentTarget === e.target) dialog?.close();
 	}}
 	class:fly={showFlyInAnimation}
 >

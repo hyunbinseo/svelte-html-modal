@@ -112,7 +112,7 @@ npm i svelte-html-modal -D
 ## Configurations
 
 ```ts
-export let closeWithBackdropClick = false;
+export let closeWithBackdrop = false;
 export let preventCancel = false;
 export let trapFocus = true;
 

@@ -49,7 +49,7 @@ npm i svelte-html-modal -D
 <div class="modal-wrapper">
   <Modal
     bind:showModal
-    closeWithBackdropClick={true}
+    closeWithBackdrop={true}
     on:close={(e) => {
       if (!(e.currentTarget instanceof HTMLDialogElement)) return;
 
@@ -107,7 +107,7 @@ For Tailwind CSS users, above style can be rewritten using the [`@apply` directi
 ## Configurations
 
 ```ts
-export let closeWithBackdropClick = false;
+export let closeWithBackdrop = false;
 export let preventCancel = false;
 export let showFlyInAnimation = true;
 ```

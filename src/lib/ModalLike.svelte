@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Action } from 'svelte/action';
 
-	export let closeWithBackdropClick = false;
+	export let closeWithBackdrop = false;
 	export let preventCancel = false;
 	export let trapFocus = true;
 
@@ -63,11 +63,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div
-	use:handleModal
-	class="backdrop"
-	on:click={closeWithBackdropClick ? () => dialog.close() : null}
->
+<div use:handleModal class="backdrop" on:click={closeWithBackdrop ? () => dialog.close() : null}>
 	<dialog
 		bind:this={dialog}
 		use:focusOnMount

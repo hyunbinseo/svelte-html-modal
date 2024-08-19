@@ -15,7 +15,7 @@
 		bind:showModal
 		onclose={formState.reset}
 		preventCancel={formState.isSubmitting}
-		closeWithBackdropClick={!formState.isSubmitting}
+		closeWithBackdrop={!formState.isSubmitting}
 	>
 		<form
 			method="post"
