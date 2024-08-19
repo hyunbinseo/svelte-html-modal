@@ -82,6 +82,9 @@ npm i svelte-html-modal -D
     /* Reference https://github.com/tailwindlabs/tailwindcss/pull/11069 */
     /* Reference https://browserdefaultstyles.com/#dialog */
     padding: 1rem;
+    /* (Optional) User-agent stylesheets restrict the dialog size. */
+    max-height: 100%; /* max-height: calc((100% - 6px) - 2em); */
+    max-width: 100%; /* max-width: calc((100% - 6px) - 2em); */
   }
   .modal-wrapper > :global(dialog::backdrop) {
     backdrop-filter: blur(8px) brightness(0.5);
@@ -106,15 +109,8 @@ For Tailwind CSS users, above style can be rewritten using the [`@apply` directi
 ```ts
 export let closeWithBackdropClick = false;
 export let preventCancel = false;
-
-export let fullHeight = false;
-export let fullWidth = false;
 export let showFlyInAnimation = true;
 ```
-
-Browser [default style] restricts dialog's height and width to `calc((100% - 6px) - 2em);`.
-
-[default style]: /docs/user-agent
 
 ## Custom Animations
 

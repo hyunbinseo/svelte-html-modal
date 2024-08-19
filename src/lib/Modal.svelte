@@ -5,8 +5,6 @@
 		showModal = $bindable<boolean>() as boolean,
 		closeWithBackdropClick = false,
 		preventCancel = false,
-		fullHeight = false,
-		fullWidth = false,
 		showFlyInAnimation = false,
 		oncancel = (() => {}) as EventHandler,
 		onclose = (() => {}) as EventHandler,
@@ -45,8 +43,6 @@
 		if (closeWithBackdropClick && e.currentTarget === e.target) dialog?.close();
 	}}
 	class:fly={showFlyInAnimation}
-	style:max-height={fullHeight ? '100%' : null}
-	style:max-width={fullWidth ? '100%' : null}
 >
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div onclick={(e) => e.stopPropagation()}>
@@ -63,6 +59,11 @@
 		/* Reference https://github.com/tailwindlabs/tailwindcss/pull/11069#issuecomment-1527384738 */
 		border-width: 0;
 		padding: 0;
+	}
+	dialog[open]::backdrop {
+		/* Fix <body> scrolling on iOS, iPadOS Safari 16.6. */
+		/* Does not work if the modal has no vertical scroll. */
+		touch-action: none;
 	}
 	@keyframes fly {
 		from {
@@ -82,10 +83,5 @@
 		dialog.fly[open] {
 			animation: none;
 		}
-	}
-	dialog[open]::backdrop {
-		/* Fix <body> scrolling on iOS, iPadOS Safari 16.6. */
-		/* Does not work if the modal has no vertical scroll. */
-		touch-action: none;
 	}
 </style>
