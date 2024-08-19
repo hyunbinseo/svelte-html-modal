@@ -1,14 +1,13 @@
 <script lang="ts">
 	import type { Action } from 'svelte/action';
 
+	// TODO Migrate to Svelte 5 runes API.
+
 	export let closeWithBackdrop = false;
 	export let preventCancel = false;
 	export let trapFocus = true;
 
-	export let fullHeight = false;
-	export let fullWidth = false;
-
-	let dialog: HTMLDialogElement;
+	let dialog: HTMLDialogElement | undefined;
 	let inertElements: Element[] = [];
 
 	const inertIsSupported = () => {
@@ -56,24 +55,15 @@
 <svelte:window
 	on:keydown={!preventCancel
 		? (e) => {
-				if (e.key === 'Escape') dialog.close();
+				if (e.key === 'Escape') dialog?.close();
 			}
 		: null}
 />
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div use:handleModal class="backdrop" on:click={closeWithBackdrop ? () => dialog.close() : null}>
-	<dialog
-		bind:this={dialog}
-		use:focusOnMount
-		open
-		on:cancel
-		on:close
-		on:submit
-		style:max-height={fullHeight ? '100%' : null}
-		style:max-width={fullWidth ? '100%' : null}
-	>
+<div use:handleModal class="backdrop" on:click={closeWithBackdrop ? () => dialog?.close() : null}>
+	<dialog bind:this={dialog} use:focusOnMount open on:cancel on:close on:submit>
 		<slot />
 	</dialog>
 </div>
