@@ -8,7 +8,9 @@
 		showFlyInAnimation = false,
 		oncancel = (() => {}) as EventHandler,
 		onclose = (() => {}) as EventHandler,
-		children
+		// FIXME Properly type children and make it optional.
+		// Workaround to allow empty slot rendering in tests.
+		children = undefined as unknown
 	} = $props();
 
 	let dialog: HTMLDialogElement | undefined;
