@@ -2,9 +2,7 @@
 	type EventHandler = (e: Event & { currentTarget: EventTarget & HTMLDialogElement }) => unknown;
 
 	let {
-		// FIXME showModal variable is currently an unknown type.
-		// Reference https://github.com/sveltejs/svelte/issues/12901
-		showModal = $bindable<boolean>(),
+		showModal = $bindable<boolean>() as boolean,
 		closeWithBackdropClick = false,
 		preventCancel = false,
 		fullHeight = false,
