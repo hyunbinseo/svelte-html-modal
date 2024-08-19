@@ -7,10 +7,10 @@
 	// To open the modal in a server-rendered markup, use the <ModalLike> component.
 	// Reference https://github.com/hyunbinseo/svelte-html-modal/blob/main/docs/ssr.md
 
-	let showModal = false;
+	let showModal = $state(false);
 </script>
 
-<button type="button" on:click={() => (showModal = true)}>Show Modal</button>
+<button type="button" onclick={() => (showModal = true)}>Show Modal</button>
 <a href="https://github.com/hyunbinseo/svelte-html-modal#readme">GitHub</a>
 
 <!-- Outer wrapper <div> is used for styling. -->
@@ -19,10 +19,10 @@
 	<Modal
 		bind:showModal
 		closeWithBackdropClick={true}
-		on:close={(e) => {
+		onclose={(e) => {
 			if (!(e.currentTarget instanceof HTMLDialogElement)) return;
 
-			// Empty string if closed with JavaScript. (e.g. on:click)
+			// Empty string if closed with JavaScript. (e.g. onclick)
 			// Value of the submit button if closed with a form submit.
 			console.log(`Dialog return value: ${e.currentTarget.returnValue || '<empty string>'}`);
 		}}
@@ -33,7 +33,7 @@
 		<ul>
 			<li>Click on the backdrop</li>
 			<li>
-				<button type="button" on:click={() => (showModal = false)}>Close with JavaScript</button>
+				<button type="button" onclick={() => (showModal = false)}>Close with JavaScript</button>
 			</li>
 		</ul>
 
