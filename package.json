@@ -42,12 +42,12 @@
 	},
 	"exports": {
 		".": {
-			"types": "./dist/index.d.ts",
-			"svelte": "./dist/index.js"
+			"types": "./dist/index.svelte.d.ts",
+			"svelte": "./dist/index.svelte.js"
 		}
 	},
-	"svelte": "./dist/index.js",
-	"types": "./dist/index.d.ts",
+	"svelte": "./dist/index.svelte.js",
+	"types": "./dist/index.svelte.d.ts",
 	"files": [
 		"dist",
 		"!dist/**/*.test.*",
