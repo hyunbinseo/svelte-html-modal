@@ -1,4 +1,6 @@
 <script lang="ts">
+	type EventHandler = (e: Event & { currentTarget: EventTarget & HTMLDialogElement }) => unknown;
+
 	let {
 		// FIXME showModal variable is currently an unknown type.
 		// Reference https://github.com/sveltejs/svelte/issues/12901
@@ -8,8 +10,8 @@
 		fullHeight = false,
 		fullWidth = false,
 		showFlyInAnimation = false,
-		oncancel = (() => {}) as () => unknown,
-		onclose = (() => {}) as () => unknown,
+		oncancel = (() => {}) as EventHandler,
+		onclose = (() => {}) as EventHandler,
 		children
 	} = $props();
 
@@ -34,12 +36,12 @@
 	bind:this={dialog}
 	oncancel={(e) => {
 		if (preventCancel) e.preventDefault();
-		oncancel();
+		oncancel(e);
 	}}
-	onclose={() => {
+	onclose={(e) => {
 		document.body.style.overflow = 'visible';
 		showModal = false;
-		onclose();
+		onclose(e);
 	}}
 	onclick={(e) => {
 		if (closeWithBackdropClick && e.currentTarget === e.target) dialog?.close();
