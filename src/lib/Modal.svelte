@@ -1,13 +1,15 @@
 <script lang="ts">
-	type EventHandler = (e: Event & { currentTarget: EventTarget & HTMLDialogElement }) => unknown;
+	type EventHandler =
+		| ((e: Event & { currentTarget: EventTarget & HTMLDialogElement }) => unknown)
+		| null;
 
 	let {
 		showModal = $bindable<boolean>() as boolean,
 		closeWithBackdrop = false,
 		preventCancel = false,
 		showTransition = true,
-		oncancel = (() => {}) as EventHandler,
-		onclose = (() => {}) as EventHandler,
+		oncancel = null as EventHandler,
+		onclose = null as EventHandler,
 		// FIXME Properly type children and make it optional.
 		// Workaround to allow empty slot rendering in tests.
 		children = undefined as unknown
@@ -34,12 +36,12 @@
 	bind:this={dialog}
 	oncancel={(e) => {
 		if (preventCancel) e.preventDefault();
-		oncancel(e);
+		oncancel?.(e);
 	}}
 	onclose={(e) => {
 		document.body.style.overflow = 'visible';
 		showModal = false;
-		onclose(e);
+		onclose?.(e);
 	}}
 	onclick={(e) => {
 		if (closeWithBackdrop && e.currentTarget === e.target) dialog?.close();
