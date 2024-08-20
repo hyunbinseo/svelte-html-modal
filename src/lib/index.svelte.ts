@@ -1,4 +1,4 @@
-export { createSubmitFunction } from './index.js';
+export { createSubmitFunction, type ExtractActionResult } from './index.js';
 export { default as Modal } from './Modal.svelte';
 export { default as ModalLike } from './ModalLike.svelte';
 

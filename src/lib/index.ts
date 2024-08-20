@@ -1,35 +1,51 @@
-import type { SubmitFunction } from '@sveltejs/kit';
+import type { ActionResult, SubmitFunction } from '@sveltejs/kit';
 import { tick } from 'svelte';
 import type { createModalFormState } from './index.svelte.js';
+
+// NOTE The generated SubmitFunction type
+// DOES NOT extend the SubmitFunction type.
+
+export type ExtractActionResult<
+	Fn // `Fn extends SubmitFunction` does not work.
+> = ActionResult<
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	Fn extends SubmitFunction<infer Success, any> ? Success : never,
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	Fn extends SubmitFunction<any, infer Failure> ? Failure : never
+>;
 
 type ChangeReturnType<Function, Returns> = Function extends (...params: infer Params) => unknown
 	? (...params: Params) => Returns
 	: never;
 
-type SubmitFnNoReturn<Fn extends SubmitFunction> = ChangeReturnType<Fn, void>;
-type SubmitFnReturnCb<Fn extends SubmitFunction> = Exclude<Awaited<ReturnType<Fn>>, void>;
+type Input = Parameters<SubmitFunction>[0];
+type Opts = Parameters<Exclude<Awaited<ReturnType<SubmitFunction>>, void>>[0];
 
-type SubmitFnReturnCbWithSubmitter<Fn extends SubmitFunction> = (
-	opts: Parameters<SubmitFnReturnCb<Fn>>[0] & { submitter: HTMLElement | null }
+type ReturnCallback<A extends ActionResult> = (
+	opts: Omit<Opts, 'result'> & { result: A; submitter: HTMLElement | null }
 ) => void;
 
-type Options<Fn extends SubmitFunction> = Partial<{
+type Options<A extends ActionResult> = Partial<{
 	delay: number;
 	modalFormState: ReturnType<typeof createModalFormState>;
-	submittedCallback: SubmitFnNoReturn<Fn>;
-	respondedCallback: SubmitFnReturnCbWithSubmitter<Fn>;
-	completedCallback: SubmitFnReturnCbWithSubmitter<Fn>;
+	submittedCallback: ChangeReturnType<SubmitFunction, void>;
+	respondedCallback: ReturnCallback<A>;
+	completedCallback: ReturnCallback<A>;
 }>;
 
-export const createSubmitFunction = <Fn extends SubmitFunction>(options: Options<Fn> = {}) =>
-	(async (input: Parameters<Fn>[0]) => {
-		const o: Options<Fn> = { delay: 1000, ...options };
+export const createSubmitFunction = <A extends ActionResult>(options: Options<A> = {}) =>
+	(async (input: Input) => {
+		const o: Options<A> = { delay: 1000, ...options };
 		const timer = o.delay && new Promise((resolve) => setTimeout(resolve, o.delay));
 		await o.submittedCallback?.(input); // TODO Form submission can be canceled.
 		o.modalFormState?.set.submitting();
-		return async (opts: Parameters<SubmitFnReturnCb<Fn>>[0]) => {
+		return async (opts: Opts) => {
 			if (timer) await timer;
-			const o2 = { ...opts, submitter: input.submitter };
+			const o2 = {
+				...opts,
+				result: opts.result as A,
+				submitter: input.submitter
+			} satisfies Parameters<ReturnCallback<A>>[0];
 			await (o.respondedCallback ? o.respondedCallback(o2) : opts.update());
 			o.modalFormState?.set.submitted();
 			if (o.completedCallback) {
