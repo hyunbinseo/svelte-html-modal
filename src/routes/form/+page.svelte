@@ -14,7 +14,6 @@
 		bind:showModal={modalForm.isShown}
 		preventCancel={modalForm.isSubmitting}
 		closeWithBackdrop={!modalForm.isSubmitting}
-		onclose={modalForm.set.standby}
 	>
 		<form
 			method="post"

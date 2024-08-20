@@ -1,7 +1,12 @@
 export { default as Modal } from './Modal.svelte';
 export { default as ModalLike } from './ModalLike.svelte';
 
-export const createModalFormState = (showModalOnMount = false) => {
+type Option = { resetFormStateOnShowModal: boolean };
+
+export const createModalFormState = (
+	showModalOnMount = false,
+	option: Option = { resetFormStateOnShowModal: true }
+) => {
 	let showModal = $state(showModalOnMount);
 	let formState = $state<0 | 1 | 2>(0);
 	return {
@@ -13,7 +18,12 @@ export const createModalFormState = (showModalOnMount = false) => {
 		set isShown(show: boolean) {
 			showModal = show;
 		},
-		show: () => (showModal = true),
+		show: () => {
+			// The form state should not be updated in a onclose handler.
+			// The dialog's content can change while it is being closed.
+			if (option.resetFormStateOnShowModal) formState = 0;
+			showModal = true;
+		},
 		close: () => (showModal = false),
 
 		// Form
