@@ -16,7 +16,13 @@
 		"format": "prettier --write ."
 	},
 	"peerDependencies": {
-		"svelte": "^5.0.0"
+		"svelte": "^5.0.0",
+		"@sveltejs/kit": "^2.5.24"
+	},
+	"peerDependenciesMeta": {
+		"@sveltejs/kit": {
+			"optional": true
+		}
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.2.4",
