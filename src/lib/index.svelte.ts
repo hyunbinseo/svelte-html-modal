@@ -1,20 +1,35 @@
 export { default as Modal } from './Modal.svelte';
 export { default as ModalLike } from './ModalLike.svelte';
 
-export const createFormState = () => {
-	let state = $state<'submitting' | 'submitted' | null>(null);
+export const createModalFormState = (showModalOnMount = false) => {
+	let showModal = $state(showModalOnMount);
+	let formState = $state<0 | 1 | 2>(0);
 	return {
-		get value() {
-			return state;
+		// Modal
+		get isShown() {
+			return showModal;
+		},
+		// required for binding
+		set isShown(show: boolean) {
+			showModal = show;
+		},
+		show: () => (showModal = true),
+		close: () => (showModal = false),
+
+		// Form
+		get isStandby() {
+			return formState === 0;
 		},
 		get isSubmitting() {
-			return state === 'submitting';
+			return formState === 1;
 		},
 		get hasSubmitted() {
-			return state === 'submitted';
+			return formState === 2;
 		},
-		setSubmitting: () => (state = 'submitting'),
-		setSubmitted: () => (state = 'submitted'),
-		reset: () => (state = null)
+		set: {
+			standby: () => (formState = 0),
+			submitting: () => (formState = 1),
+			submitted: () => (formState = 2)
+		}
 	};
 };
