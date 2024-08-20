@@ -1,6 +1,6 @@
 <script lang="ts">
-	type EventHandler =
-		| ((e: Event & { currentTarget: EventTarget & HTMLDialogElement }) => unknown)
+	type EventHandler<E extends Event = Event> =
+		| ((e: E & { currentTarget: EventTarget & HTMLDialogElement }) => unknown)
 		| null;
 
 	let {
@@ -10,6 +10,10 @@
 		showTransition = true,
 		oncancel = null as EventHandler,
 		onclose = null as EventHandler,
+		// NOTE Is called multiple times each with different property names.
+		// NOTE Is not called if `display: none` transition is unavailable.
+		ontransitionstart = null as EventHandler<TransitionEvent>,
+		ontransitionend = null as EventHandler<TransitionEvent>,
 		// FIXME Properly type children and make it optional.
 		// Workaround to allow empty slot rendering in tests.
 		children = undefined as unknown
@@ -43,6 +47,8 @@
 		showModal = false;
 		onclose?.(e);
 	}}
+	{ontransitionstart}
+	{ontransitionend}
 	onclick={(e) => {
 		if (closeWithBackdrop && e.currentTarget === e.target) dialog?.close();
 	}}
