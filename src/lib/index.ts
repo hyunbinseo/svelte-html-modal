@@ -9,12 +9,16 @@ type ChangeReturnType<Function, Returns> = Function extends (...params: infer Pa
 type SubmitFnNoReturn<Fn extends SubmitFunction> = ChangeReturnType<Fn, void>;
 type SubmitFnReturnCb<Fn extends SubmitFunction> = Exclude<Awaited<ReturnType<Fn>>, void>;
 
+type SubmitFnReturnCbWithSubmitter<Fn extends SubmitFunction> = (
+	opts: Parameters<SubmitFnReturnCb<Fn>>[0] & { submitter: HTMLElement | null }
+) => void;
+
 type Options<Fn extends SubmitFunction> = Partial<{
 	delay: number;
 	modalFormState: ReturnType<typeof createModalFormState>;
 	submittedCallback: SubmitFnNoReturn<Fn>;
-	respondedCallback: SubmitFnReturnCb<Fn>;
-	completedCallback: SubmitFnReturnCb<Fn>;
+	respondedCallback: SubmitFnReturnCbWithSubmitter<Fn>;
+	completedCallback: SubmitFnReturnCbWithSubmitter<Fn>;
 }>;
 
 export const createSubmitFunction = <Fn extends SubmitFunction>(options: Options<Fn> = {}) =>
@@ -25,11 +29,12 @@ export const createSubmitFunction = <Fn extends SubmitFunction>(options: Options
 		o.modalFormState?.set.submitting();
 		return async (opts: Parameters<SubmitFnReturnCb<Fn>>[0]) => {
 			if (timer) await timer;
-			await (o.respondedCallback ? o.respondedCallback(opts) : opts.update());
+			const o2 = { ...opts, submitter: input.submitter };
+			await (o.respondedCallback ? o.respondedCallback(o2) : opts.update());
 			o.modalFormState?.set.submitted();
 			if (o.completedCallback) {
 				await tick(); // Wait for the form prop to be updated.
-				await o.completedCallback(opts);
+				await o.completedCallback(o2);
 			}
 		};
 	}) satisfies SubmitFunction;
