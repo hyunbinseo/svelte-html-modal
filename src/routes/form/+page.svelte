@@ -18,20 +18,20 @@
 		<form
 			method="post"
 			use:enhance={async () => {
-				modalForm.set.submitting();
+				modalForm.is = 'submitting';
 				// Show the submitting state for a minimum of 1000ms.
 				const timer = new Promise((resolve) => setTimeout(resolve, 1000));
 				return async ({ update }) => {
 					await timer;
 					await update();
 					await tick(); // Update the exported form object.
-					modalForm.set.submitted();
+					modalForm.is = 'submitted';
 				};
 			}}
 		>
 			<!-- Resets the form properly by recreating the input fields. -->
 			<!-- Reference https://github.com/sveltejs/svelte/issues/8220 -->
-			{#if !modalForm.hasSubmitted}
+			{#if !modalForm.isSubmitted}
 				<input type="text" name="message" size="10" value="Hello, World!" required />
 				<button disabled={modalForm.isSubmitting}>
 					{!modalForm.isSubmitting ? 'Submit' : 'Submitting'}

@@ -9,7 +9,10 @@ export const createModalFormState = (
 	option: Option = { resetFormStateOnShowModal: true }
 ) => {
 	let showModal = $state(showModalOnMount);
-	let formState = $state<0 | 1 | 2>(0);
+
+	type FormState = 'standby' | 'submitting' | 'submitted';
+	let formState = $state<FormState>('standby');
+
 	return {
 		// Modal
 		get isShown() {
@@ -22,25 +25,23 @@ export const createModalFormState = (
 		show: () => {
 			// The form state should not be updated in a onclose handler.
 			// The dialog's content can change while it is being closed.
-			if (option.resetFormStateOnShowModal) formState = 0;
+			if (option.resetFormStateOnShowModal) formState = 'standby';
 			showModal = true;
 		},
 		close: () => (showModal = false),
 
 		// Form
 		get isStandby() {
-			return formState === 0;
+			return formState === 'standby';
 		},
 		get isSubmitting() {
-			return formState === 1;
+			return formState === 'submitting';
 		},
-		get hasSubmitted() {
-			return formState === 2;
+		get isSubmitted() {
+			return formState === 'submitted';
 		},
-		set: {
-			standby: () => (formState = 0),
-			submitting: () => (formState = 1),
-			submitted: () => (formState = 2)
+		set is(state: FormState) {
+			formState = state;
 		}
 	};
 };

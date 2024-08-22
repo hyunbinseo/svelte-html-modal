@@ -47,13 +47,13 @@ export const createSubmitFunction = <A extends ActionResult>(options: Options<A>
 		if (o.disableSubmitter) disableSubmitter(input.submitter);
 		const timer = o.delay && new Promise((resolve) => setTimeout(resolve, o.delay));
 		await o.submittedCallback?.(input); // TODO Form submission can be canceled.
-		o.modalFormState?.set.submitting();
+		o.modalFormState && (o.modalFormState.is = 'submitting');
 		return async (opts: Opts) => {
 			if (timer) await timer;
 			const o2 = { ...opts, result: opts.result as A } satisfies Parameters<ReturnCallback<A>>[0];
 			await (o.respondedCallback ? o.respondedCallback(o2) : opts.update());
 			if (o.disableSubmitter) disableSubmitter(input.submitter, false);
-			o.modalFormState?.set.submitted();
+			o.modalFormState && (o.modalFormState.is = 'submitted');
 			if (o.completedCallback) {
 				await tick(); // Wait for the form prop to be updated.
 				await o.completedCallback(o2);
