@@ -4,7 +4,7 @@ export { default as ModalLike } from './ModalLike.svelte';
 
 type Option = { resetFormStateOnShowModal: boolean };
 
-export const createModalFormState = (
+export const createFormState = (
 	showModalOnMount = false,
 	option: Option = { resetFormStateOnShowModal: true }
 ) => {

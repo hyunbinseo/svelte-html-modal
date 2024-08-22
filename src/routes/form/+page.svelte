@@ -1,45 +1,31 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { createModalFormState, Modal } from '$lib/index.svelte';
-	import { tick } from 'svelte';
+	import { createFormState, createSubmitFunction, Modal } from '$lib/index.svelte';
 
 	let { form } = $props();
-	const modalForm = createModalFormState();
+	const userForm = createFormState();
 </script>
 
-<button type="button" onclick={modalForm.show}>Show Modal</button>
+<button type="button" onclick={userForm.show}>Show Modal</button>
 
 <div class="modal-wrapper">
 	<Modal
-		bind:showModal={modalForm.isShown}
-		preventCancel={modalForm.isSubmitting}
-		closeWithBackdrop={!modalForm.isSubmitting}
+		bind:showModal={userForm.isShown}
+		preventCancel={userForm.isSubmitting}
+		closeWithBackdrop={!userForm.isSubmitting}
 	>
-		<form
-			method="post"
-			use:enhance={async () => {
-				modalForm.is = 'submitting';
-				// Show the submitting state for a minimum of 1000ms.
-				const timer = new Promise((resolve) => setTimeout(resolve, 1000));
-				return async ({ update }) => {
-					await timer;
-					await update();
-					await tick(); // Update the exported form object.
-					modalForm.is = 'submitted';
-				};
-			}}
-		>
+		<form method="post" use:enhance={createSubmitFunction({ formState: userForm })}>
 			<!-- Resets the form properly by recreating the input fields. -->
 			<!-- Reference https://github.com/sveltejs/svelte/issues/8220 -->
-			{#if !modalForm.isSubmitted}
+			{#if !userForm.isSubmitted}
 				<input type="text" name="message" size="10" value="Hello, World!" required />
-				<button disabled={modalForm.isSubmitting}>
-					{!modalForm.isSubmitting ? 'Submit' : 'Submitting'}
+				<button disabled={userForm.isSubmitting}>
+					{!userForm.isSubmitting ? 'Submit' : 'Submitting'}
 				</button>
 			{:else if form?.now}
 				<p>Submitted at {form.now.toISOString()}</p>
 			{/if}
-			<button type="button" disabled={modalForm.isSubmitting} onclick={modalForm.close}>
+			<button type="button" disabled={userForm.isSubmitting} onclick={userForm.close}>
 				Close
 			</button>
 		</form>
