@@ -1,23 +1,26 @@
 <script lang="ts">
-	type EventHandler<E extends Event = Event> =
-		| ((e: E & { currentTarget: EventTarget & HTMLDialogElement }) => unknown)
-		| null;
+	import type { Snippet } from 'svelte';
+	import type { EventHandler } from 'svelte/elements';
+
+	// EventHandler is not exported, but works when imported.
+	// Blocked by https://github.com/sveltejs/svelte/issues/13062
 
 	let {
-		showModal = $bindable<boolean>() as boolean,
+		showModal = $bindable<boolean>(),
 		closeWithBackdrop = false,
 		preventCancel = false,
 		showTransition = true,
-		oncancel = null as EventHandler,
-		onclose = null as EventHandler,
-		// NOTE Is called multiple times each with different property names.
-		// NOTE Is not called if `display: none` transition is unavailable.
-		ontransitionstart = null as EventHandler<TransitionEvent>,
-		ontransitionend = null as EventHandler<TransitionEvent>,
-		// FIXME Properly type children and make it optional.
-		// Workaround to allow empty slot rendering in tests.
-		children = undefined as unknown
-	} = $props();
+		oncancel,
+		onclose,
+		children
+	}: { showModal: boolean } & Partial<{
+		closeWithBackdrop: boolean;
+		preventCancel: boolean;
+		showTransition: boolean;
+		oncancel: EventHandler<Event, HTMLDialogElement>;
+		onclose: EventHandler<Event, HTMLDialogElement>;
+		children: Snippet;
+	}> = $props();
 
 	let dialog: HTMLDialogElement | undefined;
 
@@ -47,8 +50,6 @@
 		showModal = false;
 		onclose?.(e);
 	}}
-	{ontransitionstart}
-	{ontransitionend}
 	onclick={(e) => {
 		if (closeWithBackdrop && e.currentTarget === e.target) dialog?.close();
 	}}
@@ -56,9 +57,7 @@
 >
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div onclick={(e) => e.stopPropagation()}>
-		<!-- FIXME 'children' is of type 'unknown' -->
-		<!-- Reference https://github.com/sveltejs/language-tools/issues/2466 -->
-		{@render children()}
+		{@render children?.()}
 	</div>
 </dialog>
 
