@@ -1,26 +1,23 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { EventHandler } from 'svelte/elements';
-
-	// EventHandler is not exported, but works when imported.
-	// Blocked by https://github.com/sveltejs/svelte/issues/13062
+	import type { HTMLDialogAttributes } from 'svelte/elements';
 
 	let {
 		showModal = $bindable<boolean>(),
 		closeWithBackdrop = false,
 		preventCancel = false,
 		showTransition = true,
+		children,
 		oncancel,
-		onclose,
-		children
-	}: { showModal: boolean } & Partial<{
-		closeWithBackdrop: boolean;
-		preventCancel: boolean;
-		showTransition: boolean;
-		oncancel: EventHandler<Event, HTMLDialogElement>;
-		onclose: EventHandler<Event, HTMLDialogElement>;
-		children: Snippet;
-	}> = $props();
+		onclose
+	}: { showModal: boolean } & Partial<
+		{
+			closeWithBackdrop: boolean;
+			preventCancel: boolean;
+			showTransition: boolean;
+			children: Snippet;
+		} & Pick<HTMLDialogAttributes, 'oncancel' | 'onclose'>
+	> = $props();
 
 	let dialog: HTMLDialogElement | undefined;
 
