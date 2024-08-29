@@ -106,6 +106,8 @@
 			opacity: 1;
 		}
 	}
+	/* svelte-check warns with `Unknown at rule @starting-style (css)` */
+	/* Blocked by https://github.com/microsoft/vscode-css-languageservice/issues/403 */
 	@starting-style {
 		dialog[open].show-transition {
 			translate: 0 2rem;
