@@ -76,6 +76,9 @@
 		/* Does not work if the modal has no vertical scroll. */
 		touch-action: none;
 	}
+	dialog > div {
+		display: contents;
+	}
 	@media (prefers-reduced-motion: no-preference) {
 		dialog.show-transition {
 			translate: 0 2rem;
