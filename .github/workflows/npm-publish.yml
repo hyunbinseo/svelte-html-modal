@@ -20,7 +20,8 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           cache: 'pnpm'
       - run: |
-          if [[ "${{ fromJSON(file('package.json')).version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          VERSION=$(jq -r '.version' package.json)
+          if [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "NPM_CONFIG_TAG=latest" >> $GITHUB_ENV
           else
             echo "NPM_CONFIG_TAG=next" >> $GITHUB_ENV
