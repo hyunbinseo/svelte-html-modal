@@ -89,6 +89,12 @@ npm i svelte-html-modal -D
   .modal-wrapper > :global(dialog::backdrop) {
     backdrop-filter: blur(8px) brightness(0.5);
   }
+  /* (Optional) Make <Modal> a flex container. */
+  .modal-wrapper > :global(dialog[open]) {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+  }
 </style>
 ```
 
@@ -101,6 +107,9 @@ For Tailwind CSS users, above style can be rewritten using the [`@apply` directi
   .modal-wrapper > :global(dialog) {
     @apply w-80 rounded-md p-4 backdrop:backdrop-blur backdrop:backdrop-brightness-50;
   }
+  .modal-wrapper > :global(dialog[open]) {
+    @apply flex flex-col gap-y-4;
+  }
 </style>
 ```
 
@@ -110,37 +119,4 @@ For Tailwind CSS users, above style can be rewritten using the [`@apply` directi
 export let closeWithBackdrop = false;
 export let preventCancel = false;
 export let showTransition = true;
-```
-
-## Custom Animations
-
-Default fly-in animation can be disabled and overridden using CSS animations.
-
-Fly-out animation is not available since it is a `display: black → none` switch.
-
-```svelte
-<div class="modal-wrapper">
-  <Modal bind:showModal showTransition={false}>
-    <!-- Modal Content -->
-  </Modal>
-</div>
-
-<style>
-  @keyframes fly {
-    from {
-      transform: translateY(32px);
-    }
-    to {
-      transform: translateY(0%);
-    }
-  }
-  .modal-wrapper > :global(dialog[open]) {
-    animation: fly 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  @media (prefers-reduced-motion) {
-    .modal-wrapper > :global(dialog[open]) {
-      animation: none;
-    }
-  }
-</style>
 ```
