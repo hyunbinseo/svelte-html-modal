@@ -1,15 +1,16 @@
 import { render } from '@testing-library/svelte';
 import { tick } from 'svelte';
 import { expect } from 'vitest';
-import Modal from '../src/lib/Modal.svelte';
+import Modal from './Modal.svelte';
 
-export const testFunction = async () => {
-	const props = $state({ showModal: false });
+export const toggleModal = async () => {
+	const props = $state({ showModal: false }); // rune
 	const { getByRole } = render(Modal, props);
 
-	expect(() => getByRole('dialog')).toThrow(); // display: none by default.
-
 	const dialog = getByRole('dialog', { hidden: true }) as HTMLDialogElement;
+
+	expect(dialog instanceof HTMLDialogElement).toBe(true);
+	expect(getComputedStyle(dialog).display).toBe('none');
 	expect(dialog.open).toBe(false);
 
 	props.showModal = true;
