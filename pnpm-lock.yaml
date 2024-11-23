@@ -53,9 +53,6 @@ importers:
       svelte-check:
         specifier: ^4.1.0
         version: 4.1.0(svelte@5.2.7)(typescript@5.7.2)
-      tslib:
-        specifier: ^2.8.1
-        version: 2.8.1
       typescript:
         specifier: ^5.7.2
         version: 5.7.2
