@@ -1,6 +1,6 @@
 import { render } from '@testing-library/svelte';
 import { expect, test } from 'vitest';
-import Modal from './Modal.svelte';
+import Modal from '../lib/Modal.svelte';
 import { toggleModal } from './index.svelte.js';
 
 // NOTE `dialog::backdrop` pseudo element cannot be selected in JavaScript.
@@ -10,7 +10,7 @@ import { toggleModal } from './index.svelte.js';
 test('programmatically toggle modal', toggleModal);
 
 test('show modal on component mount', () => {
-	const { getByRole } = render(Modal, { showModal: true });
+	const { getByRole } = render(Modal, { isShown: true });
 	const dialog = getByRole('dialog') as HTMLDialogElement;
 	expect(dialog.open).toBe(true);
 });
