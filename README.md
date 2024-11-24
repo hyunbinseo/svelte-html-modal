@@ -1,30 +1,27 @@
 # Svelte HTML Modal
 
-A simple wrapper component for the HTML [`<dialog>` element] - [demo]
+Create modal using the [`<dialog>`] element. [Demo]
 
-[`<dialog>` element]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement
-[demo]: https://svelte.dev/repl/7ffaea50f0c0466ea2b4be8e0aee20dd?version=4.2.3
-
-- [Wide Support](https://caniuse.com/dialog) - 96.08% as of April, 2024
-- Accessibility - focus trap, <kbd>Esc</kbd> to cancel
+[`<dialog>`]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement
+[demo]: https://svelte.dev/repl/7ffaea50f0c0466ea2b4be8e0aee20dd?version=5.2.7
 
 ## Features
 
-- Control the modal state with a single boolean
-- Close the modal by clicking on the backdrop
-- Disable the `<body>` scrolling when opened[^overflow]
-- Forwarded DOM events (cancel, close, submit)
-- CSS animation when opening the modal
-- An alternative [SSR ready component](/docs/ssr.md)
-- Guide for SvelteKit [`use:enhance` usage](/docs/form.md)
+- **State Management**: Open and close modals with a single `$state(boolean)`
+- **Smooth Animations**: CSS transitions with `prefers-reduced-motion` support
+- **Automatic Scroll Lock**: Prevents `<body>` scrolling when the modal is displayed
+- **Backdrop Control**: Close the modal by clicking anywhere outside of it
+- **Accessibility**: Native `<dialog>` element with focus trap and <kbd>Esc</kbd> support
+- **Event Handling**: `oncancel` and `onclose` event handlers are supported
+- **[Browser Support]**: Works in 96.66% of browsers as of November, 2024
 
-[^overflow]: Sets `overflow: hidden` in the `<body>` element, similar to the [Bootstrap modal].
+[Browser Support]: https://caniuse.com/dialog
 
-[Bootstrap modal]: https://getbootstrap.com/docs/5.3/components/modal/#how-it-works
+## Quick Start
 
-## Usage
+To upgrade from previous versions, see the [migration guide](/docs/migration.md).
 
-```
+```shell
 pnpm add svelte-html-modal -D
 npm i svelte-html-modal -D
 ```
@@ -33,90 +30,98 @@ npm i svelte-html-modal -D
 <script>
   import { Modal } from 'svelte-html-modal';
 
-  // JavaScript is required for the <dialog> element to be shown as a modal.
-  // Even if this value is true, the modal cannot be opened until JS is loaded.
+  // Client-side JavaScript is required to display the modal.
+  // Even if the initial state is set to true, the modal will be displayed after hydration.
+  // Reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal
+  let isShown = $state(false);
 
-  // To open the modal in a server-rendered markup, use the <ModalLike> component.
-  // Reference https://github.com/hyunbinseo/svelte-html-modal/blob/main/docs/ssr.md
-
-  let showModal = false;
+  const show = () => (isShown = true);
+  const close = () => (isShown = false);
 </script>
 
-<button type="button" on:click={() => (showModal = true)}>Show Modal</button>
+<button type="button" onclick={show}>Show Modal</button>
 
-<!-- Outer wrapper <div> is used for styling. -->
+<!-- The wrapper <div> is used for styling. -->
 <!-- Reference the <style> element below. -->
 <div class="modal-wrapper">
   <Modal
-    bind:showModal
+    bind:isShown
     closeWithBackdrop={true}
-    on:close={(e) => {
-      if (!(e.currentTarget instanceof HTMLDialogElement)) return;
-
-      // Empty string if closed with JavaScript. (e.g. on:click)
-      // Value of the submit button if closed with a form submit.
-      e.currentTarget.returnValue; // '' | 'a' | 'b'
+    onclose={(e) => {
+      if (!e.currentTarget.returnValue) return;
+      window.alert(`Closed with a submit button of value '${e.currentTarget.returnValue}'`);
     }}
   >
-    <!-- Closes the modal with JavaScript. -->
-    <button type="button" on:click={() => (showModal = false)}>Close with JavaScript</button>
-
-    <!-- Close the modal without JavaScript. -->
-    <!-- Reference https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method -->
-    <form method="dialog">
-      <!-- The button used to close the modal can be identified in the close event's return value. -->
-      <!-- Reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/returnValue -->
-      <button value="a" formnovalidate>Close without JavaScript (A)</button>
-      <button value="b">Close without JavaScript (B)</button>
-    </form>
+    <section>
+      <p>Close the modal with JavaScript</p>
+      <ul>
+        <li>Click on the backdrop</li>
+        <li><button type="button" onclick={close}>JavaScript Button</button></li>
+      </ul>
+    </section>
+    <hr />
+    <section>
+      <p>Close the modal without JavaScript</p>
+      <!-- Reference https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method -->
+      <form method="dialog">
+        <ul>
+          <li>Press the <kbd>Esc</kbd> key</li>
+          <!-- The button used to close the modal can be identified in the close event's return value. -->
+          <!-- Reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/returnValue -->
+          <li><button value="Hello">Submit Button (1)</button></li>
+          <li><button value="World">Submit Button (2)</button></li>
+        </ul>
+      </form>
+    </section>
   </Modal>
 </div>
 
+<!-- Option 1: Vanilla CSS -->
 <style>
   /* Only the <dialog> inside this page's .modal-wrapper is styled. */
   /* Reference https://svelte.dev/docs/svelte-components#style */
   .modal-wrapper > :global(dialog) {
     width: 20rem;
-    border-radius: 0.375rem;
-    /* Dialog padding has been reset to 0. Browser default style is 1em. */
-    /* Reference https://github.com/tailwindlabs/tailwindcss/pull/11069 */
-    /* Reference https://browserdefaultstyles.com/#dialog */
     padding: 1rem;
-    /* (Optional) User-agent stylesheets restrict the dialog size. */
-    max-height: 100%; /* max-height: calc((100% - 6px) - 2em); */
-    max-width: 100%; /* max-width: calc((100% - 6px) - 2em); */
+    border-radius: 0.375rem;
+    /* Override user-agent dialog:modal max-sizes. */
+    max-height: 100%; /* calc((100% - 6px) - 2em); */
+    max-width: 100%; /* calc((100% - 6px) - 2em); */
   }
   .modal-wrapper > :global(dialog::backdrop) {
     backdrop-filter: blur(8px) brightness(0.5);
   }
-  /* (Optional) Make <Modal> a flex container. */
-  .modal-wrapper > :global(dialog[open]) {
-    display: flex;
-    flex-direction: column;
-    row-gap: 1rem;
-  }
 </style>
-```
 
-For Tailwind CSS users, above style can be rewritten using the [`@apply` directive].
-
-[`@apply` directive]: https://tailwindcss.com/docs/reusing-styles#extracting-classes-with-apply
-
-```svelte
+<!-- Option 2: Tailwind CSS -->
 <style lang="postcss">
   .modal-wrapper > :global(dialog) {
     @apply w-80 rounded-md p-4 backdrop:backdrop-blur backdrop:backdrop-brightness-50;
   }
-  .modal-wrapper > :global(dialog[open]) {
-    @apply flex flex-col gap-y-4;
-  }
 </style>
 ```
 
-## Configurations
+For SvelteKit `use:enhance` usage, see [this documentation](/docs/form.md).
 
-```ts
-export let closeWithBackdrop = false;
-export let preventCancel = false;
-export let showTransition = true;
+```svelte
+<Modal bind:isShown>
+  <form use:enhance method="post">
+    <!-- Fields -->
+  </form>
+</Modal>
+```
+
+## Component Props
+
+```svelte
+<Modal
+  bind:isShown
+  closeWithBackdrop={false}
+  preventCancel={false}
+  showTransition={true}
+  oncancel={(e) => {}}
+  onclose={(e) => {}}
+>
+  <!-- Children -->
+</Modal>
 ```

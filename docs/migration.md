@@ -1,6 +1,8 @@
 # Migration
 
-## 2.0.0
+<!-- TODO Write v3 migration guide. -->
+
+## v2
 
 ```svelte
 <Modal>
@@ -10,14 +12,14 @@
 </Modal>
 ```
 
-## 1.2.0
+## v1.2
 
 ```svelte
 <!-- Replace the `bind:showModal` with a `on:close` handler. -->
 <ModalLike on:close={() => (showModal = false)}></Modal>
 ```
 
-## 1.1.0
+## v1.1
 
 ```svelte
 <script>
