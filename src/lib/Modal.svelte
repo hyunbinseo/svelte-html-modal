@@ -119,14 +119,17 @@
 		dialog.transition,
 		dialog.transition::backdrop {
 			opacity: 0;
-			transition: opacity, translate, display, overlay; /* fallback */
-			transition:
-				opacity,
-				translate,
-				display allow-discrete,
-				overlay allow-discrete;
+			transition-property: opacity, translate;
 			transition-duration: 0.5s;
 			transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+		}
+
+		@supports (overlay: auto) and (transition-behavior: allow-discrete) {
+			dialog.transition,
+			dialog.transition::backdrop {
+				transition-property: opacity, translate, display, overlay;
+				transition-behavior: allow-discrete;
+			}
 		}
 	}
 </style>
