@@ -2,6 +2,14 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLDialogAttributes } from 'svelte/elements';
 
+	type Props = {
+		isShown: boolean;
+		closeWithBackdrop?: boolean;
+		preventCancel?: boolean;
+		showTransition?: boolean;
+		children?: Snippet;
+	} & Partial<Pick<HTMLDialogAttributes, 'oncancel' | 'onclose'>>;
+
 	let {
 		isShown = $bindable<boolean>(),
 		closeWithBackdrop = false,
@@ -10,22 +18,13 @@
 		children,
 		oncancel,
 		onclose
-	}: { isShown: boolean } & Partial<
-		{
-			closeWithBackdrop: boolean;
-			preventCancel: boolean;
-			showTransition: boolean;
-			children: Snippet;
-		} & Pick<HTMLDialogAttributes, 'oncancel' | 'onclose'>
-	> = $props();
+	}: Props = $props();
 
 	let dialog: HTMLDialogElement;
 
 	$effect(() => {
-		if (!isShown && dialog.open) {
-			// body.overflow is handled in onclose.
-			dialog.close();
-		}
+		// Reference the dialog close event handler.
+		if (!isShown && dialog.open) dialog.close();
 		if (isShown && !dialog.open) {
 			document.body.style.overflow = 'hidden';
 			dialog.showModal();
@@ -69,6 +68,7 @@
 	*::after {
 		box-sizing: border-box;
 	}
+
 	dialog {
 		/* Border-width and padding is set to 0 in the Tailwind CSS preflight. */
 		/* Reference https://github.com/tailwindlabs/tailwindcss/blob/master/src/css/preflight.css */
@@ -76,20 +76,50 @@
 		border-width: 0;
 		padding: 0;
 	}
+
 	dialog[open]::backdrop {
 		/* Fix <body> scrolling on iOS, iPadOS Safari 16.6. */
 		/* Does not work if the modal has no vertical scroll. */
 		touch-action: none;
 	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		dialog[open].show-transition {
+			translate: 0 0;
+		}
+
+		dialog[open].show-transition,
+		dialog[open].show-transition::backdrop {
+			opacity: 1;
+		}
+	}
+
+	/* svelte-check warns with `Unknown at rule @starting-style (css)` */
+	/* Blocked by https://github.com/microsoft/vscode-css-languageservice/issues/403 */
+
+	/* Closing transition is not available in Firefox 132 due to partial support. */
+	/* Reference https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style */
+
+	@starting-style {
+		dialog[open].show-transition {
+			translate: 0 2rem;
+		}
+
+		dialog[open].show-transition,
+		dialog[open].show-transition::backdrop {
+			opacity: 0;
+		}
+	}
+
 	@media (prefers-reduced-motion: no-preference) {
 		dialog.show-transition {
 			translate: 0 2rem;
 		}
+
 		dialog.show-transition,
 		dialog.show-transition::backdrop {
 			opacity: 0;
-			/* Provide cross-browser support */
-			transition: opacity, translate, display, overlay;
+			transition: opacity, translate, display, overlay; /* fallback */
 			transition:
 				opacity,
 				translate,
@@ -97,26 +127,6 @@
 				overlay allow-discrete;
 			transition-duration: 0.5s;
 			transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
-		}
-	}
-	@media (prefers-reduced-motion: no-preference) {
-		dialog[open].show-transition {
-			translate: 0 0;
-		}
-		dialog[open].show-transition,
-		dialog[open].show-transition::backdrop {
-			opacity: 1;
-		}
-	}
-	/* svelte-check warns with `Unknown at rule @starting-style (css)` */
-	/* Blocked by https://github.com/microsoft/vscode-css-languageservice/issues/403 */
-	@starting-style {
-		dialog[open].show-transition {
-			translate: 0 2rem;
-		}
-		dialog[open].show-transition,
-		dialog[open].show-transition::backdrop {
-			opacity: 0;
 		}
 	}
 </style>
