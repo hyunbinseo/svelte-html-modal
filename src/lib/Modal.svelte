@@ -19,10 +19,9 @@
 		} & Pick<HTMLDialogAttributes, 'oncancel' | 'onclose'>
 	> = $props();
 
-	let dialog: HTMLDialogElement | undefined;
+	let dialog: HTMLDialogElement;
 
 	$effect(() => {
-		if (!dialog) return;
 		if (!isShown && dialog.open) {
 			// body.overflow is handled in onclose.
 			dialog.close();
@@ -48,7 +47,7 @@
 		onclose?.(e);
 	}}
 	onclick={(e) => {
-		if (closeWithBackdrop && e.currentTarget === e.target) dialog?.close();
+		if (closeWithBackdrop && e.currentTarget === e.target) dialog.close();
 	}}
 	class:show-transition={showTransition}
 >
