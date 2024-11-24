@@ -3,14 +3,14 @@
 	import type { HTMLDialogAttributes } from 'svelte/elements';
 
 	let {
-		showModal = $bindable<boolean>(),
+		isShown = $bindable<boolean>(),
 		closeWithBackdrop = false,
 		preventCancel = false,
 		showTransition = true,
 		children,
 		oncancel,
 		onclose
-	}: { showModal: boolean } & Partial<
+	}: { isShown: boolean } & Partial<
 		{
 			closeWithBackdrop: boolean;
 			preventCancel: boolean;
@@ -23,11 +23,11 @@
 
 	$effect(() => {
 		if (!dialog) return;
-		if (!showModal && dialog.open) {
+		if (!isShown && dialog.open) {
 			// body.overflow is handled in onclose.
 			dialog.close();
 		}
-		if (showModal && !dialog.open) {
+		if (isShown && !dialog.open) {
 			document.body.style.overflow = 'hidden';
 			dialog.showModal();
 		}
@@ -44,7 +44,7 @@
 	}}
 	onclose={(e) => {
 		document.body.style.overflow = 'visible';
-		showModal = false;
+		isShown = false;
 		onclose?.(e);
 	}}
 	onclick={(e) => {
