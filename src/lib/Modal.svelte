@@ -3,18 +3,18 @@
 	import type { HTMLDialogAttributes } from 'svelte/elements';
 
 	type Props = {
-		isShown: boolean;
-		closeWithBackdrop?: boolean;
-		preventCancel?: boolean;
-		showTransition?: boolean;
+		isOpen: boolean;
+		closeOnBackdropClick?: boolean;
+		closeOnEscapeKey?: boolean;
+		enableTransitions?: boolean;
 		children?: Snippet;
 	} & Partial<Pick<HTMLDialogAttributes, 'oncancel' | 'onclose'>>;
 
 	let {
-		isShown = $bindable<boolean>(),
-		closeWithBackdrop = false,
-		preventCancel = false,
-		showTransition = true,
+		isOpen = $bindable<boolean>(),
+		closeOnBackdropClick = false,
+		closeOnEscapeKey = true,
+		enableTransitions = true,
 		children,
 		oncancel,
 		onclose
@@ -24,8 +24,8 @@
 
 	$effect(() => {
 		// Reference the dialog close event handler.
-		if (!isShown && dialog.open) dialog.close();
-		if (isShown && !dialog.open) {
+		if (!isOpen && dialog.open) dialog.close();
+		if (isOpen && !dialog.open) {
 			document.body.style.overflow = 'hidden';
 			dialog.showModal();
 		}
@@ -37,15 +37,15 @@
 <dialog
 	bind:this={dialog}
 	oncancel={(e) => {
-		if (preventCancel) e.preventDefault();
+		if (!closeOnEscapeKey) e.preventDefault();
 		oncancel?.(e);
 	}}
 	onclose={(e) => {
 		document.body.style.overflow = 'visible';
-		isShown = false;
+		isOpen = false;
 		onclose?.(e);
 	}}
-	onclick={!closeWithBackdrop
+	onclick={!closeOnBackdropClick
 		? null
 		: (e) => {
 				if (e.currentTarget !== e.target) return;
@@ -57,7 +57,7 @@
 					e.clientY > rect.bottom;
 				if (isBackdropClick) dialog.close();
 			}}
-	class:show-transition={showTransition}
+	class:transition={enableTransitions}
 >
 	{@render children?.()}
 </dialog>
@@ -84,12 +84,12 @@
 	}
 
 	@media (prefers-reduced-motion: no-preference) {
-		dialog[open].show-transition {
+		dialog[open].transition {
 			translate: 0 0;
 		}
 
-		dialog[open].show-transition,
-		dialog[open].show-transition::backdrop {
+		dialog[open].transition,
+		dialog[open].transition::backdrop {
 			opacity: 1;
 		}
 	}
@@ -101,23 +101,23 @@
 	/* Reference https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style */
 
 	@starting-style {
-		dialog[open].show-transition {
+		dialog[open].transition {
 			translate: 0 2rem;
 		}
 
-		dialog[open].show-transition,
-		dialog[open].show-transition::backdrop {
+		dialog[open].transition,
+		dialog[open].transition::backdrop {
 			opacity: 0;
 		}
 	}
 
 	@media (prefers-reduced-motion: no-preference) {
-		dialog.show-transition {
+		dialog.transition {
 			translate: 0 2rem;
 		}
 
-		dialog.show-transition,
-		dialog.show-transition::backdrop {
+		dialog.transition,
+		dialog.transition::backdrop {
 			opacity: 0;
 			transition: opacity, translate, display, overlay; /* fallback */
 			transition:

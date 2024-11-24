@@ -9,8 +9,8 @@ import { toggleModal } from './index.svelte.js';
 
 test('programmatically toggle modal', toggleModal);
 
-test('show modal on component mount', () => {
-	const { getByRole } = render(Modal, { isShown: true });
+test('open modal on component mount', () => {
+	const { getByRole } = render(Modal, { isOpen: true });
 	const dialog = getByRole('dialog') as HTMLDialogElement;
 	expect(dialog.open).toBe(true);
 });

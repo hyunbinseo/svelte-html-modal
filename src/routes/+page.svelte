@@ -6,76 +6,59 @@
 	// Client-side JavaScript is required to display the modal.
 	// Even if the initial state is set to true, the modal will be displayed after hydration.
 	// Reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal
-	let isShown = $state(false);
+	let isOpen = $state(false);
 
-	const show = () => (isShown = true);
-	const close = () => (isShown = false);
+	const open = () => (isOpen = true);
+	const close = () => (isOpen = false);
 
 	// NOTE Remove options in README
-	let closeWithBackdrop = $state(false);
-	let preventCancel = $state(false);
-	let showTransition = $state(true);
+	let closeOnBackdropClick = $state(true);
+	let closeOnEscapeKey = $state(true);
+	let enableTransitions = $state(true);
 </script>
 
-<button type="button" onclick={show}>Show Modal</button>
+<button type="button" onclick={open}>Open Modal</button>
 <span>/</span>
-<a href="https://github.com/hyunbinseo/svelte-html-modal#readme">GitHub</a>
+<a href="https://github.com/hyunbinseo/svelte-html-modal#readme">svelte-html-modal</a>
 
 <fieldset style:width="fit-content" style:margin-top="1rem">
 	<legend>Options</legend>
 	<label>
-		<input type="checkbox" bind:checked={closeWithBackdrop} />
-		<span>Close with Backdrop</span>
+		<input type="checkbox" bind:checked={closeOnBackdropClick} />
+		<span>Close on Backdrop Click</span>
 	</label>
 	<br />
 	<label>
-		<input type="checkbox" bind:checked={preventCancel} />
-		<span>Prevent Cancel (Esc)</span>
+		<input type="checkbox" bind:checked={closeOnEscapeKey} />
+		<span>Close on Escape Key</span>
 	</label>
 	<br />
 	<label>
-		<input type="checkbox" bind:checked={showTransition} />
-		<span>Show Transition</span>
+		<input type="checkbox" bind:checked={enableTransitions} />
+		<span>Enable Transitions</span>
 	</label>
 </fieldset>
 
 <!-- The wrapper <div> is used for styling. -->
 <!-- Reference the <style> element below. -->
 <div class="modal-wrapper">
-	<Modal
-		bind:isShown
-		{closeWithBackdrop}
-		{preventCancel}
-		{showTransition}
-		oncancel={() => {}}
-		onclose={(e) => {
-			if (!e.currentTarget.returnValue) return;
-			window.alert(`Closed with a submit button of value '${e.currentTarget.returnValue}'`);
-		}}
-	>
-		<section>
-			<p>Close the modal with JavaScript</p>
-			<ul>
-				{#if closeWithBackdrop}
-					<li>Click on the backdrop</li>
-				{/if}
-				<li><button type="button" onclick={close}>JavaScript Button</button></li>
-			</ul>
-		</section>
-		<hr />
-		<section>
-			<p>Close the modal without JavaScript</p>
-			<!-- Reference https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method -->
-			<form method="dialog">
-				<ul>
-					<li>Press the <kbd>Esc</kbd> key</li>
-					<!-- The button used to close the modal can be identified in the close event's return value. -->
-					<!-- Reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/returnValue -->
-					<li><button value="Hello">Submit Button (1)</button></li>
-					<li><button value="World">Submit Button (2)</button></li>
-				</ul>
-			</form>
-		</section>
+	<Modal bind:isOpen {closeOnBackdropClick} {closeOnEscapeKey} {enableTransitions}>
+		<strong>Close the Modal</strong>
+		<ul>
+			{#if closeOnBackdropClick}
+				<li>Click on the backdrop</li>
+			{/if}
+			{#if closeOnEscapeKey}
+				<li>Press the <kbd>Esc</kbd> key</li>
+			{/if}
+			<li><button type="button" onclick={close}>JavaScript Button</button></li>
+			<li>
+				<!-- Reference https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method -->
+				<form method="dialog">
+					<button>Submit Button</button>
+				</form>
+			</li>
+		</ul>
 	</Modal>
 </div>
 
