@@ -46,15 +46,21 @@
 		isShown = false;
 		onclose?.(e);
 	}}
-	onclick={(e) => {
-		if (closeWithBackdrop && e.currentTarget === e.target) dialog.close();
-	}}
+	onclick={!closeWithBackdrop
+		? null
+		: (e) => {
+				if (e.currentTarget !== e.target) return;
+				const rect = dialog.getBoundingClientRect();
+				const isBackdropClick =
+					e.clientX < rect.left ||
+					e.clientX > rect.right ||
+					e.clientY < rect.top ||
+					e.clientY > rect.bottom;
+				if (isBackdropClick) dialog.close();
+			}}
 	class:show-transition={showTransition}
 >
-	<!-- svelte-ignore a11y_no_static_element_interactions -->
-	<div onclick={(e) => e.stopPropagation()}>
-		{@render children?.()}
-	</div>
+	{@render children?.()}
 </dialog>
 
 <style>
@@ -74,9 +80,6 @@
 		/* Fix <body> scrolling on iOS, iPadOS Safari 16.6. */
 		/* Does not work if the modal has no vertical scroll. */
 		touch-action: none;
-	}
-	dialog > div {
-		display: contents;
 	}
 	@media (prefers-reduced-motion: no-preference) {
 		dialog.show-transition {
