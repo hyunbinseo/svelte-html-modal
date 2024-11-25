@@ -11,7 +11,7 @@ Requires Svelte v5 and runes mode.
 
 - **State Management**: Open and close modals with a single `$state(boolean)`
 - **Smooth Animations**: CSS transitions with `prefers-reduced-motion` support
-- **Automatic Scroll Lock**: Prevents `<body>` scrolling when the modal is displayed
+- **Automatic Scroll Lock**: Prevents `<body>` scrolling while the modal is open
 - **Backdrop Control**: Close the modal by clicking anywhere outside of it
 - **Accessibility**: Native `<dialog>` element with focus trap and <kbd>Esc</kbd> support
 - **Event Handling**: `oncancel` and `onclose` event handlers are supported
@@ -30,15 +30,15 @@ npm i svelte-html-modal -D
 
 ```svelte
 <script>
-	import { Modal } from 'svelte-html-modal';
+  import { Modal } from 'svelte-html-modal';
 
-	// Client-side JavaScript is required to display the modal.
-	// Even if the initial state is set to true, the modal will be displayed after hydration.
-	// Reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal
-	let isOpen = $state(false);
+  // Client-side JavaScript is required to display the modal.
+  // Even if the initial state is set to true, the modal will be displayed after hydration.
+  // Reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal
+  let isOpen = $state(false);
 
-	const open = () => (isOpen = true);
-	const close = () => (isOpen = false);
+  const open = () => (isOpen = true);
+  const close = () => (isOpen = false);
 </script>
 
 <button type="button" onclick={open}>Open Modal</button>
@@ -46,39 +46,41 @@ npm i svelte-html-modal -D
 <!-- The wrapper <div> is used for styling. -->
 <!-- Reference the <style> element below. -->
 <div class="modal-wrapper">
-	<Modal bind:isOpen closeOnBackdropClick={true}>
-		<strong>Close the Modal</strong>
-		<ul>
-			<li>Click on the backdrop</li>
-			<li>Press the <kbd>Esc</kbd> key</li>
-			<li><button type="button" onclick={close}>JavaScript Button</button></li>
-			<li>
-				<!-- Reference https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method -->
-				<form method="dialog">
-					<button>Submit Button</button>
-				</form>
-			</li>
-		</ul>
-	</Modal>
+  <Modal bind:isOpen closeOnBackdropClick={true}>
+    <strong>Close the Modal</strong>
+    <ul>
+      <li>Click on the backdrop</li>
+      <li>Press the <kbd>Esc</kbd> key</li>
+      <li><button type="button" onclick={close}>JavaScript Button</button></li>
+      <li>
+        <!-- Reference https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method -->
+        <form method="dialog">
+          <button>Submit Button</button>
+        </form>
+      </li>
+    </ul>
+  </Modal>
 </div>
 
 <!-- Option 1: Vanilla CSS -->
 <style>
-	/* Only the <dialog> inside this page's .modal-wrapper is styled. */
-	/* Reference https://svelte.dev/docs/svelte-components#style */
-	.modal-wrapper > :global(dialog) {
-		width: 20rem;
-		padding: 1rem;
-		border-radius: 0.375rem;
-		/* Override user-agent dialog:modal max-sizes. */
-		max-height: 100%; /* calc((100% - 6px) - 2em); */
-		max-width: 100%; /* calc((100% - 6px) - 2em); */
-	}
-	.modal-wrapper > :global(dialog::backdrop) {
-		backdrop-filter: blur(8px) brightness(0.5);
-	}
+  /* Style <dialog> within the .modal-wrapper element. */
+  /* Reference https://svelte.dev/docs/svelte/scoped-styles */
+  .modal-wrapper > :global(dialog) {
+    width: 20rem;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    /* Override user-agent dialog:modal max-sizes. */
+    max-height: 100%; /* calc((100% - 6px) - 2em); */
+    max-width: 100%; /* calc((100% - 6px) - 2em); */
+  }
+  .modal-wrapper > :global(dialog::backdrop) {
+    backdrop-filter: blur(8px) brightness(0.5);
+  }
 </style>
+```
 
+```html
 <!-- Option 2: Tailwind CSS -->
 <style lang="postcss">
   .modal-wrapper > :global(dialog) {
