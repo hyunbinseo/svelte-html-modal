@@ -33,13 +33,7 @@
 		}
 	},
 	"peerDependencies": {
-		"@sveltejs/kit": "^2.5.24",
 		"svelte": "^5.0.2"
-	},
-	"peerDependenciesMeta": {
-		"@sveltejs/kit": {
-			"optional": true
-		}
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.3.1",
@@ -62,12 +56,12 @@
 		"vite": "^5.4.11",
 		"vitest": "^2.1.5"
 	},
+	"author": "Hyunbin Seo",
+	"license": "MIT",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/hyunbinseo/svelte-html-modal.git"
 	},
-	"author": "Hyunbin Seo",
-	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/hyunbinseo/svelte-html-modal/issues"
 	},
