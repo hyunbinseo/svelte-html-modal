@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import type { Snippet } from 'svelte';
 	import type { HTMLDialogAttributes } from 'svelte/elements';
+	import { getTransitionDuration } from './utilities.js';
 
 	type Props = {
 		isOpen: boolean;
@@ -8,6 +10,7 @@
 		closeOnEscapeKey?: boolean;
 		enableTransitions?: boolean;
 		children?: Snippet;
+		onclosed?: (event: { currentTarget: HTMLDialogElement }) => void;
 	} & Partial<Pick<HTMLDialogAttributes, 'oncancel' | 'onclose'>>;
 
 	let {
@@ -17,19 +20,35 @@
 		enableTransitions = true,
 		children,
 		oncancel,
-		onclose
+		onclose,
+		onclosed: _onclosed
 	}: Props = $props();
 
 	let dialog: HTMLDialogElement;
 
 	$effect(() => {
-		// Reference the dialog close event handler.
-		if (!isOpen && dialog.open) dialog.close();
+		if (isOpen) isOnclosedInvoked = false;
 		if (isOpen && !dialog.open) {
 			document.body.style.overflow = 'hidden';
 			dialog.showModal();
 		}
+		// Reference the dialog close event handler.
+		if (!isOpen && dialog.open) dialog.close();
 	});
+
+	const isCloseTransitionSupported = $derived(
+		browser &&
+			CSS.supports('overlay', 'auto') &&
+			CSS.supports('transition-behavior', 'allow-discrete')
+	);
+
+	let isOnclosedInvoked = false;
+
+	const onclosed = () => {
+		if (!_onclosed || isOnclosedInvoked) return;
+		_onclosed({ currentTarget: dialog });
+		isOnclosedInvoked = true;
+	};
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -40,10 +59,27 @@
 		if (!closeOnEscapeKey) e.preventDefault();
 		oncancel?.(e);
 	}}
-	onclose={(e) => {
+	onclose={async (e) => {
 		document.body.style.overflow = 'visible';
 		isOpen = false;
+
+		const duration =
+			!enableTransitions || !isCloseTransitionSupported
+				? 0
+				: Math.max(
+						getTransitionDuration(dialog), //
+						getTransitionDuration(dialog, '::backdrop')
+					);
+
+		const delay = duration
+			? new Promise((resolve) => setTimeout(resolve, duration))
+			: Promise.resolve();
+
+		delay.then(onclosed);
 		onclose?.(e);
+	}}
+	ontransitionend={(e) => {
+		if (getComputedStyle(e.currentTarget).display === 'none') onclosed();
 	}}
 	onclick={!closeOnBackdropClick
 		? null
