@@ -130,12 +130,6 @@
 		}
 	}
 
-	/* svelte-check warns with `Unknown at rule @starting-style (css)` */
-	/* Blocked by https://github.com/microsoft/vscode-css-languageservice/issues/403 */
-
-	/* Closing transition is not available in Firefox 132 due to partial support. */
-	/* Reference https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style */
-
 	@starting-style {
 		dialog[open].transition {
 			translate: 0 2rem;
