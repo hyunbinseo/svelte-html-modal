@@ -42,6 +42,8 @@ test('modal functionality', async ({ page }) => {
 
 	await escCheckbox.uncheck();
 	await openButton.click();
+	// Reference https://github.com/sveltejs/svelte/pull/15458
+	await page.keyboard.press('Escape');
 	await page.keyboard.press('Escape');
 	await expect(modal).toHaveAttribute('open');
 	await closeButton.click();

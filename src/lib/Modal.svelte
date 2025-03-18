@@ -40,10 +40,10 @@
 		CSS.supports('transition-behavior', 'allow-discrete');
 </script>
 
-<!-- svelte-ignore a11y_click_events_have_key_events -->
-<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <dialog
 	bind:this={dialog}
+	class:transition={enableTransitions}
+	closedby={!closeOnEscapeKey ? 'none' : null}
 	oncancel={(e) => {
 		if (!closeOnEscapeKey) e.preventDefault();
 		oncancel?.(e);
@@ -82,7 +82,6 @@
 					e.clientY > rect.bottom;
 				if (isBackdropClick) dialog.close();
 			}}
-	class:transition={enableTransitions}
 >
 	{@render children?.()}
 </dialog>
