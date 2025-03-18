@@ -17,19 +17,19 @@
 	let enableTransitions = $state(true);
 </script>
 
-<button type="button" onclick={open}>Open Modal</button>
+<button type="button" onclick={open} data-testid="open">Open Modal</button>
 <span>/</span>
 <a href="https://github.com/hyunbinseo/svelte-html-modal#readme">svelte-html-modal</a>
 
 <fieldset style:width="fit-content" style:margin-top="1rem">
 	<legend>Options</legend>
 	<label>
-		<input type="checkbox" bind:checked={closeOnBackdropClick} />
+		<input type="checkbox" bind:checked={closeOnBackdropClick} data-testid="backdrop" />
 		<span>Close on Backdrop Click</span>
 	</label>
 	<br />
 	<label>
-		<input type="checkbox" bind:checked={closeOnEscapeKey} />
+		<input type="checkbox" bind:checked={closeOnEscapeKey} data-testid="esc" />
 		<span>Close on Escape Key</span>
 	</label>
 	<br />
@@ -58,11 +58,13 @@
 			{#if closeOnEscapeKey}
 				<li>Press the <kbd>Esc</kbd> key</li>
 			{/if}
-			<li><button type="button" onclick={close}>JavaScript Button</button></li>
+			<li>
+				<button type="button" onclick={close} data-testid="close">JavaScript Button</button>
+			</li>
 			<li>
 				<!-- Reference https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method -->
 				<form method="dialog">
-					<button>Submit Button</button>
+					<button data-testid="submit">Submit Button</button>
 				</form>
 			</li>
 		</ul>

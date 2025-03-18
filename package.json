@@ -13,8 +13,8 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
-		"test:unit": "vitest",
-		"test": "node --run test:unit -- --run"
+		"test:e2e": "playwright test",
+		"test": "node --run test:e2e"
 	},
 	"files": [
 		"dist",
@@ -39,17 +39,15 @@
 	"devDependencies": {
 		"@eslint/compat": "^1.2.7",
 		"@eslint/js": "^9.22.0",
+		"@playwright/test": "^1.51.1",
 		"@sveltejs/adapter-auto": "^4.0.0",
 		"@sveltejs/kit": "^2.20.0",
 		"@sveltejs/package": "^2.3.10",
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
-		"@testing-library/svelte": "^5.2.7",
-		"@types/node": "^22.13.10",
 		"eslint": "^9.22.0",
 		"eslint-config-prettier": "^10.1.1",
 		"eslint-plugin-svelte": "^3.3.1",
 		"globals": "^16.0.0",
-		"happy-dom": "^17.4.4",
 		"prettier": "^3.5.3",
 		"prettier-plugin-svelte": "^3.3.3",
 		"publint": "^0.3.9",
@@ -57,8 +55,7 @@
 		"svelte-check": "^4.1.5",
 		"typescript": "^5.8.2",
 		"typescript-eslint": "^8.26.1",
-		"vite": "^6.2.2",
-		"vitest": "^3.0.9"
+		"vite": "^6.2.2"
 	},
 	"author": "Hyunbin Seo",
 	"license": "MIT",
@@ -75,5 +72,5 @@
 			"esbuild"
 		]
 	},
-	"packageManager": "pnpm@10.2.1+sha512.398035c7bd696d0ba0b10a688ed558285329d27ea994804a52bad9167d8e3a72bcb993f9699585d3ca25779ac64949ef422757a6c31102c12ab932e5cbe5cc92"
+	"packageManager": "pnpm@10.6.3+sha512.bb45e34d50a9a76e858a95837301bfb6bd6d35aea2c5d52094fa497a467c43f5c440103ce2511e9e0a2f89c3d6071baac3358fc68ac6fb75e2ceb3d2736065e6"
 }

@@ -1,8 +1,11 @@
+test-results
 node_modules
 
 # Output
 .output
 .vercel
+.netlify
+.wrangler
 /.svelte-kit
 /build
 /dist
