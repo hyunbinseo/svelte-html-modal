@@ -2,7 +2,6 @@
 	import { browser } from '$app/environment';
 	import type { Snippet } from 'svelte';
 	import type { HTMLDialogAttributes } from 'svelte/elements';
-	import { getTransitionDuration } from './utilities.js';
 
 	type Props = {
 		isOpen: boolean;
@@ -21,13 +20,12 @@
 		children,
 		oncancel,
 		onclose,
-		onclosed: _onclosed
+		onclosed
 	}: Props = $props();
 
 	let dialog: HTMLDialogElement;
 
 	$effect(() => {
-		if (isOpen) isOnclosedInvoked = false;
 		if (isOpen && !dialog.open) {
 			document.body.style.overflow = 'hidden';
 			dialog.showModal();
@@ -36,19 +34,10 @@
 		if (!isOpen && dialog.open) dialog.close();
 	});
 
-	const isCloseTransitionSupported = $derived(
+	const isCloseTransitionSupported =
 		browser &&
-			CSS.supports('overlay', 'auto') &&
-			CSS.supports('transition-behavior', 'allow-discrete')
-	);
-
-	let isOnclosedInvoked = false;
-
-	const onclosed = () => {
-		if (!_onclosed || isOnclosedInvoked) return;
-		_onclosed({ currentTarget: dialog });
-		isOnclosedInvoked = true;
-	};
+		CSS.supports('overlay', 'auto') &&
+		CSS.supports('transition-behavior', 'allow-discrete');
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -62,25 +51,25 @@
 	onclose={async (e) => {
 		document.body.style.overflow = 'visible';
 		isOpen = false;
-
-		const duration =
-			!enableTransitions || !isCloseTransitionSupported
-				? 0
-				: Math.max(
-						getTransitionDuration(dialog), //
-						getTransitionDuration(dialog, '::backdrop')
-					);
-
-		const delay = duration
-			? new Promise((resolve) => setTimeout(resolve, duration))
-			: Promise.resolve();
-
-		delay.then(onclosed);
 		onclose?.(e);
+		if (!isCloseTransitionSupported) onclosed?.({ currentTarget: e.currentTarget });
 	}}
-	ontransitionend={(e) => {
-		if (getComputedStyle(e.currentTarget).display === 'none') onclosed();
-	}}
+	ontransitionstart={isCloseTransitionSupported && onclosed
+		? // Workaround for https://issues.chromium.org/issues/365565135
+			(e) => {
+				if (e.propertyName !== 'display') return;
+				let requestId: number;
+				const handleOnclosed = () => {
+					if (window.getComputedStyle(dialog).display !== 'none') {
+						requestId = requestAnimationFrame(handleOnclosed);
+						return;
+					}
+					onclosed({ currentTarget: e.currentTarget });
+					cancelAnimationFrame(requestId);
+				};
+				requestId = requestAnimationFrame(handleOnclosed);
+			}
+		: null}
 	onclick={!closeOnBackdropClick
 		? null
 		: (e) => {

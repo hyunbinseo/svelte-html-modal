@@ -42,7 +42,14 @@
 <!-- The wrapper <div> is used for styling. -->
 <!-- Reference the <style> element below. -->
 <div class="modal-wrapper">
-	<Modal bind:isOpen {closeOnBackdropClick} {closeOnEscapeKey} {enableTransitions}>
+	<Modal
+		bind:isOpen
+		{closeOnBackdropClick}
+		{closeOnEscapeKey}
+		{enableTransitions}
+		onclose={() => console.log('closing')}
+		onclosed={() => console.log('closed')}
+	>
 		<strong>Close the Modal</strong>
 		<ul>
 			{#if closeOnBackdropClick}
