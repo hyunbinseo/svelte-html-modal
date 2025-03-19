@@ -16,11 +16,16 @@ test('modal functionality', async ({ page }) => {
 
 	//
 
+	const consoleMessages: string[] = [];
+	page.on('console', (consoleMessage) => consoleMessages.push(consoleMessage.text()));
+
 	await openButton.click();
 	await expect(modal).toHaveAttribute('open');
 
 	await closeButton.click();
+	await modal.waitFor({ state: 'hidden' });
 	await expect(modal).not.toHaveAttribute('open');
+	expect(consoleMessages).toEqual(['closing', 'closed']);
 
 	await openButton.click();
 	await submitButton.click();
