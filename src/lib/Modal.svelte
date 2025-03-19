@@ -57,7 +57,7 @@
 	ontransitionstart={isCloseTransitionSupported && onclosed
 		? // Workaround for https://issues.chromium.org/issues/365565135
 			(e) => {
-				if (e.propertyName !== 'display') return;
+				if (e.propertyName !== 'display' || e.currentTarget.open) return;
 				let requestId: number;
 				const handleOnclosed = () => {
 					if (window.getComputedStyle(dialog).display !== 'none') {
