@@ -81,10 +81,12 @@ npm i svelte-html-modal -D
 ```
 
 ```html
-<!-- Option 2: Tailwind CSS -->
+<!-- Option 2: Tailwind CSS v4 -->
 <style lang="postcss">
   .modal-wrapper > :global(dialog) {
-    @apply w-80 rounded-md p-4 backdrop:backdrop-blur backdrop:backdrop-brightness-50;
+    /* https://github.com/tailwindlabs/tailwindcss/issues/16372 */
+    /* Reference https://github.com/tailwindlabs/tailwindcss/discussions/15205 */
+    @apply m-auto w-80 rounded-md p-4 backdrop:backdrop-blur backdrop:backdrop-brightness-50;
   }
 </style>
 ```
