@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
+	import { BROWSER } from 'esm-env';
 	import type { Snippet } from 'svelte';
 	import type { HTMLDialogAttributes } from 'svelte/elements';
 
@@ -35,7 +35,7 @@
 	});
 
 	const isCloseTransitionSupported =
-		browser &&
+		BROWSER &&
 		CSS.supports('overlay', 'auto') &&
 		CSS.supports('transition-behavior', 'allow-discrete');
 </script>
