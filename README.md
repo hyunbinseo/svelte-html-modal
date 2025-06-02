@@ -82,7 +82,10 @@ npm i svelte-html-modal -D
 
 ```html
 <!-- Option 2: Tailwind CSS v4 -->
-<style lang="postcss">
+<style>
+  /* https://tailwindcss.com/docs/functions-and-directives#reference-directive */
+  @reference "../../app.css";
+
   .modal-wrapper > :global(dialog) {
     /* https://github.com/tailwindlabs/tailwindcss/issues/16372 */
     /* Reference https://github.com/tailwindlabs/tailwindcss/discussions/15205 */
@@ -90,6 +93,9 @@ npm i svelte-html-modal -D
   }
 </style>
 ```
+
+<!-- TODO Use attachment instead. -->
+<!-- Reference https://svelte.dev/docs/svelte/@attach -->
 
 For SvelteKit `use:enhance` usage, see [this documentation](/docs/form.md).
 
