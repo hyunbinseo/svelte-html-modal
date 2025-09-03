@@ -112,15 +112,17 @@ For SvelteKit `use:enhance` usage, see [this documentation](/docs/form.md).
 ```svelte
 <Modal
   bind:isOpen
+  id="string"
   closeOnBackdropClick={false}
   closeOnEscapeKey={true}
   enableTransitions={true}
   oncancel={(e) => {}}
   onclose={(e) => {}}
+  onclosed={(e) => {}}
 >
   <!-- Children -->
 </Modal>
 ```
 
 > [!IMPORTANT]  
-> The `closeOnEscapeKey` prop has a known issue in Chrome 126 and above. The modal can be closed by pressing the `Esc` key twice. This will be resolved in a future update when the `closedby` attribute is implemented. [Learn more](https://github.com/hyunbinseo/svelte-html-modal/issues/6)
+> The `closeOnEscapeKey` prop has a known issue in Chrome 126~133. The modal can be closed by pressing the `Esc` key twice. This will be resolved in a future update when the `closedby` attribute is implemented. [Learn more](https://github.com/hyunbinseo/svelte-html-modal/issues/6)
