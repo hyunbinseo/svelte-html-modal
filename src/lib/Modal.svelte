@@ -10,7 +10,7 @@
 		enableTransitions?: boolean;
 		children?: Snippet;
 		onclosed?: (event: { currentTarget: HTMLDialogElement }) => void;
-	} & Partial<Pick<HTMLDialogAttributes, 'oncancel' | 'onclose'>>;
+	} & Partial<Pick<HTMLDialogAttributes, 'id' | 'oncancel' | 'onclose'>>;
 
 	let {
 		isOpen = $bindable<boolean>(),
@@ -18,6 +18,7 @@
 		closeOnEscapeKey = true,
 		enableTransitions = true,
 		children,
+		id,
 		oncancel,
 		onclose,
 		onclosed
@@ -41,6 +42,7 @@
 </script>
 
 <dialog
+	{id}
 	bind:this={dialog}
 	class:transition={enableTransitions}
 	closedby={!closeOnEscapeKey ? 'none' : null}
