@@ -63,19 +63,21 @@ npm i svelte-html-modal -D
 </div>
 
 <!-- Option 1: Vanilla CSS -->
-<style>
+<style lang="postcss">
   /* Style <dialog> within the .modal-wrapper element. */
   /* Reference https://svelte.dev/docs/svelte/scoped-styles */
-  .modal-wrapper > :global(dialog) {
-    width: 20rem;
-    padding: 1rem;
-    border-radius: 0.375rem;
-    /* Override user-agent dialog:modal max-sizes. */
-    max-height: 100%; /* calc((100% - 6px) - 2em); */
-    max-width: 100%; /* calc((100% - 6px) - 2em); */
-  }
-  .modal-wrapper > :global(dialog::backdrop) {
-    backdrop-filter: blur(8px) brightness(0.5);
+  .modal-wrapper :global {
+    > dialog {
+      width: 20rem;
+      padding: 1rem;
+      border-radius: 0.375rem;
+      /* Override user-agent dialog:modal max-sizes. */
+      max-height: 100%; /* calc((100% - 6px) - 2em); */
+      max-width: 100%; /* calc((100% - 6px) - 2em); */
+      &::backdrop {
+        backdrop-filter: blur(8px) brightness(0.5);
+      }
+    }
   }
 </style>
 ```
@@ -86,10 +88,12 @@ npm i svelte-html-modal -D
   /* https://tailwindcss.com/docs/functions-and-directives#reference-directive */
   @reference "../../app.css";
 
-  .modal-wrapper > :global(dialog) {
-    /* https://github.com/tailwindlabs/tailwindcss/issues/16372 */
-    /* Reference https://github.com/tailwindlabs/tailwindcss/discussions/15205 */
-    @apply m-auto w-80 rounded-md p-4 backdrop:backdrop-blur backdrop:backdrop-brightness-50;
+  .modal-wrapper :global {
+    > dialog {
+      /* https://github.com/tailwindlabs/tailwindcss/issues/16372 */
+      /* Reference https://github.com/tailwindlabs/tailwindcss/discussions/15205 */
+      @apply m-auto w-80 rounded-md p-4 backdrop:backdrop-blur backdrop:backdrop-brightness-50;
+    }
   }
 </style>
 ```
