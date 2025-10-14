@@ -21,7 +21,7 @@
 		id,
 		oncancel,
 		onclose,
-		onclosed
+		onclosed,
 	}: Props = $props();
 
 	let dialog: HTMLDialogElement;

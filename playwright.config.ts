@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
 	webServer: {
 		command: 'node --run build && node --run preview',
-		port: 4173
+		port: 4173,
 	},
 	testDir: 'e2e',
 	projects: [
@@ -16,6 +16,6 @@ export default defineConfig({
 		{ name: 'Mobile Safari', use: { ...devices['iPhone 12'] } },
 		/* Test against branded browsers. */
 		{ name: 'Google Chrome', use: { ...devices['Desktop Chrome'], channel: 'chrome' } },
-		{ name: 'Microsoft Edge', use: { ...devices['Desktop Edge'], channel: 'msedge' } }
-	]
+		{ name: 'Microsoft Edge', use: { ...devices['Desktop Edge'], channel: 'msedge' } },
+	],
 });
