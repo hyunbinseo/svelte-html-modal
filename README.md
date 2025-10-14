@@ -94,19 +94,6 @@ npm i svelte-html-modal -D
 </style>
 ```
 
-<!-- TODO Use attachment instead. -->
-<!-- Reference https://svelte.dev/docs/svelte/@attach -->
-
-For SvelteKit `use:enhance` usage, see [this documentation](/docs/form.md).
-
-```svelte
-<Modal bind:isOpen>
-  <form use:enhance method="post">
-    <!-- Fields -->
-  </form>
-</Modal>
-```
-
 ## Component Props
 
 ```svelte
