@@ -1,10 +1,10 @@
 <script>
+	import { resolve } from '$app/paths';
 	import Modal from '$lib/Modal.svelte';
 	// NOTE import { Modal } from 'svelte-html-modal'; in README
 	// NOTE import { Modal } from 'svelte-html-modal@3'; in REPL
 
 	// Client-side JavaScript is required to display the modal.
-	// Even if the initial state is set to true, the modal will be displayed after hydration.
 	// Reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal
 	let isOpen = $state(false);
 
@@ -16,6 +16,9 @@
 	let closeOnEscapeKey = $state(true);
 	let enableTransitions = $state(true);
 </script>
+
+<a href={resolve('/is-open')}>is-open</a>
+<hr />
 
 <button type="button" onclick={open} data-testid="open">Open Modal</button>
 <span>/</span>

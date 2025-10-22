@@ -33,7 +33,6 @@ npm i svelte-html-modal -D
   import { Modal } from 'svelte-html-modal';
 
   // Client-side JavaScript is required to display the modal.
-  // Even if the initial state is set to true, the modal will be displayed after hydration.
   // Reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal
   let isOpen = $state(false);
 

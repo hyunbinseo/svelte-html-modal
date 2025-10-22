@@ -2,6 +2,7 @@
 	import { BROWSER } from 'esm-env';
 	import type { Snippet } from 'svelte';
 	import type { HTMLDialogAttributes } from 'svelte/elements';
+	import { showModalScript } from './show.js';
 
 	type Props = {
 		isOpen: boolean;
@@ -31,7 +32,8 @@
 			document.body.style.overflow = 'hidden';
 			dialog.showModal();
 		}
-		// Reference the dialog close event handler.
+
+		// body style is handled in the close handler
 		if (!isOpen && dialog.open) dialog.close();
 	});
 
@@ -87,6 +89,9 @@
 >
 	{@render children?.()}
 </dialog>
+
+<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+{@html !BROWSER && isOpen ? showModalScript : ''}
 
 <style>
 	*,
