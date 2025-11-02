@@ -2,7 +2,7 @@
 	import { BROWSER } from 'esm-env';
 	import type { Snippet } from 'svelte';
 	import type { HTMLDialogAttributes } from 'svelte/elements';
-	import { showModalScript } from './show.js';
+	import { showModalScript } from './show.ts';
 
 	type Props = {
 		isOpen: boolean;
