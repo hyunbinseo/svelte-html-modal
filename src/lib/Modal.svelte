@@ -106,54 +106,45 @@
 		/* Reference https://github.com/tailwindlabs/tailwindcss/pull/11069#issuecomment-1527384738 */
 		border-width: 0;
 		padding: 0;
-	}
 
-	dialog[open]::backdrop {
-		/* Fix <body> scrolling on iOS, iPadOS Safari 16.6. */
-		/* Does not work if the modal has no vertical scroll. */
-		touch-action: none;
-	}
-
-	@media (prefers-reduced-motion: no-preference) {
-		dialog[open].transition {
-			translate: 0 0;
-		}
-
-		dialog[open].transition,
-		dialog[open].transition::backdrop {
-			opacity: 1;
-		}
-	}
-
-	@starting-style {
-		dialog[open].transition {
-			translate: 0 2rem;
-		}
-
-		dialog[open].transition,
-		dialog[open].transition::backdrop {
-			opacity: 0;
+		&:modal::backdrop {
+			/* Fix <body> scrolling on iOS, iPadOS Safari 16.6. */
+			/* Does not work if the modal has no vertical scroll. */
+			touch-action: none;
 		}
 	}
 
 	@media (prefers-reduced-motion: no-preference) {
-		dialog.transition {
-			translate: 0 2rem;
-		}
-
 		dialog.transition,
 		dialog.transition::backdrop {
-			opacity: 0;
 			transition-duration: 0.5s;
 			transition-property: opacity, translate;
-			transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
-		}
-
-		@supports (transition-behavior: allow-discrete) and (overlay: auto) {
-			dialog.transition,
-			dialog.transition::backdrop {
+			@supports (transition-behavior: allow-discrete) and (overlay: auto) {
 				transition-behavior: allow-discrete;
 				transition-property: opacity, translate, display, overlay;
+			}
+		}
+
+		dialog.transition {
+			opacity: 0;
+			translate: 0 2rem;
+			&:modal {
+				opacity: 1;
+				translate: 0;
+				@starting-style {
+					opacity: 0;
+					translate: 0 2rem;
+				}
+			}
+
+			&::backdrop {
+				opacity: 0;
+			}
+			&:modal::backdrop {
+				opacity: 1;
+				@starting-style {
+					opacity: 0;
+				}
 			}
 		}
 	}
