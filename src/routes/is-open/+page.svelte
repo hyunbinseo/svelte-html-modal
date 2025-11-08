@@ -8,7 +8,7 @@
 <a href={resolve('/')}>home</a>
 <button type="button" onclick={() => (isOpen = true)}>open</button>
 
-<Modal bind:isOpen enableTransitions={false}>
+<Modal bind:isOpen>
 	<form method="dialog">
 		<button>Close</button>
 	</form>

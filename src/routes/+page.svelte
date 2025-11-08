@@ -1,8 +1,6 @@
 <script>
 	import { resolve } from '$app/paths';
 	import Modal from '$lib/Modal.svelte';
-	// NOTE import { Modal } from 'svelte-html-modal'; in README
-	// NOTE import { Modal } from 'svelte-html-modal@3'; in REPL
 
 	// Client-side JavaScript is required to display the modal.
 	// Reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal
@@ -11,10 +9,8 @@
 	const open = () => (isOpen = true);
 	const close = () => (isOpen = false);
 
-	// NOTE Remove options in README
 	let closeOnBackdropClick = $state(true);
 	let closeOnEscapeKey = $state(true);
-	let enableTransitions = $state(true);
 </script>
 
 <a href={resolve('/is-open')}>is-open</a>
@@ -35,11 +31,6 @@
 		<input type="checkbox" bind:checked={closeOnEscapeKey} data-testid="esc" />
 		<span>Close on Escape Key</span>
 	</label>
-	<br />
-	<label>
-		<input type="checkbox" bind:checked={enableTransitions} />
-		<span>Enable Transitions</span>
-	</label>
 </fieldset>
 
 <!-- The wrapper <div> is used for styling. -->
@@ -49,7 +40,6 @@
 		bind:isOpen
 		{closeOnBackdropClick}
 		{closeOnEscapeKey}
-		{enableTransitions}
 		onclose={() => console.log('closing')}
 		onclosed={() => console.log('closed')}
 	>

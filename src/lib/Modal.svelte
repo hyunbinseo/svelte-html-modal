@@ -8,7 +8,6 @@
 		isOpen: boolean;
 		closeOnBackdropClick?: boolean;
 		closeOnEscapeKey?: boolean;
-		enableTransitions?: boolean;
 		children?: Snippet;
 		onclosed?: (event: { currentTarget: HTMLDialogElement }) => void;
 	} & Partial<Pick<HTMLDialogAttributes, 'id' | 'oncancel' | 'onclose'>>;
@@ -17,12 +16,11 @@
 		isOpen = $bindable<boolean>(),
 		closeOnBackdropClick = false,
 		closeOnEscapeKey = true,
-		enableTransitions = true,
 		children,
+		onclosed,
 		id,
 		oncancel,
 		onclose,
-		onclosed,
 	}: Props = $props();
 
 	let dialog: HTMLDialogElement;
@@ -32,7 +30,9 @@
 			document.body.style.overflow = 'hidden';
 			dialog.showModal();
 		}
+	});
 
+	$effect(() => {
 		// body style is handled in the close handler
 		if (!isOpen && dialog.open) dialog.close();
 	});
@@ -46,7 +46,6 @@
 <dialog
 	{id}
 	bind:this={dialog}
-	class:transition={enableTransitions}
 	closedby={!closeOnEscapeKey ? 'none' : null}
 	oncancel={(e) => {
 		if (!closeOnEscapeKey) e.preventDefault();
@@ -111,41 +110,6 @@
 			/* Fix <body> scrolling on iOS, iPadOS Safari 16.6. */
 			/* Does not work if the modal has no vertical scroll. */
 			touch-action: none;
-		}
-	}
-
-	@media (prefers-reduced-motion: no-preference) {
-		dialog.transition,
-		dialog.transition::backdrop {
-			transition-duration: 0.5s;
-			transition-property: opacity, translate;
-			@supports (transition-behavior: allow-discrete) and (overlay: auto) {
-				transition-behavior: allow-discrete;
-				transition-property: opacity, translate, display, overlay;
-			}
-		}
-
-		dialog.transition {
-			opacity: 0;
-			translate: 0 2rem;
-			&:modal {
-				opacity: 1;
-				translate: 0;
-				@starting-style {
-					opacity: 0;
-					translate: 0 2rem;
-				}
-			}
-
-			&::backdrop {
-				opacity: 0;
-			}
-			&:modal::backdrop {
-				opacity: 1;
-				@starting-style {
-					opacity: 0;
-				}
-			}
 		}
 	}
 </style>

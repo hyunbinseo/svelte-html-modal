@@ -105,7 +105,6 @@ npm i svelte-html-modal -D
   id="string"
   closeOnBackdropClick={false}
   closeOnEscapeKey={true}
-  enableTransitions={true}
   oncancel={(e) => {}}
   onclose={(e) => {}}
   onclosed={(e) => {}}

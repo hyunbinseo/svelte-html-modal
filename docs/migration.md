@@ -1,5 +1,9 @@
 # Migration
 
+## v4
+
+The `enableTransitions` prop is removed. Custom animation has to be provided.
+
 ## v3
 
 Requires Svelte v5 and runes mode.
