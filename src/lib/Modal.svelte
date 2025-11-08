@@ -9,7 +9,6 @@
 		closeOnBackdropClick?: boolean;
 		closeOnEscapeKey?: boolean;
 		children?: Snippet;
-		onclosed?: (event: { currentTarget: HTMLDialogElement }) => void;
 	} & Partial<Pick<HTMLDialogAttributes, 'id' | 'oncancel' | 'onclose'>>;
 
 	let {
@@ -17,7 +16,6 @@
 		closeOnBackdropClick = false,
 		closeOnEscapeKey = true,
 		children,
-		onclosed,
 		id,
 		oncancel,
 		onclose,
@@ -36,11 +34,6 @@
 		// body style is handled in the close handler
 		if (!isOpen && dialog.open) dialog.close();
 	});
-
-	const isCloseTransitionSupported =
-		BROWSER &&
-		CSS.supports('overlay', 'auto') &&
-		CSS.supports('transition-behavior', 'allow-discrete');
 </script>
 
 <dialog
@@ -55,24 +48,7 @@
 		document.body.style.overflow = 'visible';
 		isOpen = false;
 		onclose?.(e);
-		if (!isCloseTransitionSupported) onclosed?.({ currentTarget: e.currentTarget });
 	}}
-	ontransitionstart={isCloseTransitionSupported && onclosed
-		? // Workaround for https://issues.chromium.org/issues/365565135
-			(e) => {
-				if (e.propertyName !== 'display' || e.currentTarget.open) return;
-				let requestId: number;
-				const handleOnclosed = () => {
-					if (window.getComputedStyle(dialog).display !== 'none') {
-						requestId = requestAnimationFrame(handleOnclosed);
-						return;
-					}
-					onclosed({ currentTarget: e.currentTarget });
-					cancelAnimationFrame(requestId);
-				};
-				requestId = requestAnimationFrame(handleOnclosed);
-			}
-		: null}
 	onclick={!closeOnBackdropClick
 		? null
 		: (e) => {

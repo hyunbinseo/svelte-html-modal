@@ -23,10 +23,6 @@ test('modal component features', async ({ page }) => {
 	await modal.waitFor({ state: 'hidden' });
 	await expect(modal).not.toHaveAttribute('open');
 
-	const consoleMessages = (await page.consoleMessages()).filter((msg) => msg.type() === 'log');
-	expect(consoleMessages.length).toEqual(2);
-	expect(consoleMessages.map((msg) => msg.text())).toEqual(['closing', 'closed']);
-
 	await button.open.click();
 	await button.submit.click();
 	await expect(modal).not.toHaveAttribute('open');

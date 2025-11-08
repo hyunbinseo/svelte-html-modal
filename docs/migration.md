@@ -2,7 +2,21 @@
 
 ## v4
 
-The `enableTransitions` prop is removed. Custom animation has to be provided.
+The following props have been removed:
+
+- `enableTransitions`
+- `onclosed`
+
+Set custom transition using CSS. Examples:
+
+- [Centered Dialog] with Fly Transition
+- [Navigation Drawer] with Slide Transition
+
+[Centered Dialog]: https://svelte.dev/playground/f2836fe6442c438bb4669909b01a6649?version=5.43.4
+[Navigation Drawer]: https://svelte.dev/playground/86e9d2cfbf7c4ddf966d39347098a56f?version=5.43.4
+
+> [!NOTE]  
+> `transitionend` is not reliable in Chromium. [Learn more](https://issues.chromium.org/issues/365565135)
 
 ## v3
 

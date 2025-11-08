@@ -26,13 +26,7 @@
 </fieldset>
 
 <div class="modal-wrapper">
-	<Modal
-		bind:isOpen
-		{closeOnBackdropClick}
-		{closeOnEscapeKey}
-		onclose={() => console.log('closing')}
-		onclosed={() => console.log('closed')}
-	>
+	<Modal bind:isOpen {closeOnBackdropClick} {closeOnEscapeKey}>
 		<strong>Close the Modal</strong>
 		<ul>
 			{#if closeOnBackdropClick}

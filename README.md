@@ -1,9 +1,16 @@
 # Svelte HTML Modal
 
-Create modal using the [`<dialog>`] element. [Demo]
+Create modal using the [`<dialog>`] element.
 
 [`<dialog>`]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement
-[demo]: https://svelte.dev/repl/7ffaea50f0c0466ea2b4be8e0aee20dd?version=5.2.7
+
+## Demo
+
+- [Centered Dialog] with Fly Transition
+- [Navigation Drawer] with Slide Transition
+
+[Centered Dialog]: https://svelte.dev/playground/f2836fe6442c438bb4669909b01a6649?version=5.43.4
+[Navigation Drawer]: https://svelte.dev/playground/86e9d2cfbf7c4ddf966d39347098a56f?version=5.43.4
 
 ## Features
 
@@ -105,7 +112,6 @@ npm i svelte-html-modal -D
   closeOnEscapeKey={true}
   oncancel={(e) => {}}
   onclose={(e) => {}}
-  onclosed={(e) => {}}
 >
   <!-- Children -->
 </Modal>
