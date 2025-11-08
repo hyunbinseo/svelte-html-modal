@@ -59,15 +59,15 @@ test('modal component features', async ({ page }) => {
 
 test('modal open via client-side navigation', async ({ page }) => {
 	await page.goto('/');
-	await page.click('a[href*="is-open"]');
-	await page.waitForURL('/is-open');
+	await page.click('a[href*="opened-by-default"]');
+	await page.waitForURL('/opened-by-default');
 
 	const modal = page.locator('dialog');
 	await expect(modal).toHaveAttribute('open');
 });
 
 test('modal open via server-side rendering', async ({ page }) => {
-	await page.goto('/is-open');
+	await page.goto('/opened-by-default');
 	const modal = page.locator('dialog');
 	await expect(modal).toHaveAttribute('open');
 });

@@ -2,39 +2,29 @@
 	import { resolve } from '$app/paths';
 	import Modal from '$lib/Modal.svelte';
 
-	// Client-side JavaScript is required to display the modal.
-	// Reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal
 	let isOpen = $state(false);
-
-	const open = () => (isOpen = true);
-	const close = () => (isOpen = false);
 
 	let closeOnBackdropClick = $state(true);
 	let closeOnEscapeKey = $state(true);
 </script>
 
-<a href={resolve('/is-open')}>is-open</a>
-<hr />
-
-<button type="button" onclick={open} data-testid="open">Open Modal</button>
+<button type="button" onclick={() => (isOpen = true)} data-testid="open">Open</button>
 <span>/</span>
-<a href="https://github.com/hyunbinseo/svelte-html-modal#readme">svelte-html-modal</a>
+<a href={resolve('/opened-by-default')}>Opened by Default</a>
 
-<fieldset style:width="fit-content" style:margin-top="1rem">
-	<legend>Options</legend>
+<fieldset>
+	<legend>Close on</legend>
 	<label>
 		<input type="checkbox" bind:checked={closeOnBackdropClick} data-testid="backdrop" />
-		<span>Close on Backdrop Click</span>
+		<span>Backdrop Click</span>
 	</label>
 	<br />
 	<label>
 		<input type="checkbox" bind:checked={closeOnEscapeKey} data-testid="esc" />
-		<span>Close on Escape Key</span>
+		<span>Escape Key</span>
 	</label>
 </fieldset>
 
-<!-- The wrapper <div> is used for styling. -->
-<!-- Reference the <style> element below. -->
 <div class="modal-wrapper">
 	<Modal
 		bind:isOpen
@@ -52,10 +42,11 @@
 				<li>Press the <kbd>Esc</kbd> key</li>
 			{/if}
 			<li>
-				<button type="button" onclick={close} data-testid="close">JavaScript Button</button>
+				<button type="button" onclick={() => (isOpen = false)} data-testid="close">
+					JavaScript Button
+				</button>
 			</li>
 			<li>
-				<!-- Reference https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method -->
 				<form method="dialog">
 					<button data-testid="submit">Submit Button</button>
 				</form>
@@ -65,16 +56,18 @@
 </div>
 
 <style lang="postcss">
-	/* Style <dialog> within the .modal-wrapper element. */
-	/* Reference https://svelte.dev/docs/svelte/scoped-styles */
+	:root {
+		font-family: system-ui;
+	}
+	fieldset {
+		width: fit-content;
+		margin-top: 1rem;
+	}
 	.modal-wrapper :global {
 		> dialog {
 			width: 20rem;
 			padding: 1rem;
 			border-radius: 0.375rem;
-			/* Override user-agent dialog:modal max-sizes. */
-			max-height: 100%; /* calc((100% - 6px) - 2em); */
-			max-width: 100%; /* calc((100% - 6px) - 2em); */
 			&::backdrop {
 				backdrop-filter: blur(8px) brightness(0.5);
 			}

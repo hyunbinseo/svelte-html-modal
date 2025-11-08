@@ -45,7 +45,7 @@ npm i svelte-html-modal -D
 <!-- The wrapper <div> is used for styling. -->
 <!-- Reference the <style> element below. -->
 <div class="modal-wrapper">
-  <Modal bind:isOpen closeOnBackdropClick={true}>
+  <Modal bind:isOpen>
     <strong>Close the Modal</strong>
     <ul>
       <li>Click on the backdrop</li>
@@ -89,8 +89,6 @@ npm i svelte-html-modal -D
 
   .modal-wrapper :global {
     > dialog {
-      /* https://github.com/tailwindlabs/tailwindcss/issues/16372 */
-      /* Reference https://github.com/tailwindlabs/tailwindcss/discussions/15205 */
       @apply m-auto w-80 rounded-md p-4 backdrop:backdrop-blur backdrop:backdrop-brightness-50;
     }
   }
