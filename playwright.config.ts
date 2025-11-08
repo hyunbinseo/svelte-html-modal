@@ -7,15 +7,12 @@ export default defineConfig({
 	},
 	testDir: 'e2e',
 	projects: [
-		/* Test against desktop browsers */
-		{ name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-		{ name: 'firefox', use: { ...devices['Desktop Firefox'] } },
-		{ name: 'webkit', use: { ...devices['Desktop Safari'] } },
-		/* Test against mobile viewports. */
-		{ name: 'Mobile Chrome', use: { ...devices['Pixel 5'] } },
-		{ name: 'Mobile Safari', use: { ...devices['iPhone 12'] } },
-		/* Test against branded browsers. */
-		{ name: 'Google Chrome', use: { ...devices['Desktop Chrome'], channel: 'chrome' } },
-		{ name: 'Microsoft Edge', use: { ...devices['Desktop Edge'], channel: 'msedge' } },
+		{ name: 'desktop-chrome', use: { ...devices['Desktop Chrome'], channel: 'chrome' } },
+		{ name: 'desktop-chromium', use: { ...devices['Desktop Chrome'] } },
+		{ name: 'desktop-edge', use: { ...devices['Desktop Edge'], channel: 'msedge' } },
+		{ name: 'desktop-firefox', use: { ...devices['Desktop Firefox'] } },
+		{ name: 'desktop-safari', use: { ...devices['Desktop Safari'] } },
+		{ name: 'mobile-chrome', use: { ...devices['Pixel 7'] } },
+		{ name: 'mobile-safari', use: { ...devices['iPhone 15'] } },
 	],
 });

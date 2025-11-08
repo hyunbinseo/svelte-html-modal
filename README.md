@@ -17,7 +17,6 @@ Create modal using the [`<dialog>`] element.
 Requires Svelte v5 and runes mode.
 
 - **State Management**: Open and close modals with a single `$state(boolean)`
-- **Smooth Animations**: CSS transitions with `prefers-reduced-motion` support
 - **Automatic Scroll Lock**: Prevents `<body>` scrolling while the modal is open
 - **Backdrop Control**: Close the modal by clicking anywhere outside of it
 - **Accessibility**: Native `<dialog>` element with focus trap and <kbd>Esc</kbd> support

@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test('modal component features', async ({ page, browserName }) => {
+test('modal component features', async ({ page }) => {
 	await page.goto('/');
 
 	const modal = page.locator('dialog');
@@ -17,11 +17,6 @@ test('modal component features', async ({ page, browserName }) => {
 	};
 
 	await button.open.click();
-
-	if (browserName === 'firefox') {
-		await new Promise((resolve) => setTimeout(resolve, 100));
-	}
-
 	await expect(modal).toHaveAttribute('open');
 
 	await button.close.click();
