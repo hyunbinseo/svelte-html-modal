@@ -67,7 +67,7 @@ npm i svelte-html-modal -D
   </Modal>
 </div>
 
-<!-- Option 1: Vanilla CSS -->
+<!-- Vanilla CSS -->
 <style lang="postcss">
   /* Style <dialog> within the .modal-wrapper element. */
   /* Reference https://svelte.dev/docs/svelte/scoped-styles */
@@ -76,9 +76,6 @@ npm i svelte-html-modal -D
       width: 20rem;
       padding: 1rem;
       border-radius: 0.375rem;
-      /* Override user-agent dialog:modal max-sizes. */
-      max-height: 100%; /* calc((100% - 6px) - 2em); */
-      max-width: 100%; /* calc((100% - 6px) - 2em); */
       &::backdrop {
         backdrop-filter: blur(8px) brightness(0.5);
       }
@@ -87,9 +84,28 @@ npm i svelte-html-modal -D
 </style>
 ```
 
-```html
-<!-- Option 2: Tailwind CSS v4 -->
-<style>
+Tailwind CSS v4 can be used as well:
+
+```svelte
+<!-- using variables -->
+<style lang="postcss">
+  .modal-wrapper :global {
+    > dialog {
+      margin: auto;
+      width: calc(var(--spacing) * 80);
+      border-radius: var(--radius-md);
+      padding: calc(var(--spacing) * 4);
+      &::backdrop {
+        backdrop-filter: blur(8px) brightness(0.5);
+      }
+    }
+  }
+</style>
+```
+
+```svelte
+<!-- using @apply -->
+<style lang="postcss">
   /* https://tailwindcss.com/docs/functions-and-directives#reference-directive */
   @reference "../../app.css";
 
@@ -99,6 +115,26 @@ npm i svelte-html-modal -D
     }
   }
 </style>
+```
+
+> [!NOTE]  
+> For fullscreen modal, override max-size values:
+
+```css
+dialog {
+  /* Override user-agent dialog:modal max-sizes. */
+  max-height: 100%; /* calc((100% - 6px) - 2em); */
+  max-width: 100%; /* calc((100% - 6px) - 2em); */
+}
+```
+
+## Default Options
+
+```json
+{
+  "closeOnBackdropClick": false,
+  "closeOnEscapeKey": true
+}
 ```
 
 ## Component Props
