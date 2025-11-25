@@ -1,7 +1,7 @@
 {
 	"name": "svelte-html-modal",
 	"description": "Svelte modal component that utilizes the HTML dialog element",
-	"version": "4.0.0",
+	"version": "4.0.1",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && node --run prepack",
