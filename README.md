@@ -35,6 +35,8 @@ npm i svelte-html-modal -D
 ```
 
 ```svelte
+<!-- See src/routes/docs/+page.svelte -->
+
 <script>
   import { Modal } from 'svelte-html-modal';
 
@@ -51,7 +53,7 @@ npm i svelte-html-modal -D
 <!-- The wrapper <div> is used for styling. -->
 <!-- Reference the <style> element below. -->
 <div class="modal-wrapper">
-  <Modal bind:isOpen>
+  <Modal bind:isOpen closeOnBackdropClick={true} closeOnEscapeKey={true}>
     <strong>Close the Modal</strong>
     <ul>
       <li>Click on the backdrop</li>

@@ -17,7 +17,7 @@
 <!-- The wrapper <div> is used for styling. -->
 <!-- Reference the <style> element below. -->
 <div class="modal-wrapper">
-	<Modal bind:isOpen>
+	<Modal bind:isOpen closeOnBackdropClick={true} closeOnEscapeKey={true}>
 		<strong>Close the Modal</strong>
 		<ul>
 			<li>Click on the backdrop</li>
@@ -33,7 +33,7 @@
 	</Modal>
 </div>
 
-<!-- Option 1: Vanilla CSS -->
+<!-- Vanilla CSS -->
 <style lang="postcss">
 	/* Style <dialog> within the .modal-wrapper element. */
 	/* Reference https://svelte.dev/docs/svelte/scoped-styles */
@@ -42,9 +42,6 @@
 			width: 20rem;
 			padding: 1rem;
 			border-radius: 0.375rem;
-			/* Override user-agent dialog:modal max-sizes. */
-			max-height: 100%; /* calc((100% - 6px) - 2em); */
-			max-width: 100%; /* calc((100% - 6px) - 2em); */
 			&::backdrop {
 				backdrop-filter: blur(8px) brightness(0.5);
 			}
