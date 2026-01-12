@@ -4,12 +4,12 @@ import prettier from 'eslint-config-prettier';
 import svelte from 'eslint-plugin-svelte';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
-import { join } from 'node:path';
+import { resolve } from 'node:path';
 import ts from 'typescript-eslint';
 import svelteConfig from './svelte.config.js';
 
 export default defineConfig(
-	includeIgnoreFile(join(import.meta.dirname, '.gitignore')),
+	includeIgnoreFile(resolve(import.meta.dirname, '.gitignore')),
 	js.configs.recommended,
 	...ts.configs.recommended,
 	...svelte.configs.recommended,

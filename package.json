@@ -37,7 +37,7 @@
 		"svelte": "^5.0.2"
 	},
 	"devDependencies": {
-		"@eslint/compat": "^1.4.1",
+		"@eslint/compat": "^2.0.1",
 		"@eslint/js": "^9.39.1",
 		"@playwright/test": "^1.56.1",
 		"@sveltejs/adapter-auto": "^7.0.0",
@@ -51,7 +51,7 @@
 		"globals": "^16.5.0",
 		"prettier": "^3.6.2",
 		"prettier-plugin-svelte": "^3.4.0",
-		"prettier-plugin-tailwindcss": "^0.7.1",
+		"prettier-plugin-tailwindcss": "^0.7.2",
 		"publint": "^0.3.15",
 		"svelte": "^5.44.0",
 		"svelte-check": "^4.3.4",
@@ -69,5 +69,5 @@
 		"url": "https://github.com/hyunbinseo/svelte-html-modal/issues"
 	},
 	"homepage": "https://github.com/hyunbinseo/svelte-html-modal#readme",
-	"packageManager": "pnpm@10.23.0+sha512.21c4e5698002ade97e4efe8b8b4a89a8de3c85a37919f957e7a0f30f38fbc5bbdd05980ffe29179b2fb6e6e691242e098d945d1601772cad0fef5fb6411e2a4b"
+	"packageManager": "pnpm@10.28.0+sha512.05df71d1421f21399e053fde567cea34d446fa02c76571441bfc1c7956e98e363088982d940465fd34480d4d90a0668bc12362f8aa88000a64e83d0b0e47be48"
 }
