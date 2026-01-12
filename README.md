@@ -1,16 +1,14 @@
 # Svelte HTML Modal
 
-Create modal using the [`<dialog>`] element.
+Create modals using the [`<dialog>`] element.
+
+See [examples] with custom transitions:
 
 [`<dialog>`]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement
+[examples]: https://svelte.dev/playground/f2836fe6442c438bb4669909b01a6649
 
-## Demo
-
-- [Centered Dialog] with Fly Transition
-- [Navigation Drawer] with Slide Transition
-
-[Centered Dialog]: https://svelte.dev/playground/f2836fe6442c438bb4669909b01a6649?version=5.43.4
-[Navigation Drawer]: https://svelte.dev/playground/86e9d2cfbf7c4ddf966d39347098a56f?version=5.43.4
+- Centered, Bottom Sheet on Mobile (fly-up)
+- Navigation Drawer (slide-right)
 
 ## Features
 
