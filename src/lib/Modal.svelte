@@ -8,6 +8,7 @@
 		isOpen: boolean;
 		closeOnBackdropClick?: boolean;
 		closeOnEscapeKey?: boolean;
+		class?: string;
 		children?: Snippet;
 	} & Partial<Pick<HTMLDialogAttributes, 'id' | 'oncancel' | 'onclose'>>;
 
@@ -15,6 +16,7 @@
 		isOpen = $bindable<boolean>(),
 		closeOnBackdropClick = false,
 		closeOnEscapeKey = true,
+		class: className,
 		children,
 		id,
 		oncancel,
@@ -61,31 +63,10 @@
 					e.clientY > rect.bottom;
 				if (isBackdropClick) dialog.close();
 			}}
+	class={className}
 >
 	{@render children?.()}
 </dialog>
 
 <!-- eslint-disable-next-line svelte/no-at-html-tags -->
 {@html !BROWSER && isOpen ? showModalScript : ''}
-
-<style>
-	*,
-	*::before,
-	*::after {
-		box-sizing: border-box;
-	}
-
-	dialog {
-		/* Border-width and padding is set to 0 in the Tailwind CSS preflight. */
-		/* See https://github.com/tailwindlabs/tailwindcss/blob/master/src/css/preflight.css */
-		/* See https://github.com/tailwindlabs/tailwindcss/pull/11069#issuecomment-1527384738 */
-		border-width: 0;
-		padding: 0;
-
-		&:modal::backdrop {
-			/* Fix <body> scrolling on iOS, iPadOS Safari 16.6. */
-			/* Does not work if the modal has no vertical scroll. */
-			touch-action: none;
-		}
-	}
-</style>

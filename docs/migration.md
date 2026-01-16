@@ -1,5 +1,25 @@
 # Migration
 
+## v5
+
+Default styles have been removed. Re-add if needed.
+
+```css
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+dialog {
+  border-width: 0;
+  padding: 0;
+  &:modal::backdrop {
+    touch-action: none;
+  }
+}
+```
+
 ## v4
 
 The following props have been removed:

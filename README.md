@@ -84,37 +84,11 @@ npm i svelte-html-modal -D
 </style>
 ```
 
-Tailwind CSS v4 can be used as well:
+Tailwind CSS v4 class names can be used as well:
 
 ```svelte
-<!-- using variables -->
-<style lang="postcss">
-  .modal-wrapper :global {
-    > dialog {
-      margin: auto;
-      width: calc(var(--spacing) * 80);
-      border-radius: var(--radius-md);
-      padding: calc(var(--spacing) * 4);
-      &::backdrop {
-        backdrop-filter: blur(8px) brightness(0.5);
-      }
-    }
-  }
-</style>
-```
-
-```svelte
-<!-- using @apply -->
-<style lang="postcss">
-  /* https://tailwindcss.com/docs/functions-and-directives#reference-directive */
-  @reference "../../app.css";
-
-  .modal-wrapper :global {
-    > dialog {
-      @apply m-auto w-80 rounded-md p-4 backdrop:backdrop-blur backdrop:backdrop-brightness-50;
-    }
-  }
-</style>
+<Modal class="m-auto w-80 rounded-md p-4 backdrop:backdrop-blur backdrop:backdrop-brightness-50"
+></Modal>
 ```
 
 > [!NOTE]  
@@ -143,6 +117,7 @@ dialog {
 <Modal
   bind:isOpen
   id="string"
+  class="string"
   closeOnBackdropClick={false}
   closeOnEscapeKey={true}
   oncancel={(e) => {}}
