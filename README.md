@@ -39,7 +39,7 @@ npm i svelte-html-modal -D
   import { Modal } from 'svelte-html-modal';
 
   // Client-side JavaScript is required to display the modal.
-  // Reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal
+  // See https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal
   let isOpen = $state(false);
 
   const open = () => (isOpen = true);
@@ -49,7 +49,7 @@ npm i svelte-html-modal -D
 <button type="button" onclick={open}>Open Modal</button>
 
 <!-- The wrapper <div> is used for styling. -->
-<!-- Reference the <style> element below. -->
+<!-- See the <style> element below. -->
 <div class="modal-wrapper">
   <Modal bind:isOpen closeOnBackdropClick={true} closeOnEscapeKey={true}>
     <strong>Close the Modal</strong>
@@ -58,7 +58,7 @@ npm i svelte-html-modal -D
       <li>Press the <kbd>Esc</kbd> key</li>
       <li><button type="button" onclick={close}>JavaScript Button</button></li>
       <li>
-        <!-- Reference https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method -->
+        <!-- See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method -->
         <form method="dialog">
           <button>Submit Button</button>
         </form>
@@ -70,7 +70,7 @@ npm i svelte-html-modal -D
 <!-- Vanilla CSS -->
 <style lang="postcss">
   /* Style <dialog> within the .modal-wrapper element. */
-  /* Reference https://svelte.dev/docs/svelte/scoped-styles */
+  /* See https://svelte.dev/docs/svelte/scoped-styles */
   .modal-wrapper :global {
     > dialog {
       width: 20rem;

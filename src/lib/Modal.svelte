@@ -77,8 +77,8 @@
 
 	dialog {
 		/* Border-width and padding is set to 0 in the Tailwind CSS preflight. */
-		/* Reference https://github.com/tailwindlabs/tailwindcss/blob/master/src/css/preflight.css */
-		/* Reference https://github.com/tailwindlabs/tailwindcss/pull/11069#issuecomment-1527384738 */
+		/* See https://github.com/tailwindlabs/tailwindcss/blob/master/src/css/preflight.css */
+		/* See https://github.com/tailwindlabs/tailwindcss/pull/11069#issuecomment-1527384738 */
 		border-width: 0;
 		padding: 0;
 

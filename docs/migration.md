@@ -60,8 +60,7 @@ Nested form has been removed.
 
 ```svelte
 <script>
-  let showModal = true; // Can be set to true. Consider using the ModalLike component.
-  // Reference https://github.com/hyunbinseo/svelte-html-modal/blob/main/docs/ssr.md
+  let showModal = true; // can be set to true
 </script>
 
 <!-- Remove the `showModalOnMount={true}` prop. -->

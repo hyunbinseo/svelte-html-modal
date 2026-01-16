@@ -34,7 +34,7 @@ test('modal component features', async ({ page }) => {
 	await button.close.click();
 
 	// Elements outside of the modal cannot be focused. The modal must first be closed.
-	// Reference https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inert
+	// See https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inert
 
 	await checkbox.closeWithBackdrop.check();
 	await button.open.click();
