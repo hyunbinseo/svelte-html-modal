@@ -42,6 +42,9 @@
 			width: 20rem;
 			padding: 1rem;
 			border-radius: 0.375rem;
+			&:modal {
+				overscroll-behavior: contain;
+			}
 			&::backdrop {
 				backdrop-filter: blur(8px) brightness(0.5);
 			}

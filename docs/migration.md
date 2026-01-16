@@ -2,21 +2,14 @@
 
 ## v5
 
-Default styles have been removed. Re-add if needed.
+- No longer manages `document.body.style.overflow` via JavaScript.
+- No longer includes [default styles](https://github.com/hyunbinseo/svelte-html-modal/blob/v4.0.1/src/lib/Modal.svelte#L71-L91).
 
 ```css
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-dialog {
-  border-width: 0;
-  padding: 0;
-  &:modal::backdrop {
-    touch-action: none;
-  }
+/* (Required) Add to global CSS file */
+body:has(dialog:modal) {
+  overflow: hidden;
+  touch-action: none;
 }
 ```
 
@@ -29,7 +22,7 @@ The following props have been removed:
 - onclosed
 ```
 
-Set custom transitions using CSS. [Examples]
+Set custom transitions using CSS instead. [Examples]
 
 [examples]: https://svelte.dev/playground/f2836fe6442c438bb4669909b01a6649
 
@@ -38,7 +31,8 @@ Set custom transitions using CSS. [Examples]
 
 ## v3
 
-Requires Svelte v5 and runes mode.
+- Requires Svelte v5 and runes mode.
+- Component props have been renamed or removed:
 
 | Before                   | After                  |
 | ------------------------ | ---------------------- |
@@ -51,7 +45,7 @@ Requires Svelte v5 and runes mode.
 
 ```css
 .modal-wrapper > :global(dialog) {
-  /* Override user-agent dialog:modal max-sizes. */
+  /* Override user-agent styles for full height or width */
   max-height: 100%; /* calc((100% - 6px) - 2em); */
   max-width: 100%; /* calc((100% - 6px) - 2em); */
 }
@@ -59,7 +53,7 @@ Requires Svelte v5 and runes mode.
 
 ## v2
 
-Nested form has been removed.
+The nested form has been removed.
 
 ```svelte
 <Modal>
@@ -72,7 +66,7 @@ Nested form has been removed.
 ## v1.2
 
 ```svelte
-<!-- Replace the `bind:showModal` with a `on:close` handler. -->
+<!-- Replace `bind:showModal` with an `on:close` handler. -->
 <ModalLike on:close={() => (showModal = false)}></Modal>
 ```
 

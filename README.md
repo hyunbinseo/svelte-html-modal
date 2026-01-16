@@ -15,7 +15,6 @@ See [examples] with custom transitions:
 Requires Svelte v5 and runes mode.
 
 - **State Management**: Open and close modals with a single `$state(boolean)`
-- **Automatic Scroll Lock**: Prevents `<body>` scrolling while the modal is open
 - **Backdrop Control**: Close the modal by clicking anywhere outside of it
 - **Accessibility**: Native `<dialog>` element with focus trap and <kbd>Esc</kbd> support
 - **Event Handling**: `oncancel` and `onclose` event handlers are supported
@@ -30,6 +29,18 @@ To upgrade from previous versions, see the [migration guide](/docs/migration.md)
 ```shell
 pnpm add svelte-html-modal -D
 npm i svelte-html-modal -D
+```
+
+```css
+/* Add to your global CSS file (e.g. src/routes/layout.css) */
+/* For Tailwind v4 users, place it inside the base layer */
+/* See https://tailwindcss.com/docs/adding-custom-styles */
+@layer base {
+  body:has(dialog:modal) {
+    overflow: hidden;
+    touch-action: none;
+  }
+}
 ```
 
 ```svelte
@@ -76,6 +87,9 @@ npm i svelte-html-modal -D
       width: 20rem;
       padding: 1rem;
       border-radius: 0.375rem;
+      &:modal {
+        overscroll-behavior: contain;
+      }
       &::backdrop {
         backdrop-filter: blur(8px) brightness(0.5);
       }
@@ -87,7 +101,8 @@ npm i svelte-html-modal -D
 Tailwind CSS v4 class names can be used as well:
 
 ```svelte
-<Modal class="m-auto w-80 rounded-md p-4 backdrop:backdrop-blur backdrop:backdrop-brightness-50"
+<Modal
+  class="m-auto w-80 rounded-md p-4 backdrop:backdrop-blur backdrop:backdrop-brightness-50 open:overscroll-contain"
 ></Modal>
 ```
 

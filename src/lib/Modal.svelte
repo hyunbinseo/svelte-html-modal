@@ -26,15 +26,12 @@
 	let dialog: HTMLDialogElement;
 
 	$effect(() => {
-		if (isOpen && !dialog.open) {
-			document.body.style.overflow = 'hidden';
+		if (isOpen === dialog.open) return;
+		if (isOpen) {
 			dialog.showModal();
+		} else {
+			dialog.close();
 		}
-	});
-
-	$effect(() => {
-		// body style is handled in the close handler
-		if (!isOpen && dialog.open) dialog.close();
 	});
 </script>
 
@@ -47,7 +44,6 @@
 		oncancel?.(e);
 	}}
 	onclose={async (e) => {
-		document.body.style.overflow = 'visible';
 		isOpen = false;
 		onclose?.(e);
 	}}
