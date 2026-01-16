@@ -8,7 +8,7 @@
 		isOpen: boolean;
 		closeOnBackdropClick?: boolean;
 		closeOnEscapeKey?: boolean;
-		class?: string;
+		class?: HTMLDialogAttributes['class'];
 		children?: Snippet;
 	} & Partial<Pick<HTMLDialogAttributes, 'id' | 'oncancel' | 'onclose'>>;
 

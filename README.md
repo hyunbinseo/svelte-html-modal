@@ -132,7 +132,7 @@ dialog {
 <Modal
   bind:isOpen
   id="string"
-  class="string"
+  class="string | object | array"
   closeOnBackdropClick={false}
   closeOnEscapeKey={true}
   oncancel={(e) => {}}
