@@ -129,19 +129,17 @@ dialog {
 
 ## Component Props
 
-```svelte
-<Modal
-  bind:dialog
-  bind:isOpen
-  id="string"
-  class="string | object | array"
-  closeOnBackdropClick={false}
-  closeOnEscapeKey={true}
-  oncancel={(e) => {}}
-  onclose={(e) => {}}
->
-  <!-- Children -->
-</Modal>
+<!-- See dist/Modal.svelte.d.ts -->
+
+```ts
+type Props = {
+  dialog?: HTMLDialogElement | undefined; // bindable
+  isOpen: boolean; // bindable
+  closeOnBackdropClick?: boolean | undefined;
+  closeOnEscapeKey?: boolean | undefined;
+  class?: HTMLDialogAttributes['class'] | undefined;
+  children?: Snippet | undefined;
+} & Partial<Pick<HTMLDialogAttributes, 'id' | 'oncancel' | 'onclose'>>;
 ```
 
 > [!IMPORTANT]  

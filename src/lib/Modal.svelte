@@ -5,12 +5,12 @@
 	import { showModalScript } from './show.ts';
 
 	type Props = {
-		dialog?: HTMLDialogElement;
+		dialog?: HTMLDialogElement | undefined;
 		isOpen: boolean;
-		closeOnBackdropClick?: boolean;
-		closeOnEscapeKey?: boolean;
-		class?: HTMLDialogAttributes['class'];
-		children?: Snippet;
+		closeOnBackdropClick?: boolean | undefined;
+		closeOnEscapeKey?: boolean | undefined;
+		class?: HTMLDialogAttributes['class'] | undefined;
+		children?: Snippet | undefined;
 	} & Partial<Pick<HTMLDialogAttributes, 'id' | 'oncancel' | 'onclose'>>;
 
 	let {
