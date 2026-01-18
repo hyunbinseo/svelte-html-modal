@@ -8,7 +8,9 @@ See [examples] with custom transitions:
 [examples]: https://svelte.dev/playground/f2836fe6442c438bb4669909b01a6649
 
 - Centered, Bottom Sheet on Mobile (fly-up)
-- Navigation Drawer (slide-right)
+- Navigation Drawer (slide-right[^slide-right])
+
+[^slide-right]: Consider setting `scrollbar-gutter: stable;` on the HTML element to avoid layout shift during transition.
 
 ## Features
 
@@ -18,6 +20,7 @@ Requires Svelte v5 and runes mode.
 - **Backdrop Control**: Close the modal by clicking anywhere outside of it
 - **Accessibility**: Native `<dialog>` element with focus trap and <kbd>Esc</kbd> support
 - **Event Handling**: `oncancel` and `onclose` event handlers are supported
+- **SSR Support**: The modal can be opened(shown) before Svelte hydration
 - **[Browser Support]**: Works in 96.66% of browsers as of November, 2024
 
 [Browser Support]: https://caniuse.com/dialog
@@ -33,13 +36,11 @@ npm i svelte-html-modal -D
 
 ```css
 /* Add to your global CSS file (e.g. src/routes/layout.css) */
-/* For Tailwind v4 users, place it inside the base layer */
+/* For Tailwind v4 users, place it inside `@layer base` */
 /* See https://tailwindcss.com/docs/adding-custom-styles */
-@layer base {
-  body:has(dialog:modal) {
-    overflow: hidden;
-    touch-action: none;
-  }
+body:has(dialog:modal) {
+  overflow: hidden;
+  touch-action: none;
 }
 ```
 
