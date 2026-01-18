@@ -5,6 +5,7 @@
 	import { showModalScript } from './show.ts';
 
 	type Props = {
+		dialog?: HTMLDialogElement;
 		isOpen: boolean;
 		closeOnBackdropClick?: boolean;
 		closeOnEscapeKey?: boolean;
@@ -13,7 +14,8 @@
 	} & Partial<Pick<HTMLDialogAttributes, 'id' | 'oncancel' | 'onclose'>>;
 
 	let {
-		isOpen = $bindable<boolean>(),
+		dialog = $bindable(),
+		isOpen = $bindable(),
 		closeOnBackdropClick = false,
 		closeOnEscapeKey = true,
 		class: className,
@@ -23,9 +25,8 @@
 		onclose,
 	}: Props = $props();
 
-	let dialog: HTMLDialogElement;
-
 	$effect(() => {
+		if (!dialog) return;
 		if (isOpen === dialog.open) return;
 		if (isOpen) {
 			dialog.showModal();
@@ -50,6 +51,7 @@
 	onclick={!closeOnBackdropClick
 		? null
 		: (e) => {
+				if (!dialog) return;
 				if (e.currentTarget !== e.target) return;
 				const rect = dialog.getBoundingClientRect();
 				const isBackdropClick =

@@ -130,6 +130,7 @@ dialog {
 
 ```svelte
 <Modal
+  bind:dialog
   bind:isOpen
   id="string"
   class="string | object | array"
