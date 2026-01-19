@@ -68,7 +68,9 @@ body:has(dialog:modal) {
     <ul>
       <li>Click on the backdrop</li>
       <li>Press the <kbd>Esc</kbd> key</li>
-      <li><button type="button" onclick={close}>JavaScript Button</button></li>
+      <li>
+        <button type="button" onclick={close}>JavaScript Button</button>
+      </li>
       <li>
         <!-- See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#method -->
         <form method="dialog">
