@@ -146,4 +146,4 @@ type Props = {
 ```
 
 > [!IMPORTANT]  
-> The `closeOnEscapeKey` prop has a known issue in Chrome 126~133. The modal can be closed by pressing the `Esc` key twice. This will be resolved in a future update when the `closedby` attribute is implemented. [Learn more](https://github.com/hyunbinseo/svelte-html-modal/issues/6)
+> In Chrome 126-133, the modal with `closeOnEscapeKey={false}` can still be closed by pressing `Esc` twice.
