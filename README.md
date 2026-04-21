@@ -87,6 +87,7 @@ body:has(dialog:modal) {
   /* See https://svelte.dev/docs/svelte/scoped-styles */
   .modal-wrapper :global {
     > dialog {
+      margin: auto; /* Tailwind preflight sets this to 0 */
       width: 20rem;
       padding: 1rem;
       border-radius: 0.375rem;
