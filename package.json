@@ -37,16 +37,15 @@
 		"svelte": "^5.16.0"
 	},
 	"devDependencies": {
-		"@eslint/compat": "^2.0.1",
-		"@eslint/js": "^9.39.2",
+		"@eslint/compat": "^2.0.5",
+		"@eslint/js": "^10.0.1",
 		"@playwright/test": "^1.57.0",
 		"@sveltejs/adapter-auto": "^7.0.0",
 		"@sveltejs/kit": "^2.50.0",
 		"@sveltejs/package": "^2.5.7",
 		"@sveltejs/vite-plugin-svelte": "^6.2.4",
-		"eslint": "^9.39.2",
-		"eslint-config-prettier": "^10.1.8",
-		"eslint-plugin-svelte": "^3.14.0",
+		"eslint": "^10.2.1",
+		"eslint-plugin-svelte": "^3.17.0",
 		"esm-env": "^1.2.2",
 		"globals": "^17.0.0",
 		"prettier": "^3.8.0",
@@ -56,7 +55,7 @@
 		"svelte": "^5.47.0",
 		"svelte-check": "^4.3.5",
 		"typescript": "^5.9.3",
-		"typescript-eslint": "^8.53.0",
+		"typescript-eslint": "^8.59.0",
 		"vite": "^7.3.1"
 	},
 	"author": "Hyunbin Seo",
@@ -69,5 +68,5 @@
 		"url": "https://github.com/hyunbinseo/svelte-html-modal/issues"
 	},
 	"homepage": "https://github.com/hyunbinseo/svelte-html-modal#readme",
-	"packageManager": "pnpm@10.28.0+sha512.05df71d1421f21399e053fde567cea34d446fa02c76571441bfc1c7956e98e363088982d940465fd34480d4d90a0668bc12362f8aa88000a64e83d0b0e47be48"
+	"packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319"
 }

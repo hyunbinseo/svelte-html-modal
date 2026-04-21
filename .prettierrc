@@ -4,7 +4,6 @@
 	"quoteProps": "consistent",
 	"trailingComma": "all",
 	"printWidth": 100,
-	"endOfLine": "auto",
 	"plugins": ["prettier-plugin-svelte", "prettier-plugin-tailwindcss"],
 	"overrides": [
 		{ "files": "*.jsonc", "options": { "trailingComma": "none" } },
