@@ -38,9 +38,14 @@ npm i svelte-html-modal -D
 /* Add to your global CSS file (e.g. src/routes/layout.css) */
 /* For Tailwind v4 users, place it inside `@layer base` */
 /* See https://tailwindcss.com/docs/adding-custom-styles */
+
 body:has(dialog:modal) {
   overflow: hidden;
   touch-action: none;
+}
+
+dialog:modal {
+  overscroll-behavior: contain;
 }
 ```
 
@@ -82,18 +87,15 @@ body:has(dialog:modal) {
 </div>
 
 <!-- Vanilla CSS -->
-<style lang="postcss">
+<style>
   /* Style <dialog> within the .modal-wrapper element. */
   /* See https://svelte.dev/docs/svelte/scoped-styles */
   .modal-wrapper :global {
     > dialog {
       margin: auto; /* Tailwind preflight sets this to 0 */
       width: 20rem;
-      padding: 1rem;
       border-radius: 0.375rem;
-      &:modal {
-        overscroll-behavior: contain;
-      }
+      padding: 1rem;
       &::backdrop {
         backdrop-filter: blur(8px) brightness(0.5);
       }
@@ -105,8 +107,7 @@ body:has(dialog:modal) {
 Tailwind CSS v4 class names can be used as well:
 
 ```svelte
-<Modal
-  class="m-auto w-80 rounded-md p-4 backdrop:backdrop-blur backdrop:backdrop-brightness-50 open:overscroll-contain"
+<Modal class="m-auto w-80 rounded-md p-4 backdrop:backdrop-blur backdrop:backdrop-brightness-50"
 ></Modal>
 ```
 
