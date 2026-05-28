@@ -49,6 +49,9 @@ dialog:modal {
 }
 ```
 
+> [!NOTE]
+> `modal.show()` and `modal.close()` are also available. See [Component Methods](#component-methods).
+
 ```svelte
 <!-- See src/routes/docs/+page.svelte -->
 
@@ -138,12 +141,27 @@ dialog {
 ```ts
 type Props = {
   dialog?: HTMLDialogElement | undefined; // bindable
-  isOpen: boolean; // bindable
+  isOpen?: boolean; // bindable, defaults to false
   closeOnBackdropClick?: boolean | undefined;
   closeOnEscapeKey?: boolean | undefined;
   class?: HTMLDialogAttributes['class'] | undefined;
   children?: Snippet | undefined;
 } & Partial<Pick<HTMLDialogAttributes, 'id' | 'oncancel' | 'onclose'>>;
+```
+
+## Component Methods
+
+```svelte
+<script lang="ts">
+  import { Modal } from 'svelte-html-modal';
+
+  let modal: Modal;
+</script>
+
+<button type="button" onclick={() => modal.show()}>Open</button>
+<button type="button" onclick={() => modal.close()}>Close</button>
+
+<Modal bind:this={modal}>...</Modal>
 ```
 
 > [!IMPORTANT]  

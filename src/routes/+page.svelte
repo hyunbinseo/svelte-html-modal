@@ -1,12 +1,15 @@
-<script>
+<script lang="ts">
 	import { resolve } from '$app/paths';
 	import Modal from '$lib/Modal.svelte';
 
+	let modal: Modal;
 	let isOpen = $state(false);
 
 	let closeOnBackdropClick = $state(true);
 	let closeOnEscapeKey = $state(true);
 </script>
+
+<button type="button" onclick={() => modal.show()} data-testid="show()">Show</button>
 
 <button type="button" onclick={() => (isOpen = true)} data-testid="open">Open</button>
 <span>/</span>
@@ -26,18 +29,23 @@
 </fieldset>
 
 <div class="modal-wrapper">
-	<Modal bind:isOpen {closeOnBackdropClick} {closeOnEscapeKey}>
-		<strong>Close the Modal</strong>
+	<Modal bind:this={modal} bind:isOpen {closeOnBackdropClick} {closeOnEscapeKey}>
+		<strong>Methods to Close the Modal</strong>
 		<ul>
 			{#if closeOnBackdropClick}
-				<li>Click on the backdrop</li>
+				<li>Click Backdrop</li>
 			{/if}
 			{#if closeOnEscapeKey}
-				<li>Press the <kbd>Esc</kbd> key</li>
+				<li>Press <kbd>Esc</kbd> Key</li>
 			{/if}
 			<li>
 				<button type="button" onclick={() => (isOpen = false)} data-testid="close">
-					JavaScript Button
+					JavaScript Button A
+				</button>
+			</li>
+			<li>
+				<button type="button" onclick={() => modal.close()} data-testid="close()">
+					JavaScript Button B
 				</button>
 			</li>
 			<li>

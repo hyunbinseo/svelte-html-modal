@@ -6,7 +6,7 @@
 
 	type Props = {
 		dialog?: HTMLDialogElement | undefined;
-		isOpen: boolean;
+		isOpen?: boolean;
 		closeOnBackdropClick?: boolean | undefined;
 		closeOnEscapeKey?: boolean | undefined;
 		class?: HTMLDialogAttributes['class'] | undefined;
@@ -15,7 +15,7 @@
 
 	let {
 		dialog = $bindable(),
-		isOpen = $bindable(),
+		isOpen = $bindable(false),
 		closeOnBackdropClick = false,
 		closeOnEscapeKey = true,
 		class: className,
@@ -34,6 +34,9 @@
 			dialog.close();
 		}
 	});
+
+	export const show = () => dialog?.showModal();
+	export const close = () => dialog?.close();
 </script>
 
 <dialog
