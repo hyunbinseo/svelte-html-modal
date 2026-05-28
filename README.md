@@ -104,7 +104,7 @@ dialog:modal {
 </style>
 ```
 
-Tailwind CSS v4 class names can be used as well:
+Tailwind CSS v4 class names can be passed directly to the `class` prop — no wrapper `<div>` needed:
 
 ```svelte
 <Modal class="m-auto w-80 rounded-md p-4 backdrop:backdrop-blur backdrop:backdrop-brightness-50"
