@@ -8,9 +8,6 @@ importers:
 
   .:
     devDependencies:
-      '@eslint/compat':
-        specifier: ^2.1.0
-        version: 2.1.0(eslint@10.4.0)
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.4.0)
@@ -35,6 +32,9 @@ importers:
       eslint:
         specifier: ^10.4.0
         version: 10.4.0
+      eslint-config-prettier:
+        specifier: ^10.1.8
+        version: 10.1.8(eslint@10.4.0)
       eslint-plugin-svelte:
         specifier: ^3.18.0
         version: 3.18.0(eslint@10.4.0)(svelte@5.55.9(@typescript-eslint/types@8.60.0))
@@ -92,15 +92,6 @@ packages:
   '@eslint-community/regexpp@4.12.2':
     resolution: {integrity: sha512-EriSTlt5OC9/7SXkRSCAhfSxxoSUgBm33OH+IkwbdpgoqsSsUg7y3uh+IICI/Qg4BBWr3U2i39RpmycbxMq4ew==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
-
-  '@eslint/compat@2.1.0':
-    resolution: {integrity: sha512-LgaSCymEpw7tF53xvDw9SNsraPb1IBHxpdABIOM0hW8UAlP8znrjYtuxfR58FSJ3L9BhwD+FaPRFQpZq84Nh6g==}
-    engines: {node: ^20.19.0 || ^22.13.0 || >=24}
-    peerDependencies:
-      eslint: ^8.40 || 9 || 10
-    peerDependenciesMeta:
-      eslint:
-        optional: true
 
   '@eslint/config-array@0.23.5':
     resolution: {integrity: sha512-Y3kKLvC1dvTOT+oGlqNQ1XLqK6D1HU2YXPc52NmAlJZbMMWDzGYXMiPRJ8TYD39muD/OTjlZmNJ4ib7dvSrMBA==}
@@ -492,6 +483,12 @@ packages:
   escape-string-regexp@4.0.0:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
+
+  eslint-config-prettier@10.1.8:
+    resolution: {integrity: sha512-82GZUjRS0p/jganf6q1rEO25VSoHH0hKPCTrgillPjdI/3bgBhAE1QzHrHTizjpRvy6pGAvKjDJtk2pF9NDq8w==}
+    hasBin: true
+    peerDependencies:
+      eslint: '>=7.0.0'
 
   eslint-plugin-svelte@3.18.0:
     resolution: {integrity: sha512-vc3P37lrDronWDb2kPXiG8sqkuiMqitGXSSaflb7Y+jpDgNoAzW8i7tdqyJKpcLZmFIqZCD+je2oZRf9qyRyBw==}
@@ -1147,12 +1144,6 @@ snapshots:
 
   '@eslint-community/regexpp@4.12.2': {}
 
-  '@eslint/compat@2.1.0(eslint@10.4.0)':
-    dependencies:
-      '@eslint/core': 1.2.1
-    optionalDependencies:
-      eslint: 10.4.0
-
   '@eslint/config-array@0.23.5':
     dependencies:
       '@eslint/object-schema': 3.0.5
@@ -1501,6 +1492,10 @@ snapshots:
   devalue@5.8.1: {}
 
   escape-string-regexp@4.0.0: {}
+
+  eslint-config-prettier@10.1.8(eslint@10.4.0):
+    dependencies:
+      eslint: 10.4.0
 
   eslint-plugin-svelte@3.18.0(eslint@10.4.0)(svelte@5.55.9(@typescript-eslint/types@8.60.0)):
     dependencies:

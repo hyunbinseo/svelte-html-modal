@@ -37,7 +37,6 @@
 		"svelte": "^5.16.0"
 	},
 	"devDependencies": {
-		"@eslint/compat": "^2.1.0",
 		"@eslint/js": "^10.0.1",
 		"@playwright/test": "^1.60.0",
 		"@sveltejs/adapter-auto": "^7.0.1",
@@ -46,6 +45,7 @@
 		"@sveltejs/vite-plugin-svelte": "^7.1.2",
 		"@types/node": "^24.12.4",
 		"eslint": "^10.4.0",
+		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.18.0",
 		"esm-env": "^1.2.2",
 		"globals": "^17.6.0",
