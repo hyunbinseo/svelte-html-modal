@@ -22,26 +22,30 @@ test('component features', async ({ page }) => {
 	};
 
 	await modal.show.click();
+	await expect(dialog).toHaveAttribute('data-is-open', 'true');
 	await expect(dialog).toHaveAttribute('open');
 
 	await modal.close.click();
-	await dialog.waitFor({ state: 'hidden' });
+	await expect(dialog).toHaveAttribute('data-is-open', 'false');
 	await expect(dialog).not.toHaveAttribute('open');
 
 	await button.open.click();
+	await expect(dialog).toHaveAttribute('data-is-open', 'true');
 	await expect(dialog).toHaveAttribute('open');
 
 	await button.close.click();
-	await dialog.waitFor({ state: 'hidden' });
+	await expect(dialog).toHaveAttribute('data-is-open', 'false');
 	await expect(dialog).not.toHaveAttribute('open');
 
 	await button.open.click();
 	await button.submit.click();
+	await expect(dialog).toHaveAttribute('data-is-open', 'false');
 	await expect(dialog).not.toHaveAttribute('open');
 
 	await checkbox.closeWithBackdrop.uncheck();
 	await button.open.click();
 	await page.mouse.click(0, 0);
+	await expect(dialog).toHaveAttribute('data-is-open', 'true');
 	await expect(dialog).toHaveAttribute('open');
 	await button.close.click();
 
@@ -51,17 +55,20 @@ test('component features', async ({ page }) => {
 	await checkbox.closeWithBackdrop.check();
 	await button.open.click();
 	await page.mouse.click(0, 0);
+	await expect(dialog).toHaveAttribute('data-is-open', 'false');
 	await expect(dialog).not.toHaveAttribute('open');
 
 	await checkbox.closeWithEscapeKey.uncheck();
 	await button.open.click();
 	await page.keyboard.press('Escape');
+	await expect(dialog).toHaveAttribute('data-is-open', 'true');
 	await expect(dialog).toHaveAttribute('open');
 	await button.close.click();
 
 	await checkbox.closeWithEscapeKey.check();
 	await button.open.click();
 	await page.keyboard.press('Escape');
+	await expect(dialog).toHaveAttribute('data-is-open', 'false');
 	await expect(dialog).not.toHaveAttribute('open');
 });
 
@@ -70,12 +77,15 @@ test('open via client-side navigation', async ({ page }) => {
 	await page.click('a[href*="opened-by-default"]');
 	await page.waitForURL('/opened-by-default');
 
-	const modal = page.locator('dialog');
-	await expect(modal).toHaveAttribute('open');
+	const dialog = page.locator('dialog');
+	await expect(dialog).toHaveAttribute('data-is-open', 'true');
+	await expect(dialog).toHaveAttribute('open');
 });
 
 test('open via server-side rendering', async ({ page }) => {
 	await page.goto('/opened-by-default');
-	const modal = page.locator('dialog');
-	await expect(modal).toHaveAttribute('open');
+
+	const dialog = page.locator('dialog');
+	await expect(dialog).toHaveAttribute('data-is-open', 'true');
+	await expect(dialog).toHaveAttribute('open');
 });

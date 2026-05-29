@@ -151,6 +151,9 @@ type Props = {
 
 ## Component Methods
 
+> [!NOTE]  
+> To check if modal is open, `bind:isOpen` is still required.
+
 ```svelte
 <script lang="ts">
   import { Modal } from 'svelte-html-modal';
@@ -158,10 +161,11 @@ type Props = {
   let modal: Modal;
 </script>
 
-<button type="button" onclick={() => modal.show()}>Open</button>
-<button type="button" onclick={() => modal.close()}>Close</button>
+<button type="button" onclick={modal.show}>Open</button>
 
-<Modal bind:this={modal}>...</Modal>
+<Modal bind:this={modal}>
+  <button type="button" onclick={modal.close}>Close</button>
+</Modal>
 ```
 
 > [!IMPORTANT]  

@@ -25,6 +25,13 @@
 		onclose,
 	}: Props = $props();
 
+	export const close = () => (isOpen = false);
+	export const show = () => (isOpen = true);
+
+	// NOTE `shown()` should not be exported (e.g. `{modal.shown()}`):
+	// - `modal` is updated but not declared as `$state()` - warning
+	// - `modal` is initially undefined - runtime error
+
 	$effect(() => {
 		if (!dialog) return;
 		if (isOpen === dialog.open) return;
@@ -34,9 +41,6 @@
 			dialog.close();
 		}
 	});
-
-	export const show = () => dialog?.showModal();
-	export const close = () => dialog?.close();
 </script>
 
 <dialog

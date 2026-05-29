@@ -3,10 +3,16 @@
 	import Modal from '$lib/Modal.svelte';
 
 	let modal: Modal;
+	let dialog = $state<HTMLDialogElement>();
 	let isOpen = $state(false);
 
 	let closeOnBackdropClick = $state(true);
 	let closeOnEscapeKey = $state(true);
+
+	$effect(() => {
+		if (!dialog) return;
+		dialog.dataset.isOpen = String(isOpen);
+	});
 </script>
 
 <button type="button" onclick={() => modal.show()} data-testid="show()">Show</button>
@@ -29,7 +35,7 @@
 </fieldset>
 
 <div class="modal-wrapper">
-	<Modal bind:this={modal} bind:isOpen {closeOnBackdropClick} {closeOnEscapeKey}>
+	<Modal bind:this={modal} bind:dialog bind:isOpen {closeOnBackdropClick} {closeOnEscapeKey}>
 		<strong>Methods to Close the Modal</strong>
 		<ul>
 			{#if closeOnBackdropClick}
