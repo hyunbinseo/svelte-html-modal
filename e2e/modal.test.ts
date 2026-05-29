@@ -1,4 +1,12 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
+
+const expectOpen = (locator: Locator, open: boolean) =>
+	Promise.all([
+		expect(locator).toHaveAttribute('data-is-open', String(open)),
+		open
+			? expect(locator).toHaveAttribute('open') //
+			: expect(locator).not.toHaveAttribute('open'),
+	]);
 
 test('component features', async ({ page }) => {
 	await page.goto('/');
@@ -22,31 +30,25 @@ test('component features', async ({ page }) => {
 	};
 
 	await modal.show.click();
-	await expect(dialog).toHaveAttribute('data-is-open', 'true');
-	await expect(dialog).toHaveAttribute('open');
+	await expectOpen(dialog, true);
 
 	await modal.close.click();
-	await expect(dialog).toHaveAttribute('data-is-open', 'false');
-	await expect(dialog).not.toHaveAttribute('open');
+	await expectOpen(dialog, false);
 
 	await button.open.click();
-	await expect(dialog).toHaveAttribute('data-is-open', 'true');
-	await expect(dialog).toHaveAttribute('open');
+	await expectOpen(dialog, true);
 
 	await button.close.click();
-	await expect(dialog).toHaveAttribute('data-is-open', 'false');
-	await expect(dialog).not.toHaveAttribute('open');
+	await expectOpen(dialog, false);
 
 	await button.open.click();
 	await button.submit.click();
-	await expect(dialog).toHaveAttribute('data-is-open', 'false');
-	await expect(dialog).not.toHaveAttribute('open');
+	await expectOpen(dialog, false);
 
 	await checkbox.closeWithBackdrop.uncheck();
 	await button.open.click();
 	await page.mouse.click(0, 0);
-	await expect(dialog).toHaveAttribute('data-is-open', 'true');
-	await expect(dialog).toHaveAttribute('open');
+	await expectOpen(dialog, true);
 	await button.close.click();
 
 	// Elements outside of the modal cannot be focused. The modal must first be closed.
@@ -55,37 +57,30 @@ test('component features', async ({ page }) => {
 	await checkbox.closeWithBackdrop.check();
 	await button.open.click();
 	await page.mouse.click(0, 0);
-	await expect(dialog).toHaveAttribute('data-is-open', 'false');
-	await expect(dialog).not.toHaveAttribute('open');
+	await expectOpen(dialog, false);
 
 	await checkbox.closeWithEscapeKey.uncheck();
 	await button.open.click();
 	await page.keyboard.press('Escape');
-	await expect(dialog).toHaveAttribute('data-is-open', 'true');
-	await expect(dialog).toHaveAttribute('open');
+	await expectOpen(dialog, true);
 	await button.close.click();
 
 	await checkbox.closeWithEscapeKey.check();
 	await button.open.click();
 	await page.keyboard.press('Escape');
-	await expect(dialog).toHaveAttribute('data-is-open', 'false');
-	await expect(dialog).not.toHaveAttribute('open');
+	await expectOpen(dialog, false);
 });
 
 test('open via client-side navigation', async ({ page }) => {
 	await page.goto('/');
 	await page.click('a[href*="opened-by-default"]');
 	await page.waitForURL('/opened-by-default');
-
 	const dialog = page.locator('dialog');
-	await expect(dialog).toHaveAttribute('data-is-open', 'true');
-	await expect(dialog).toHaveAttribute('open');
+	await expectOpen(dialog, true);
 });
 
 test('open via server-side rendering', async ({ page }) => {
 	await page.goto('/opened-by-default');
-
 	const dialog = page.locator('dialog');
-	await expect(dialog).toHaveAttribute('data-is-open', 'true');
-	await expect(dialog).toHaveAttribute('open');
+	await expectOpen(dialog, true);
 });
