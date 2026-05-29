@@ -16,9 +16,7 @@
 </script>
 
 <button type="button" onclick={() => modal.show()} data-testid="show()">Show</button>
-
 <button type="button" onclick={() => (isOpen = true)} data-testid="open">Open</button>
-<span>/</span>
 <a href={resolve('/opened-by-default')}>Opened by Default</a>
 
 <fieldset>

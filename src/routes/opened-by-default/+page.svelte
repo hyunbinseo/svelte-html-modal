@@ -12,7 +12,6 @@
 </script>
 
 <button type="button" onclick={() => (isOpen = true)}>Open</button>
-<span>/</span>
 <a href={resolve('/')}>Home</a>
 
 <div class="modal-wrapper">
