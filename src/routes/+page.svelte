@@ -1,6 +1,6 @@
 <script lang="ts">
+	import Modal from '#lib/Modal.svelte';
 	import { resolve } from '$app/paths';
-	import Modal from '$lib/Modal.svelte';
 
 	let modal: Modal;
 	let dialog = $state<HTMLDialogElement>();
@@ -16,8 +16,10 @@
 </script>
 
 <button type="button" onclick={() => modal.show()} data-testid="show()">Show</button>
+
 <button type="button" onclick={() => (isOpen = true)} data-testid="open">Open</button>
-<a href={resolve('/opened-by-default')}>Opened by Default</a>
+
+<a href={resolve('opened-by-default')}>Opened by Default</a>
 
 <fieldset>
 	<legend>Close on</legend>

@@ -1,6 +1,17 @@
+import adapter from '@sveltejs/adapter-auto';
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-	plugins: [sveltekit()],
+	plugins: [
+		sveltekit({
+			// Consult https://svelte.dev/docs/kit/integrations
+			// for more information about preprocessors
+			preprocess: vitePreprocess(),
+			compilerOptions: { experimental: { async: true } },
+			experimental: { remoteFunctions: true },
+			adapter: adapter(),
+		}),
+	],
 });

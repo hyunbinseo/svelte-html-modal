@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import Modal from '$lib/Modal.svelte';
+	import Modal from '#lib/Modal.svelte';
 
 	let dialog = $state<HTMLDialogElement>();
 	let isOpen = $state(true);
@@ -12,7 +12,7 @@
 </script>
 
 <button type="button" onclick={() => (isOpen = true)}>Open</button>
-<a href={resolve('/')}>Home</a>
+<a href={resolve('')}>Home</a>
 
 <div class="modal-wrapper">
 	<Modal bind:dialog bind:isOpen>

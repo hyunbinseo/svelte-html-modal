@@ -39,9 +39,9 @@
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
 		"@playwright/test": "^1.65.0",
-		"@sveltejs/adapter-auto": "^7.0.1",
-		"@sveltejs/kit": "^2.70.4",
-		"@sveltejs/package": "^2.5.8",
+		"@sveltejs/adapter-auto": "^8.0.1",
+		"@sveltejs/kit": "^3.2.0",
+		"@sveltejs/package": "^3.0.2",
 		"@sveltejs/vite-plugin-svelte": "^7.3.1",
 		"@types/node": "^26.6.6",
 		"eslint": "^10.14.0",
@@ -76,5 +76,8 @@
 			"version": "26.13.1",
 			"onFail": "download"
 		}
+	},
+	"imports": {
+		"#lib/*": "./src/lib/*"
 	}
 }

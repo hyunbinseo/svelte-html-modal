@@ -2,7 +2,7 @@
 <!-- import { Modal } from 'svelte-html-modal'; -->
 
 <script>
-	import Modal from '$lib/Modal.svelte';
+	import Modal from '#lib/Modal.svelte';
 
 	// Client-side JavaScript is required to display the modal.
 	// See https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal
