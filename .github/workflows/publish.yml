@@ -1,5 +1,5 @@
 # See https://docs.npmjs.com/trusted-publishers
-# See https://pnpm.io/continuous-integration
+# See https://github.com/pnpm/setup
 
 name: Publish Package
 
@@ -15,12 +15,8 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v5
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/setup@731dfb6463bbd11c11fd0ee11fe00ed0e36d48a1 # v3.2.0
         with:
-          node-version: '24'
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'pnpm'
-      - run: pnpm install
+          require-lockfile: true
       - run: pnpm stage publish --no-git-checks --access public
