@@ -2,15 +2,19 @@
 
 Create modals using the [`<dialog>`] element.
 
-See [examples] with custom transitions:
+See examples with custom transitions:
 
 [`<dialog>`]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement
-[examples]: https://svelte.dev/playground/f2836fe6442c438bb4669909b01a6649
 
-- Centered, Bottom Sheet on Mobile (fly-up)
-- Navigation Drawer (slide-right[^slide-right])
+- Mobile Bottom Sheet: [Vanilla][bottom-sheet-vanilla], [Tailwind][bottom-sheet-tailwind]
+- Navigation Drawer[^drawer]: [Vanilla][drawer-vanilla], [Tailwind][drawer-tailwind]
 
-[^slide-right]: Consider setting `scrollbar-gutter: stable;` on the HTML element to avoid layout shift during transition.
+[bottom-sheet-vanilla]: https://svelte.dev/playground/f2836fe6442c438bb4669909b01a6649
+[bottom-sheet-tailwind]: https://svelte.dev/playground/a0aed9be296941789518feae7be14dd0
+[drawer-vanilla]: https://svelte.dev/playground/36abfa721dcb4c3199203a2ed581b910
+[drawer-tailwind]: https://svelte.dev/playground/176300bf01b346eebc156abee781f6ac
+
+[^drawer]: Set `scrollbar-gutter: stable` on `<html>` to prevent layout shift.
 
 ## Features
 
@@ -25,7 +29,7 @@ Requires Svelte v5 and runes mode.
 
 [Browser Support]: https://caniuse.com/dialog
 
-## Quick Start
+## Usage
 
 To upgrade from previous versions, see the [migration guide](/docs/migration.md).
 
@@ -123,6 +127,54 @@ dialog {
   max-height: 100%; /* calc((100% - 6px) - 2em); */
   max-width: 100%; /* calc((100% - 6px) - 2em); */
 }
+```
+
+### Custom Transitions
+
+Adapted from the [Tailwind examples above](#svelte-html-modal).
+
+Centered modal, fades in while sliding up:
+
+```svelte
+<Modal
+  bind:isOpen
+  closeOnBackdropClick
+  class={[
+    'm-auto w-100 rounded-md p-4',
+    'backdrop:backdrop-blur-sm backdrop:backdrop-brightness-50',
+    // dialog transition
+    'translate-y-8 opacity-0 duration-300',
+    'open:translate-y-0 open:opacity-100',
+    'starting:open:translate-y-8 starting:open:opacity-0',
+    'motion-safe:transition motion-safe:supports-overlay:transition-discrete',
+    // backdrop transition
+    'backdrop:opacity-0 backdrop:duration-200',
+    'open:backdrop:opacity-100 starting:open:backdrop:opacity-0',
+    'motion-safe:backdrop:transition motion-safe:supports-overlay:backdrop:transition-discrete',
+  ]}
+></Modal>
+```
+
+Navigation drawer, slides in from the right:
+
+```svelte
+<Modal
+  bind:isOpen
+  closeOnBackdropClick
+  class={[
+    'm-0 ml-auto h-full max-h-none w-100 p-4',
+    'backdrop:backdrop-blur-sm backdrop:backdrop-brightness-50',
+    // dialog transition
+    'translate-x-full opacity-0 duration-300',
+    'open:translate-x-0 open:opacity-100',
+    'starting:open:translate-x-full starting:open:opacity-0',
+    'motion-safe:transition motion-safe:supports-overlay:transition-discrete',
+    // backdrop transition
+    'backdrop:opacity-0 backdrop:duration-200',
+    'open:backdrop:opacity-100 starting:open:backdrop:opacity-0',
+    'motion-safe:backdrop:transition motion-safe:supports-overlay:backdrop:transition-discrete',
+  ]}
+></Modal>
 ```
 
 ## Default Options
