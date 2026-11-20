@@ -1,6 +1,6 @@
 {
 	"name": "svelte-html-modal",
-	"version": "5.1.1",
+	"version": "5.2.0",
 	"description": "Svelte modal component that utilizes the HTML dialog element",
 	"homepage": "https://github.com/hyunbinseo/svelte-html-modal#readme",
 	"bugs": {
