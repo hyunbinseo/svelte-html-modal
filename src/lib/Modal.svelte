@@ -60,7 +60,7 @@
 		if (!closeOnEscapeKey) e.preventDefault();
 		oncancel?.(e);
 	}}
-	onclose={async (e) => {
+	onclose={(e) => {
 		isOpen = false;
 		onclose?.(e);
 	}}
