@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Modal from '#lib/Modal.svelte';
 	import { resolve } from '$app/paths';
+	import Modal from '#lib/Modal.svelte';
 
 	let modal: Modal;
 	let dialog = $state<HTMLDialogElement>();

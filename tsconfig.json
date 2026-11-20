@@ -14,12 +14,12 @@
 		"noUncheckedIndexedAccess": true,
 		"exactOptionalPropertyTypes": true,
 		"allowUnreachableCode": false,
-		"allowUnusedLabels": false,
+		"allowUnusedLabels": false
 	},
 	"include": [
 		"src", //
 		"eslint.config.js",
 		"playwright.config.ts",
-		"vite.config.ts",
-	],
+		"vite.config.ts"
+	]
 }

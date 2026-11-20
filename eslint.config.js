@@ -1,9 +1,9 @@
+import { resolve } from 'node:path';
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier';
 import svelte from 'eslint-plugin-svelte';
 import { defineConfig, includeIgnoreFile } from 'eslint/config';
 import globals from 'globals';
-import { resolve } from 'node:path';
 import ts from 'typescript-eslint';
 
 export default defineConfig(

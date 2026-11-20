@@ -1,0 +1,15 @@
+{
+	"overrides": [
+		{
+			"files": ["*.md"],
+			"options": { "tabWidth": 2, "useTabs": false }
+		}
+	],
+	"printWidth": 100,
+	"singleQuote": true,
+	"sortImports": { "newlinesBetween": false },
+	"sortPackageJson": { "sortScripts": true },
+	"sortTailwindcss": {},
+	"svelte": true,
+	"useTabs": true
+}
