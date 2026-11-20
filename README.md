@@ -23,7 +23,7 @@ Requires Svelte v5 and runes mode.
 - **State Management**: Open and close modals with a single `$state(boolean)`
 - **Backdrop Control**: Close the modal by clicking anywhere outside of it
 - **Accessibility**: Native `<dialog>` element with focus trap and <kbd>Esc</kbd> support
-- **Event Handling**: `oncancel` and `onclose` event handlers are supported
+- **Event Handling**: Selected `<dialog>` event handlers. See [Component Props](#component-props)
 - **SSR Support**: The modal can be opened(shown) before Svelte hydration
 - **[Browser Support]**: Works in 96.66% of browsers as of November, 2024
 
@@ -198,8 +198,22 @@ type Props = {
   closeOnEscapeKey?: boolean | undefined;
   class?: HTMLDialogAttributes['class'] | undefined;
   children?: Snippet | undefined;
-} & Partial<Pick<HTMLDialogAttributes, 'id' | 'oncancel' | 'onclose'>>;
+} & Partial<
+  Pick<
+    HTMLDialogAttributes,
+    | 'id' //
+    | 'oncancel'
+    | 'onclose'
+    | 'ontransitionend'
+  >
+>;
 ```
+
+> [!IMPORTANT]  
+> In Chrome 117-159, `ontransitionend` may not fire when the modal closes. [Learn more](https://issues.chromium.org/issues/365565135)
+
+> [!NOTE]  
+> `ontransitionend` fires per property, including `::backdrop` and child transitions. Filter by `e.target`, `e.pseudoElement`, or `e.propertyName`.
 
 ## Component Methods
 
@@ -221,4 +235,4 @@ type Props = {
 ```
 
 > [!IMPORTANT]  
-> In Chrome 126-133, the modal with `closeOnEscapeKey={false}` can still be closed by pressing `Esc` twice.
+> In Chrome 126-133, the modal with `closeOnEscapeKey={false}` can still be closed by pressing `Esc` twice. [Learn more](https://developer.chrome.com/blog/new-in-chrome-134)

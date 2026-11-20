@@ -11,7 +11,15 @@
 		closeOnEscapeKey?: boolean | undefined;
 		class?: HTMLDialogAttributes['class'] | undefined;
 		children?: Snippet | undefined;
-	} & Partial<Pick<HTMLDialogAttributes, 'id' | 'oncancel' | 'onclose'>>;
+	} & Partial<
+		Pick<
+			HTMLDialogAttributes,
+			| 'id' //
+			| 'oncancel'
+			| 'onclose'
+			| 'ontransitionend'
+		>
+	>;
 
 	let {
 		dialog = $bindable(),
@@ -23,6 +31,7 @@
 		id,
 		oncancel,
 		onclose,
+		ontransitionend,
 	}: Props = $props();
 
 	export const close = () => (isOpen = false);
@@ -55,6 +64,7 @@
 		isOpen = false;
 		onclose?.(e);
 	}}
+	{ontransitionend}
 	onclick={!closeOnBackdropClick
 		? null
 		: (e) => {
